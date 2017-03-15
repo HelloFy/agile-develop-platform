@@ -5,4 +5,8 @@
 # IntelliJ project files
 .idea
 *.iml
-out
+gen/target
+web/target
+web/src/main/resources/static/node_modules
+web/src/main/resources/static/assets
+web/src/main/resources/templates
