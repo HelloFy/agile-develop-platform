@@ -25,6 +25,10 @@ module.exports = merge(baseWebpackConfig, {
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+        name: 'manifest',
+        chunks: ['vendor']
+    }),
     new ExtractTextPlugin(utils.assetsPath('css/[name].[contenthash].css')),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
