@@ -29,6 +29,7 @@
     "function-bind": "^1.0.2",
     "graceful-fs": "^4.1.11",
     "html-webpack-plugin": "^2.8.1",
+    "html-withimg-loader": "^0.1.16",
     "http-proxy-middleware": "^0.17.2",
     "jquery": "^3.1.1",
     "json-loader": "^0.5.4",
