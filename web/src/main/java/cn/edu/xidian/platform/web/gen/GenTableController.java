@@ -1,6 +1,7 @@
 package cn.edu.xidian.platform.web.gen;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,13 +23,13 @@ public class GenTableController {
     private GenTableService genTableService;
 
     @RequestMapping("tableForm")
-    public ModelAndView genTableFormView(){
+    public ModelAndView genTableFormView(Model model){
+        model.addAttribute("tables",genTableService.findAllTableList());
         return new ModelAndView("gen/genTableForm");
     }
 
     @RequestMapping("getAllTables")
     public void getAllTables(){
         List<GenTable> genTables = genTableService.findAllTableList();
-
     }
 }
