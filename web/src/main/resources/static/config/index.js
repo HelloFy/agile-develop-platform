@@ -4,7 +4,7 @@ module.exports = {
   build: {
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../../templates/index.ftl'),
-    login: path.resolve(__dirname, '../../templates/login/login.ftl'),
+    gen: path.resolve(__dirname, '../../templates/gen/genTableForm.ftl'),
     assetsRoot: path.resolve(__dirname, '../../static'),
     assetsSubDirectory: 'assets',
     assetsPublicPath: '/',

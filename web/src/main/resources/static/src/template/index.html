@@ -13,27 +13,40 @@
 <div class="pusher">
     <div class="full-height">
         <div class="toc">
-            <div class="ui vertical blue inverted sticky menu fixed top">
+            <div class="ui left fixed vertical blue inverted sticky menu">
                 <div class="item">
                     <div class="ui tiny image">
                         <img alt="Logo" src="../imgs/logo.png">
                     </div>
-                    <a class="ui header" style="margin-left: 15px;color: white;">
+                    <a class="ui medium white inverted header">
                         敏捷开发平台
                     </a>
                 </div>
-                <a class="item">代码生成</a>
-                <a class="item">Test</a>
-                <a class="item">Sign-in</a>
+                <div class="ui inverted styled accordion" style="background:  #2185d0;">
+                    <div class="title">
+                        <i class="dropdown icon"></i>
+                        <a class="ui white inverted medium  header">代码生成</a>
+                    </div>
+                    <div class="content" style="padding:0 0 0 0 !important;">
+                        <a class="item" id="gen_table_item" href="javascript:void(0)"><h3 class="ui white inverted header"> 业务表配置</h3></a>
+                        <a class="item"><h3 class="ui white inverted header"> 生成方案配置</h3></a>
+                    </div>
+                    <div class="title">
+                        <i class="dropdown icon"></i>
+                        <a class="ui white inverted medium  header">文档生成</a>
+                    </div>
+                </div>
             </div>
 
         </div>
         <div class="article">
-            <div class="a-title">
-                <div class="item">
-
+            <div class="ui very padded blue inverted vertical segment" style="height: 106px;">
+                <div class="ui item">
+                    <div class="ui white inverted small header">您好，欢迎来到敏捷开发平台</div>
                 </div>
             </div>
+
+            <iframe id="main_frame" src="" frameborder="0" scrolling="no" style="min-height:500px; max-height:1366px;width:100%; background: white;" onload="setIframeHeight(this)"></iframe>
         </div>
 
     </div>

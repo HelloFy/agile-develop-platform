@@ -14,6 +14,7 @@ module.exports = {
     entry: {
         // fetch:'whatwg-fetch',
         index: './src/js/index.js',
+        gen:'./src/js/gen/gen.js',
         vendor: ['jquery']
     },
     output: {
