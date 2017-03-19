@@ -18,7 +18,7 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 8080,
+    port: 8081,
     assetsRoot: path.resolve(__dirname, '../../static'),
     assetsSubDirectory: 'assets',
     assetsPublicPath: '/',
@@ -33,7 +33,8 @@ module.exports = {
   buildDev:{
     env: require('./dev.env'),
     index: path.resolve(__dirname, '../../templates/index.ftl'),
-    port: 8080,
+      gen: path.resolve(__dirname, '../../templates/gen/genTableForm.ftl'),
+      port: 8081,
     assetsRoot: path.resolve(__dirname, '../../static'),
     assetsSubDirectory: 'assets',
     assetsPublicPath: '/',

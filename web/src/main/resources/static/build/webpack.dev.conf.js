@@ -6,9 +6,9 @@ var baseWebpackConfig = require('./webpack.base.conf');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 // add hot-reload related code to entry chunks
-/*Object.keys(baseWebpackConfig.entry).forEach(function (name) {
+Object.keys(baseWebpackConfig.entry).forEach(function (name) {
   baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
-});*/
+});
 module.exports = merge(baseWebpackConfig, {
   output: {
     path: config.build.assetsRoot,
@@ -42,9 +42,20 @@ module.exports = merge(baseWebpackConfig, {
         // more options:
         // https://github.com/kangax/html-minifier#options-quick-reference
       },*/
-      chunks: ['index'],
+      chunks: ['vendor','manifest','index'],
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunksSortMode: 'dependency'
+        chunksSortMode: function (chunk1, chunk2) {
+            var orders = ['manifest', 'vendor', 'index'];
+            var order1 = orders.indexOf(chunk1.names[0]);
+            var order2 = orders.indexOf(chunk2.names[0]);
+            if (order1 > order2) {
+                return 1;
+            } else if (order1 < order2) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
     }),
     new HtmlWebpackPlugin({
         filename: config.build.gen,
@@ -57,9 +68,20 @@ module.exports = merge(baseWebpackConfig, {
        // more options:
        // https://github.com/kangax/html-minifier#options-quick-reference
        },*/
-        chunks: ['gen'],
+        chunks: ['vendor','manifest','gen'],
         // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-        chunksSortMode: 'dependency'
+        chunksSortMode: function (chunk1, chunk2) {
+            var orders = ['manifest', 'vendor', 'gen'];
+            var order1 = orders.indexOf(chunk1.names[0]);
+            var order2 = orders.indexOf(chunk2.names[0]);
+            if (order1 > order2) {
+                return 1;
+            } else if (order1 < order2) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
     })
   ]
 });

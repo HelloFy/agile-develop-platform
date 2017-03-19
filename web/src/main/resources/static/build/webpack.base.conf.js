@@ -15,7 +15,7 @@ module.exports = {
         // fetch:'whatwg-fetch',
         index: './src/js/index.js',
         gen:'./src/js/gen/gen.js',
-        vendor: ['jquery']
+        vendor: ['jquery','sweetalert','./src/js/base.js']
     },
     output: {
         path: config.build.assetsRoot,
@@ -27,7 +27,8 @@ module.exports = {
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery : 'jquery',
-            'window.jQuery': 'jquery'
+            'window.jQuery': 'jquery',
+            swal : 'sweetalert'
         })
     ],
     resolve: {
