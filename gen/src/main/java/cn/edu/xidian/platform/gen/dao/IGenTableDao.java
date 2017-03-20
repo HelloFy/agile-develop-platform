@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
-import cn.edu.xidian.platform.gen.dao.provider.IGenTableDaoProvider;
+import cn.edu.xidian.platform.gen.dao.provider.IGenTableDaoSQLProvider;
 import cn.edu.xidian.platform.gen.entity.GenTable;
 
 /**
@@ -24,7 +24,7 @@ public interface IGenTableDao {
             "a.*\n"+
             "FROM gen_table a\n" +
             "WHERE a.id = #{id}")
-    GenTable get(long id);
+    GenTable get(GenTable genTable);
 
     @Select("SELECT a.*\n" +
             "FROM gen_table a\n"+
@@ -32,7 +32,7 @@ public interface IGenTableDao {
     List<GenTable> findAllList();
 
 
-    @SelectProvider(type = IGenTableDaoProvider.class, method = "findList")
+    @SelectProvider(type = IGenTableDaoSQLProvider.class, method = "findList")
     List<GenTable> findList(GenTable table);
 
     @Insert("INSERT INTO gen_table(\n" +

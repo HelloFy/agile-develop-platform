@@ -5,9 +5,11 @@ package cn.edu.xidian.platform.gen.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,12 +33,14 @@ import cn.edu.xidian.platform.gen.entity.GenScheme;
 import cn.edu.xidian.platform.gen.entity.GenTable;
 import cn.edu.xidian.platform.gen.entity.GenTableColumn;
 import cn.edu.xidian.platform.gen.entity.GenTemplate;
+import cn.edu.xidian.platform.gen.service.GenTableService;
 
 /**
  * 代码生成工具类
  * @author ThinkGem
  * @version 2013-11-16
  */
+@Component
 public class GenUtils {
 
 	private static Logger logger = LoggerFactory.getLogger(GenUtils.class);
@@ -45,6 +49,9 @@ public class GenUtils {
 	 * 初始化列属性字段
 	 * @param genTable
 	 */
+
+	private static GenTableService genTableService;
+
 	public static void initColumnField(GenTable genTable){
 		for (GenTableColumn column : genTable.getColumnList()){
 			
@@ -239,13 +246,16 @@ public class GenUtils {
 	 */
 	public static Map<String, Object> getDataModel(GenScheme genScheme){
 		Map<String, Object> model = new HashMap<>();
-		
+		GenTable genTable = new GenTable();
+		genTable.setId(genScheme.getGenTableId());
+		genTable = genTableService.get(genTable);
+
 		model.put("packageName", StringUtils.lowerCase(genScheme.getPackageName()));
 		model.put("lastPackageName", StringUtils.substringAfterLast((String)model.get("packageName"),"."));
 		model.put("moduleName", StringUtils.lowerCase(genScheme.getModuleName()));
 		model.put("subModuleName", StringUtils.lowerCase(genScheme.getSubModuleName()));
-		model.put("className", StringUtils.uncapitalize(genScheme.getGenTable().getClassName()));
-		model.put("ClassName", StringUtils.capitalize(genScheme.getGenTable().getClassName()));
+		model.put("className", StringUtils.uncapitalize(genTable.getClassName()));
+		model.put("ClassName", StringUtils.capitalize(genTable.getClassName()));
 		
 		model.put("functionName", genScheme.getFunctionName());
 		model.put("functionNameSimple", genScheme.getFunctionNameSimple());
@@ -259,7 +269,7 @@ public class GenUtils {
 		model.put("permissionPrefix", model.get("moduleName")+(StringUtils.isNotBlank(genScheme.getSubModuleName())
 				?":"+StringUtils.lowerCase(genScheme.getSubModuleName()):"")+":"+model.get("className"));
 
-		model.put("table", genScheme.getGenTable());
+		model.put("table", genTable);
 		
 		return model;
 	}
@@ -307,5 +317,13 @@ public class GenUtils {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public static GenTableService getGenTableService() {
+		return genTableService;
+	}
+
+	@Autowired
+	public static void setGenTableService(GenTableService genTableService) {
+		GenUtils.genTableService = genTableService;
+	}
 }

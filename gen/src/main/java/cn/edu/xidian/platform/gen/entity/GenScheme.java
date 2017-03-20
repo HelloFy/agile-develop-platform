@@ -25,9 +25,9 @@ public class GenScheme extends Page<GenScheme> implements Serializable {
 	private String functionName;		// 生成功能名
 	private String functionNameSimple;		// 生成功能名（简写）
 	private String functionAuthor;		// 生成功能作者
-	private GenTable genTable;		// 业务表名
-	
-	private String flag; 	// 0：保存方案； 1：保存方案并生成代码
+    private long genTableId;        // 业务表Id
+
+    private String flag; 	// 0：保存方案； 1：保存方案并生成代码
 	
 	private Boolean replaceFile;	// 是否替换现有文件    0：不替换；1：替换文件
 
@@ -95,14 +95,6 @@ public class GenScheme extends Page<GenScheme> implements Serializable {
 		this.functionAuthor = functionAuthor;
 	}
 
-	public GenTable getGenTable() {
-		return genTable;
-	}
-
-	public void setGenTable(GenTable genTable) {
-		this.genTable = genTable;
-	}
-
 	public String getFlag() {
 		return flag;
 	}
@@ -126,6 +118,14 @@ public class GenScheme extends Page<GenScheme> implements Serializable {
 	public void setId(long id) {
 		this.id = id;
 	}
+
+    public long getGenTableId() {
+        return genTableId;
+    }
+
+    public void setGenTableId(long genTableId) {
+        this.genTableId = genTableId;
+    }
 }
 
 

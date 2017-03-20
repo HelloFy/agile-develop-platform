@@ -30,6 +30,10 @@ public class GenTableService {
     @Autowired
     private IGenTableColumnDao iGenTableColumnDao;
 
+    public GenTable get(GenTable genTable) {
+        return iGenTableDao.get(genTable);
+    }
+
     public List<GenTable> findAllTableList() {
         return iGenDataBaseDictDao.findAllTableList();
     }

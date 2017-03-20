@@ -6,7 +6,7 @@ import cn.edu.xidian.platform.gen.entity.GenTable;
 /**
  * Created by 费玥 on 2017/3/19.
  */
-public class IGenTableDaoProvider {
+public class IGenTableDaoSQLProvider {
 
     public String findList(GenTable genTable){
         StringBuilder sql =  new StringBuilder();

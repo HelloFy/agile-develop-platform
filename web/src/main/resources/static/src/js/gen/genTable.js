@@ -1,22 +1,9 @@
-(function(self) {
-    'use strict';
+require('../../css/gen/gen.css');
+require('../jqPagination/jqPaginator.js');
 
-    if (self.hehe) {
-        return
-    }
+var totalPages = 1;
 
-    self.hehe = function(input, init) {
-        console.log("hehe");
-        return "hehe"
-    }
-    self.fetch.polyfill = true
-})(typeof self !== 'undefined' ? self : this);
-
-
-/*
-
-
-$(function () {
+export function load() {
 
     $('.tabular.menu #get_business_tables')
         .tab({
@@ -31,7 +18,7 @@ $(function () {
                                  if (isSuccess) {
                                      var message = data.message;
                                      totalPages = message.pages == 0 ? 1 :message.pages;
-                                     console.log(message);
+                                     console.log(totalPages);
                                      var html = '';
                                      $.each(message.list, function (index, content) {
                                          html += "<tr>";
@@ -62,9 +49,28 @@ $(function () {
                                                          }
                                                      }).then(function (response) {
                                                          console.log(response);
-                                                         response.text().then(function (data) {
-                                                             console.log(data);
-                                                             $('#main_frame').html(data);
+                                                         response.json().then(function (data) {
+                                                             var html = '';
+                                                             $.each(message.list,
+                                                                    function (index, content) {
+                                                                        html += "<tr>";
+                                                                        html +=
+                                                                            "<td>"
+                                                                            + content.tableName
+                                                                            + "</td>";
+                                                                        html +=
+                                                                            "<td>"
+                                                                            + content.tableComments
+                                                                            + "</td>";
+                                                                        html +=
+                                                                            "<td>"
+                                                                            + content.className
+                                                                            + "</td>";
+                                                                        html +=
+                                                                            "<td><a class=\"\" href=\"\">修改</a><a >删除</a></td>";
+                                                                        html += "</tr>";
+                                                                    });
+                                                             $('#business_tb').html(html);
                                                          })
                                                      }).catch(function (err) {
                                                          swal("错误","服务器繁忙","error");
@@ -139,7 +145,7 @@ $(function () {
                 method:'get',
                 credentials: 'include',
                 body:{
-                    tableName: $('.ui.dropdown').dropdown('get value')
+                    tableName: $('#phy_tb_name').dropdown('get value')
                 }
             }).then(function (response) {
                 console.log(response);
@@ -294,60 +300,63 @@ $(function () {
     });
 
     $('#saveTable').click(function () {
-        $.ajax('gen/saveGenTable', {
-            type: 'POST', //GET
-            data: $('#next_step_form').serialize(),
-            dataType: 'json',    //返回的数据格式：json/xml/html/script/jsonp/text
-            beforeSend: function (xhr) {
-                $('#next_step_form').addClass('loading');
-            },
-            success: function (data, textStatus, jqXHR) {
-                $('#next_step_form').removeClass('loading');
-                var isSuccess = data.result == 'SUCCESS' ? true : false;
-                if (isSuccess) {
-                    swal({
-                             title: "添加成功",
-                             text: "是否继续添加?",
-                             type: "success",
-                             showCancelButton: true,
-                             confirmButtonText: "是的",
-                             cancelButtonText: "不了",
-                             closeOnConfirm: true,
-                             closeOnCancel: true
-                         },
-                         function (isConfirm) {
-                             if (isConfirm) {
-                                 $('.tabular.menu .item').tab('change tab', 'getPhysicalTables');
-                                 $('#final_step').removeClass('active');
-                                 $('#final_step').addClass('disabled');
-                                 $('#first_step').removeClass('completed');
-                                 $('#first_step').addClass('active');
-                                 $('#next_step_form').addClass('hidden');
-                                 $('#first_step_form').removeClass('hidden');
-                                 $('#first_step_form').removeClass('loading');
-                                 $('#table_info').html('');
-                             }
-                             else {
-                                 $('.tabular.menu .item').tab('change tab', 'getBusinessTables');
-                                 $('#final_step').removeClass('active');
-                                 $('#final_step').addClass('disabled');
-                                 $('#first_step').removeClass('completed');
-                                 $('#first_step').addClass('active');
-                                 $('#next_step_form').addClass('hidden');
-                                 $('#first_step_form').removeClass('hidden');
-                                 $('#first_step_form').removeClass('loading');
-                                 $('#table_info').html('');
-                             }
-                         });
+        require.ensure(["whatwg-fetch"], function () {
+            $('#next_step_form').addClass('loading');
+            fetch('gen/saveGenTable', {
+                method: 'get',
+                credentials: 'include',
+                data: $('#next_step_form').serialize(),
+            }).then(function (response) {
+                console.log(response);
+                response.json().then(function (data) {
+                    $('#next_step_form').removeClass('loading');
+                    var isSuccess = data.result == 'SUCCESS' ? true : false;
+                    if (isSuccess) {
+                        swal({
+                                 title: "添加成功",
+                                 text: "是否继续添加?",
+                                 type: "success",
+                                 showCancelButton: true,
+                                 confirmButtonText: "是的",
+                                 cancelButtonText: "不了",
+                                 closeOnConfirm: true,
+                                 closeOnCancel: true
+                             },
+                             function (isConfirm) {
+                                 if (isConfirm) {
+                                     $('.tabular.menu .item')
+                                         .tab('change tab', 'getPhysicalTables');
+                                     $('#final_step').removeClass('active');
+                                     $('#final_step').addClass('disabled');
+                                     $('#first_step').removeClass('completed');
+                                     $('#first_step').addClass('active');
+                                     $('#next_step_form').addClass('hidden');
+                                     $('#first_step_form').removeClass('hidden');
+                                     $('#first_step_form').removeClass('loading');
+                                     $('#table_info').html('');
+                                 }
+                                 else {
+                                     $('.tabular.menu .item')
+                                         .tab('change tab', 'getBusinessTables');
+                                     $('#final_step').removeClass('active');
+                                     $('#final_step').addClass('disabled');
+                                     $('#first_step').removeClass('completed');
+                                     $('#first_step').addClass('active');
+                                     $('#next_step_form').addClass('hidden');
+                                     $('#first_step_form').removeClass('hidden');
+                                     $('#first_step_form').removeClass('loading');
+                                     $('#table_info').html('');
+                                 }
+                             });
 
-                }
-                else {
-                    swal('添加失败', '添加业务表失败' + data.errorMsg, 'error');
-                }
-            },
-            error: function (data) {
-                swal('添加失败', '服务器繁忙', 'error');
-            }
-        })
+                    }
+                    else {
+                        swal('添加失败', '添加业务表失败' + data.errorMsg, 'error');
+                    }
+                })
+            }).catch(function (err) {
+                swal("错误", "服务器繁忙", "error");
+            })
+        });
     })
-});*/
+};

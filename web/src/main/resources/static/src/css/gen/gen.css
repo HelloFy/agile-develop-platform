@@ -1,3 +1,21 @@
 .ui.form.hidden{
     display: none;
 }
+
+.format.label {
+    min-width: 7em;
+}
+
+.help.text {
+    margin-left: 1em;
+    color: #aaaaaa;
+}
+
+.gen.field {
+    border-bottom: 1px dotted #dddddd;
+    padding-bottom: 1px;
+}
+
+.gen.inline.field {
+    border-bottom: none;
+}

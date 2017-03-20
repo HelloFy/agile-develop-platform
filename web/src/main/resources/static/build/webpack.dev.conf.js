@@ -86,7 +86,7 @@ module.exports = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
         filename: config.build.genSchema,
         template: 'src/template/gen/genSchemaForm.html',
-        inject: true,
+        inject: false,
         /*      minify: {
          removeComments: true,
          collapseWhitespace: true,
