@@ -58,9 +58,9 @@ module.exports = merge(baseWebpackConfig, {
         }
     }),
     new HtmlWebpackPlugin({
-        filename: config.build.gen,
+        filename: config.build.genTable,
         template: 'src/template/gen/genTableForm.html',
-        inject: true,
+        inject: false,
       /*      minify: {
        removeComments: true,
        collapseWhitespace: true,
@@ -68,10 +68,36 @@ module.exports = merge(baseWebpackConfig, {
        // more options:
        // https://github.com/kangax/html-minifier#options-quick-reference
        },*/
-        chunks: ['vendor','manifest','gen'],
+        chunks: ['vendor','manifest','genTable'],
         // necessary to consistently work with multiple chunks via CommonsChunkPlugin
         chunksSortMode: function (chunk1, chunk2) {
             var orders = ['manifest', 'vendor', 'gen'];
+            var order1 = orders.indexOf(chunk1.names[0]);
+            var order2 = orders.indexOf(chunk2.names[0]);
+            if (order1 > order2) {
+                return 1;
+            } else if (order1 < order2) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    }),
+    new HtmlWebpackPlugin({
+        filename: config.build.genSchema,
+        template: 'src/template/gen/genSchemaForm.html',
+        inject: true,
+        /*      minify: {
+         removeComments: true,
+         collapseWhitespace: true,
+         removeAttributeQuotes: true
+         // more options:
+         // https://github.com/kangax/html-minifier#options-quick-reference
+         },*/
+        chunks: ['vendor','manifest','genSchema'],
+        // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+        chunksSortMode: function (chunk1, chunk2) {
+            var orders = ['manifest', 'vendor', 'genSchema'];
             var order1 = orders.indexOf(chunk1.names[0]);
             var order2 = orders.indexOf(chunk2.names[0]);
             if (order1 > order2) {

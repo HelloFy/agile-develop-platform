@@ -17,7 +17,7 @@
 .toc{
     position: relative;
     z-index: 1;
-    width: 21.5em;
+    width: 20em;
     min-height: 100%;
     flex: 0 0 auto;
 }

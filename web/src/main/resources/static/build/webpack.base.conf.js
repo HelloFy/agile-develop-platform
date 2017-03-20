@@ -14,7 +14,8 @@ module.exports = {
     entry: {
         // fetch:'whatwg-fetch',
         index: './src/js/index.js',
-        gen:'./src/js/gen/gen.js',
+        genTable:'./src/js/gen/genTable.js',
+        genSchema: './src/js/gen/genSchema.js',
         vendor: ['jquery','sweetalert','./src/js/base.js']
     },
     output: {

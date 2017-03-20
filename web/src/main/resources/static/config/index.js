@@ -4,8 +4,9 @@ module.exports = {
   build: {
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../../templates/index.ftl'),
-    gen: path.resolve(__dirname, '../../templates/gen/genTableForm.ftl'),
-    assetsRoot: path.resolve(__dirname, '../../static'),
+    genTable: path.resolve(__dirname, '../../templates/gen/genTableForm.ftl'),
+      genSchema: path.resolve(__dirname, '../../templates/gen/genSchemaForm.ftl'),
+      assetsRoot: path.resolve(__dirname, '../../static'),
     assetsSubDirectory: 'assets',
     assetsPublicPath: '/',
     productionSourceMap: false,
@@ -33,7 +34,8 @@ module.exports = {
   buildDev:{
     env: require('./dev.env'),
     index: path.resolve(__dirname, '../../templates/index.ftl'),
-      gen: path.resolve(__dirname, '../../templates/gen/genTableForm.ftl'),
+      genTable: path.resolve(__dirname, '../../templates/gen/genTableForm.ftl'),
+      genSchema: path.resolve(__dirname, '../../templates/gen/genSchemaForm.ftl'),
       port: 8081,
     assetsRoot: path.resolve(__dirname, '../../static'),
     assetsSubDirectory: 'assets',

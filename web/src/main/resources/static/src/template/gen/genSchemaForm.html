@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="敏捷开发平台">
+    <!-- 设置文档宽度、是否缩放 -->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+    <!-- 优先使用IE最新版本或chrome -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>敏捷开发平台</title>
+    <style>
+        label{
+            min-width: 7em;
+        }
+        .field{
+            border-bottom: 1px dotted #dddddd;
+            padding-bottom:1px;
+        }
+        .inline.field{
+            border-bottom: none;
+        }
+        span{
+            margin-left: 1em;
+            color: #aaaaaa;
+        }
+    </style>
+</head>
+<body>
+<div class="ui tabular menu">
+    <a class="item" id="list_schema" data-tab="schema_list">生成方案列表</a>
+    <a class="item" id="add_schema" data-tab="schema_add">生成方案添加</a>
+</div>
+<div class="ui tab" data-tab="schema_list">
+    <div class="ui container">
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="inline field">
+                    <label>方案名称</label>
+                    <input type="text" placeholder="方案名称">
+                </div>
+                <div class="inline field">
+                    <button class="ui primary button" id="query_schema_btn">查询</button>
+                </div>
+            </div>
+        </div>
+        <table class="ui celled table ">
+            <thead>
+            <tr>
+                <th>方案名称</th>
+                <th>生成模块</th>
+                <th>模块名</th>
+                <th>功能名</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tb_schema_body">
+            </tbody>
+        </table>
+        <div class="ui middle aligned  center aligned grid">
+            <div class="ui column">
+                <div class="ui pagination menu">
+                    <ul class="pagination">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui tab" data-tab="schema_add">
+    <div class="ui container">
+        <form class="ui form">
+            <div class="field">
+                <div class="inline field">
+                    <label>方案名称:</label>
+                    <input type="text" placeholder="方案名称">
+                </div>
+            </div>
+            <div class="field">
+                <div class="inline field">
+                    <label>模版分类:</label>
+                    <div class="ui search selection dropdown">
+                        <input type="hidden" name="gender">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">请选择模版</div>
+                        <div class="menu">
+                            <div class="item" data-value="1">增删改查(单表)</div>
+                            <div class="item" data-value="2">仅持久层(dao/entity/mapper)</div>
+                        </div>
+                    </div>
+                    <span class="">生成结构：{包名}/{模块名}/{分层(dao,entity,service,web)}/{子模块名}/{java类}</span>
+                </div>
+            </div>
+            <div class="field">
+                <div class="inline field">
+                    <label>生成包路径:</label>
+                    <input type="text" placeholder="生成包路径">
+                    <span class="">建议模块包：cn.edu.xidian.platform</span>
+                </div>
+            </div>
+            <div class="field">
+                <div class="inline field">
+                    <label>生成模块名:</label>
+                    <input type="text" placeholder="生成模块名">
+                    <span class="">可理解为子系统名，例如 sys</span>
+                </div>
+            </div>
+            <div class="field">
+                <div class="inline field">
+                    <label>生成子模块名:</label>
+                    <input type="text" placeholder="生成子模块名">
+                    <span class="">可选，分层下的文件夹</span>
+                </div>
+            </div>
+            <div class="field">
+                <div class="inline field">
+                    <label>生成功能描述:</label>
+                    <input type="text" placeholder="生成功能描述">
+                    <span class="">将设置到类描述</span>
+                </div>
+            </div>
+            <div class="field">
+                <div class="inline field">
+                    <label>生成功能名:</label>
+                    <input type="text" placeholder="生成功能名">
+                    <span class="">用作功能提示，如：保存“某某”成功</span>
+                </div>
+            </div>
+            <div class="field">
+                <div class="inline field">
+                    <label>生成功能作者:</label>
+                    <input type="text" placeholder="生成功能作者">
+                    <span class="">功能开发者</span>
+                </div>
+            </div>
+            <div class="field">
+                <div class="inline field">
+                    <label>业务表名:</label>
+                    <div class="ui search selection dropdown">
+                        <input type="hidden" name="gender">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">请选择模版</div>
+                        <div class="menu">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="inline field">
+                    <label>生成选项:</label>
+                    <div class="ui checkbox">
+                        <input type="checkbox" tabindex="0" class="hidden">
+                        <label>是否替换现有文件?</label>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="field">
+                    <button class="ui primary button">保存并生成代码</button>
+                    <button class="ui green button">保存方案</button>
+                    <button class="ui button">返回</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+</body>
+</html>
