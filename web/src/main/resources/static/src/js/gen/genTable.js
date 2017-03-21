@@ -1,7 +1,26 @@
-require('../../css/gen/gen.css');
-require('../jqPagination/jqPaginator.js');
+// require('../../css/gen/gen.css');
+// require('../jqPagination/jqPaginator.js');
+let util = require('../utils/util.js');
+let totalPages = 1;
 
-var totalPages = 1;
+function next_step() {
+    $('#first_step_form').addClass('hidden');
+    $('#next_step_form').removeClass('hidden');
+    $('#first_step').removeClass('active');
+    $('#first_step').addClass('completed');
+    $('#final_step').removeClass('disabled');
+    $('#final_step').addClass('active');
+}
+
+function last_step() {
+    $('#final_step').removeClass('active');
+    $('#final_step').addClass('disabled');
+    $('#first_step').removeClass('completed');
+    $('#first_step').addClass('active');
+    $('#next_step_form').addClass('hidden');
+    $('#first_step_form').removeClass('hidden');
+    $('#first_step_form').removeClass('loading');
+}
 
 export function load() {
 
@@ -9,17 +28,17 @@ export function load() {
         .tab({
                  onLoad: function () {
                      require.ensure(["whatwg-fetch"],function () {
-                         fetch('gen/getBusinessTables',{
-                             method:'post',
+                         fetch('gen/getBusinessTables?page=1',{
+                             method:'get',
                              credentials: 'include'
                          }).then(function (response) {
                              response.json().then(function (data) {
-                                 var isSuccess = data.result == 'SUCCESS' ? true : false;
+                                 let isSuccess = data.result == 'SUCCESS' ? true : false;
                                  if (isSuccess) {
-                                     var message = data.message;
+                                     let message = data.message;
                                      totalPages = message.pages == 0 ? 1 :message.pages;
                                      console.log(totalPages);
-                                     var html = '';
+                                     let html = '';
                                      $.each(message.list, function (index, content) {
                                          html += "<tr>";
                                          html += "<td>" + content.tableName + "</td>";
@@ -29,7 +48,44 @@ export function load() {
                                          html += "</tr>";
                                      });
                                      $('#business_tb').html(html);
-                                     $('.pagination').jqPaginator(
+                                     util.createPage('.pagination',totalPages,5,1,function (num, type) {
+                                         if(num == 1){
+                                             return;
+                                         }
+                                         require.ensure(["whatwg-fetch"],function () {
+                                             fetch('gen/getBusinessTables?page='+num,{
+                                                 method:'get',
+                                                 credentials: 'include'
+                                             }).then(function (response) {
+                                                 console.log(response);
+                                                 response.json().then(function (data) {
+                                                     let html = '';
+                                                     $.each(message.list,
+                                                            function (index, content) {
+                                                                html += "<tr>";
+                                                                html +=
+                                                                    "<td>"
+                                                                    + content.tableName
+                                                                    + "</td>";
+                                                                html +=
+                                                                    "<td>"
+                                                                    + content.tableComments
+                                                                    + "</td>";
+                                                                html +=
+                                                                    "<td>"
+                                                                    + content.className
+                                                                    + "</td>";
+                                                                html +=
+                                                                    "<td><a class=\"\" href=\"\">修改</a><a >删除</a></td>";
+                                                                html += "</tr>";
+                                                            });
+                                                     $('#business_tb').html(html);
+                                                 })
+                                             }).catch(function (err) {
+                                                 swal("错误","服务器繁忙","error");
+                                             })
+                                         })                                         });
+/*                                     $('.pagination').jqPaginator(
                                          {
                                              totalPages: totalPages,
                                              visiblePages: 5,
@@ -40,17 +96,17 @@ export function load() {
                                              last: '<li class="icon item"><a href="javascript:void(0);"><i class="right chevron icon"></i><i class="right chevron icon"></i><\/a><\/li>',
                                              page: '<li class="item"><a href="javascript:void(0);">{{page}}<\/a><\/li>',
                                              onPageChange: function (num, type) {
+                                                 if(num == 1){
+                                                     return;
+                                                 }
                                                  require.ensure(["whatwg-fetch"],function () {
-                                                     fetch('gen/getBusinessTables',{
+                                                     fetch('gen/getBusinessTables?page='+num,{
                                                          method:'get',
-                                                         credentials: 'include',
-                                                         body:{
-                                                             page:num
-                                                         }
+                                                         credentials: 'include'
                                                      }).then(function (response) {
                                                          console.log(response);
                                                          response.json().then(function (data) {
-                                                             var html = '';
+                                                             let html = '';
                                                              $.each(message.list,
                                                                     function (index, content) {
                                                                         html += "<tr>";
@@ -76,7 +132,7 @@ export function load() {
                                                          swal("错误","服务器繁忙","error");
                                                      })
                                                  })                                         }
-                                         });
+                                         });*/
                                  }
                                  else {
                                      swal(data.message, data.message, "error");
@@ -98,16 +154,16 @@ export function load() {
                      }
                      require.ensure(["whatwg-fetch"],function () {
                          fetch('gen/getPhysicalTables',{
-                             method:'POST',
+                             method:'get',
                              credentials: 'include'
                          }).then(function (response) {
                              console.log(response);
                              response.json().then(function (data) {
-                                 var isSuccess = data.result == 'SUCCESS' ? true : false;
+                                 let isSuccess = data.result == 'SUCCESS' ? true : false;
                                  if (isSuccess) {
-                                     var message = data.message;
+                                     let message = data.message;
                                      console.log(message);
-                                     var html = '';
+                                     let html = '';
                                      $.each(message, function (index, content) {
                                          html +=
                                              "<div class='item' data-value=\"" + content.tableName + "\">"
@@ -127,8 +183,7 @@ export function load() {
                          })
                      })
                  }
-             })
-    ;
+             });
 
     $('.ui.dropdown').dropdown();
 
@@ -140,30 +195,23 @@ export function load() {
 
     $('#next_step').click(function () {
         $('#first_step_form').addClass('loading');
+        let tableName =  $('#phy_tb_name').dropdown('get value');
         require.ensure(["whatwg-fetch"],function () {
-            fetch('gen/getTableInfo',{
+            fetch('gen/getTableInfo?tableName='+tableName,{
                 method:'get',
-                credentials: 'include',
-                body:{
-                    tableName: $('#phy_tb_name').dropdown('get value')
-                }
+                credentials: 'include'
             }).then(function (response) {
                 console.log(response);
                 response.json().then(function (data) {
-                    var isSuccess = data.result;
+                    let isSuccess = data.result;
                     if (isSuccess == 'SUCCESS') {
-                        $('#first_step_form').addClass('hidden');
-                        $('#next_step_form').removeClass('hidden');
-                        $('#first_step').removeClass('active');
-                        $('#first_step').addClass('completed');
-                        $('#final_step').removeClass('disabled');
-                        $('#final_step').addClass('active');
-                        var message = data.message;
+                        next_step();
+                        let message = data.message;
                         $("input[name='tableName']").val(message.tableName);
                         $("input[name='className']").val(message.className);
                         $("input[name='tableComments']").val(message.tableComments);
-                        var queryTypes = ['=', '!=', '<', '>', '>=', '<=', 'LIKE', 'BETWEEN'];
-                        var html;
+                        let queryTypes = ['=', '!=', '<', '>', '>=', '<=', 'LIKE', 'BETWEEN'];
+                        let html;
                         $.each(message.columnList, function (index, content) {
                             html += "<tr>";
                             html += "<td >"
@@ -274,43 +322,41 @@ export function load() {
                             });
                             html += "</tr>";
                         });
-                        console.log(html);
+                        // console.log(html);
                         $('#table_info').html(html);
-
                     }
                     else {
                         swal(data.message, data.message, "error");
                     }
+                    $('#first_step_form').removeClass('loading');
                     return;
                 })
             }).catch(function (err) {
                 swal("错误","服务器繁忙","error");
+                $('#first_step_form').removeClass('loading');
             })
         });
     });
 
     $('#last_step').click(function () {
-        $('#final_step').removeClass('active');
-        $('#final_step').addClass('disabled');
-        $('#first_step').removeClass('completed');
-        $('#first_step').addClass('active');
-        $('#next_step_form').addClass('hidden');
-        $('#first_step_form').removeClass('hidden');
-        $('#first_step_form').removeClass('loading');
+        last_step();
     });
 
     $('#saveTable').click(function () {
         require.ensure(["whatwg-fetch"], function () {
             $('#next_step_form').addClass('loading');
             fetch('gen/saveGenTable', {
-                method: 'get',
+                method: 'put',
                 credentials: 'include',
-                data: $('#next_step_form').serialize(),
+                headers:{
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: $('#next_step_form').serialize(),
             }).then(function (response) {
                 console.log(response);
                 response.json().then(function (data) {
                     $('#next_step_form').removeClass('loading');
-                    var isSuccess = data.result == 'SUCCESS' ? true : false;
+                    let isSuccess = data.result == 'SUCCESS' ? true : false;
                     if (isSuccess) {
                         swal({
                                  title: "添加成功",
@@ -326,25 +372,13 @@ export function load() {
                                  if (isConfirm) {
                                      $('.tabular.menu .item')
                                          .tab('change tab', 'getPhysicalTables');
-                                     $('#final_step').removeClass('active');
-                                     $('#final_step').addClass('disabled');
-                                     $('#first_step').removeClass('completed');
-                                     $('#first_step').addClass('active');
-                                     $('#next_step_form').addClass('hidden');
-                                     $('#first_step_form').removeClass('hidden');
-                                     $('#first_step_form').removeClass('loading');
+                                     last_step();
                                      $('#table_info').html('');
                                  }
                                  else {
                                      $('.tabular.menu .item')
                                          .tab('change tab', 'getBusinessTables');
-                                     $('#final_step').removeClass('active');
-                                     $('#final_step').addClass('disabled');
-                                     $('#first_step').removeClass('completed');
-                                     $('#first_step').addClass('active');
-                                     $('#next_step_form').addClass('hidden');
-                                     $('#first_step_form').removeClass('hidden');
-                                     $('#first_step_form').removeClass('loading');
+                                     last_step();
                                      $('#table_info').html('');
                                  }
                              });

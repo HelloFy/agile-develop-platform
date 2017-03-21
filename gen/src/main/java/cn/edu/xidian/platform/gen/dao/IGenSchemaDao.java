@@ -45,7 +45,7 @@ public interface IGenSchemaDao {
             "#{functionName},  \n" +
             "#{functionNameSimple},  \n" +
             "#{functionAuthor},  \n" +
-            "#{gen_table_id}  \n" +
+            "#{genTableId}  \n" +
             "\t\t)")
     long save(GenScheme genScheme);
 

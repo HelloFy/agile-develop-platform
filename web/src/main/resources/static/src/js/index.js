@@ -7,7 +7,7 @@ $('.ui.accordion')
 
 $(function () {
     $('#gen_table_item').click(function () {
-        require.ensure(["whatwg-fetch","./gen/genTable.js"],function () {
+        require.ensure(["whatwg-fetch","./gen/genTable.js","../css/gen/gen.css"],function () {
             var func = require('./gen/genTable.js');
             fetch('gen/tableForm',{
                 method:'get',
@@ -26,7 +26,7 @@ $(function () {
 
         });
     $('#gen_schema_item').click(function () {
-        require.ensure(["whatwg-fetch", "./gen/genSchema.js"], function () {
+        require.ensure(["whatwg-fetch", "./gen/genSchema.js","../css/gen/gen.css"], function () {
             var func = require('./gen/genSchema.js');
             fetch('gen/schemaForm',{
                 method:'get',

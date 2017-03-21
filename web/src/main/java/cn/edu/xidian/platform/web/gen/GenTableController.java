@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +16,6 @@ import java.util.List;
 
 import cn.edu.xidian.platform.commons.entity.Message;
 import cn.edu.xidian.platform.commons.utils.Exceptions;
-import cn.edu.xidian.platform.commons.utils.StringUtils;
 import cn.edu.xidian.platform.gen.entity.GenTable;
 import cn.edu.xidian.platform.gen.service.GenTableService;
 
@@ -49,7 +47,7 @@ public class GenTableController {
         return new ModelAndView("gen/genTableForm");
     }
 
-    @RequestMapping("getPhysicalTables")
+    @RequestMapping(value = "getPhysicalTables",method = RequestMethod.GET)
     public Message getPhysicalTables(){
         Message message = new Message();
         message.setResult(Message.MessageResult.SUCCESS);
@@ -57,21 +55,24 @@ public class GenTableController {
         return message;
     }
 
-    @RequestMapping("getBusinessTables")
+    @RequestMapping(value = "getBusinessTables",method = RequestMethod.GET)
     public Message getBusinessTables(GenTable genTable){
         Message message = new Message();
         message.setResult(Message.MessageResult.SUCCESS);
-        if (genTable.getIndex() == 0 ) {
-            PageHelper.startPage(genTable.getIndex(), genTable.getPageSize());
+        if (genTable.getPage() != 0 ) { //分页
+            PageHelper.startPage(genTable.getPage(), genTable.getPageSize());
+            List<GenTable> genTablePage = genTableService.findPagedBusinessTableList(genTable);
+            PageInfo<GenTable> pageInfo = new PageInfo<>(genTablePage);
+            message.setMessage(pageInfo);
+            logger.info(pageInfo);
+            return message ;
         }
-        List<GenTable> genTablePage = genTableService.findAllBusinessTableList(genTable);
-        PageInfo<GenTable> pageInfo = new PageInfo<>(genTablePage);
-        message.setMessage(pageInfo);
-        logger.info(pageInfo);
+        List<GenTable> allBusinessTbList = genTableService.findAllBusinessTableList();
+        message.setMessage(allBusinessTbList);
         return message;
     }
 
-    @RequestMapping("getTableInfo")
+    @RequestMapping(value = "getTableInfo",method = RequestMethod.GET)
     public Message getTableInfo(GenTable genTable){
         Message message =  new Message();
         if (!genTableService.checkTableName(genTable.getTableName())){
@@ -85,7 +86,7 @@ public class GenTableController {
         return message;
     }
 
-    @RequestMapping("saveGenTable")
+    @RequestMapping(value = "saveGenTable",method = RequestMethod.PUT)
     public Message saveGenTable(GenTable genTable){
         Message message = new Message();
         genTableService.saveOrUpdate(genTable);

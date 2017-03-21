@@ -3,7 +3,10 @@ package cn.edu.xidian.platform.gen.dao;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+
+import java.util.List;
 
 import cn.edu.xidian.platform.gen.entity.GenTable;
 import cn.edu.xidian.platform.gen.entity.GenTableColumn;
@@ -65,7 +68,11 @@ public interface IGenTableColumnDao {
             "\t\tWHERE id = #{id}")
     long update(GenTableColumn genTableColumn);
 
-    @Delete("DELETE FROM gen_table_column \n"+
+    @Delete("DELETE FROM gen_table_column \n" +
             "WHERE gen_table_id = #{id}")
     void delByGenTableId(GenTable genTable);
+
+    @Select("SELECT a.* FROM gen_table_column a WHERE gen_table_id = {genTableId}")
+    List<GenTableColumn> findListByTbId(GenTableColumn genTableColumn);
+
 }

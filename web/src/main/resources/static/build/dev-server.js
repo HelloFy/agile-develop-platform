@@ -45,8 +45,9 @@ app.use(devMiddleware);
 // compilation error display
 app.use(hotMiddleware);
 // serve pure static assets
-var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory);
-app.use(staticPath, express.static('./static'));
+// var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory);
+app.use('/static', express.static(__dirname + '../src'));
+console.log(express.static(__dirname + '../src'));
 module.exports = app.listen(port, function (err) {
   if (err) {
     console.log(err);

@@ -38,13 +38,17 @@ public class GenTableService {
         return iGenDataBaseDictDao.findAllTableList();
     }
 
-    public List<GenTable> findAllBusinessTableList(GenTable genTable) {
+    public List<GenTable> findAllBusinessTableList() {
+        return iGenTableDao.findAllList();
+    }
+
+    public List<GenTable> findPagedBusinessTableList(GenTable genTable){
         return iGenTableDao.findList(genTable);
     }
 
     public boolean checkTableName(String tableName) {
         if (StringUtils.isBlank(tableName)) {
-            return true;
+            return false;
         }
         GenTable genTable = new GenTable();
         genTable.setTableName(tableName);

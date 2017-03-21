@@ -1,14 +1,12 @@
 package cn.edu.xidian.platform.commons.entity;
 
-import java.util.List;
-
 /**
  * Created by 费玥 on 2017/3/19.
  */
 public class Page<T> {
 
     private int pageSize = 10;
-    private int index ;
+    private int page;
 
     public int getPageSize() {
         return pageSize;
@@ -18,11 +16,11 @@ public class Page<T> {
         this.pageSize = pageSize;
     }
 
-    public int getIndex() {
-        return index;
+    public int getPage() {
+        return page;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
+    public void setPage(int page) {
+        this.page = page;
     }
 }

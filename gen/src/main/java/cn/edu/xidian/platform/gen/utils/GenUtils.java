@@ -50,8 +50,6 @@ public class GenUtils {
 	 * @param genTable
 	 */
 
-	private static GenTableService genTableService;
-
 	public static void initColumnField(GenTable genTable){
 		for (GenTableColumn column : genTable.getColumnList()){
 			
@@ -158,7 +156,7 @@ public class GenUtils {
 	@SuppressWarnings("unchecked")
 	public static <T> T fileToObject(String fileName, Class<?> clazz){
 		try {
-			String pathName = "/templates/modules/gen/" + fileName;
+			String pathName = "/templates/gen/" + fileName;
 //			logger.debug("File to object: {}", pathName);
 			Resource resource = new ClassPathResource(pathName);
 			InputStream is = resource.getInputStream();
@@ -244,11 +242,8 @@ public class GenUtils {
 	 * @param genScheme
 	 * @return
 	 */
-	public static Map<String, Object> getDataModel(GenScheme genScheme){
+	public static Map<String, Object> getDataModel(GenScheme genScheme,GenTable genTable){
 		Map<String, Object> model = new HashMap<>();
-		GenTable genTable = new GenTable();
-		genTable.setId(genScheme.getGenTableId());
-		genTable = genTableService.get(genTable);
 
 		model.put("packageName", StringUtils.lowerCase(genScheme.getPackageName()));
 		model.put("lastPackageName", StringUtils.substringAfterLast((String)model.get("packageName"),"."));
@@ -316,14 +311,5 @@ public class GenUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static GenTableService getGenTableService() {
-		return genTableService;
-	}
-
-	@Autowired
-	public static void setGenTableService(GenTableService genTableService) {
-		GenUtils.genTableService = genTableService;
 	}
 }

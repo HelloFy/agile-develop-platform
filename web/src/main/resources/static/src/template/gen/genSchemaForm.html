@@ -1,4 +1,25 @@
-<body>
+<style>
+    .format.label {
+        min-width: 7em;
+    }
+
+    .help.text {
+        margin-left: 1em;
+        color: #aaaaaa;
+    }
+
+    .gen.field {
+        border-bottom: 1px dotted #dddddd;
+        padding-bottom: 1px;
+    }
+
+    .gen.inline.field {
+        border-bottom: none;
+    }
+    .gen.inline.field input{
+        min-width: 196px;
+    }
+</style>
 <div class="ui tabular menu">
     <a class="item" id="list_schema" data-tab="schema_list">生成方案列表</a>
     <a class="item" id="add_schema" data-tab="schema_add">生成方案添加</a>
@@ -8,7 +29,7 @@
         <div class="ui form">
             <div class="inline fields">
                 <div class="inline field">
-                    <label class="format label">方案名称</label>
+                    <label class="label">方案名称</label>
                     <input type="text" placeholder="方案名称">
                 </div>
                 <div class="inline field">
@@ -19,11 +40,12 @@
         <table class="ui celled table ">
             <thead>
             <tr>
-                <th>方案名称</th>
-                <th>生成模块</th>
-                <th>模块名</th>
-                <th>功能名</th>
-                <th>操作</th>
+                <th class="two wide">方案名称</th>
+                <th class="four wide">生成模块</th>
+                <th class="two wide">模块名</th>
+                <th class="three wide">功能名</th>
+                <th class="two wid">功能作者</th>
+                <th class="two wide">操作</th>
             </tr>
             </thead>
             <tbody id="tb_schema_body">
@@ -60,49 +82,49 @@
                             <div class="item" data-value="onlyDao">仅持久层(dao/entity/mapper)</div>
                         </div>
                     </div>
-                    <span class="helper text">生成结构：{包名}/{模块名}/{分层(dao,entity,service,web)}/{子模块名}/{java类}</span>
+                    <span class="help text">生成结构：{包名}/{模块名}/{分层(dao,entity,service,web)}/{子模块名}/{java类}</span>
                 </div>
             </div>
             <div class="gen field">
                 <div class="gen inline field">
                     <label class="format label">生成包路径:</label>
                     <input type="text" placeholder="生成包路径" name="packageName">
-                    <span class="helper text">建议模块包：cn.edu.xidian.platform</span>
+                    <span class="help text">建议模块包：cn.edu.xidian.platform</span>
                 </div>
             </div>
             <div class="gen field">
                 <div class="gen inline field">
                     <label class="format label">生成模块名:</label>
                     <input type="text" placeholder="生成模块名" name="moduleName">
-                    <span class="helper text">可理解为子系统名，例如 sys</span>
+                    <span class="help text">可理解为子系统名，例如 sys</span>
                 </div>
             </div>
             <div class="gen field">
                 <div class="gen inline field">
                     <label class="format label">生成子模块名:</label>
                     <input type="text" placeholder="生成子模块名" name="subModuleName">
-                    <span class="helper text">可选，分层下的文件夹</span>
+                    <span class="help text">可选，分层下的文件夹</span>
                 </div>
             </div>
             <div class="gen field">
                 <div class="gen inline field">
                     <label class="format label">生成功能描述:</label>
                     <input type="text" placeholder="生成功能描述" name="functionName">
-                    <span class="helper text">将设置到类描述</span>
+                    <span class="help text">将设置到类描述</span>
                 </div>
             </div>
             <div class="gen field">
                 <div class="gen inline field">
                     <label class="format label">生成功能名:</label>
-                    <input type="text" placeholder="生成功能名" name="fuctionNameSimple">
-                    <span class="helper text">用作功能提示，如：保存“某某”成功</span>
+                    <input type="text" placeholder="生成功能名" name="functionNameSimple">
+                    <span class="help text">用作功能提示，如：保存“某某”成功</span>
                 </div>
             </div>
             <div class="gen field">
                 <div class="gen inline field">
                     <label class="format label">生成功能作者:</label>
                     <input type="text" placeholder="生成功能作者" name="functionAuthor">
-                    <span class="helper text">功能开发者</span>
+                    <span class="help text">功能开发者</span>
                 </div>
             </div>
             <div class="gen field">
@@ -121,7 +143,7 @@
                 <div class="gen inline field">
                     <label class="format label">生成选项:</label>
                     <div class="ui checkbox">
-                        <input type="checkbox" tabindex="0" class="hidden" name="replaceFile">
+                        <input type="checkbox" tabindex="0" name="replaceFile">
                         <label class="format label">是否替换现有文件?</label>
                     </div>
                 </div>
@@ -136,6 +158,4 @@
         </form>
     </div>
 </div>
-</div>
-</body>
-</html>
+
