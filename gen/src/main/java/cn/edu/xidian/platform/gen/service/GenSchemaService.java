@@ -67,9 +67,11 @@ public class GenSchemaService {
         genTable.setId(genScheme.getGenTableId());
         // 查询主表及字段列
         genTable = iGenTableDao.get(genTable);
-        GenTableColumn genTableColumn = new GenTableColumn();
-        genTableColumn.setGenTableId(genTable.getId());
-        genTable.setColumnList(iGenTableColumnDao.findListByTbId(genTableColumn));
+        List<GenTableColumn> genTableColumnList = iGenTableColumnDao.findListByTbId(genTable);
+        for (GenTableColumn genTableColumn : genTableColumnList) {
+            genTableColumn.setGenTable(genTable);
+        }
+        genTable.setColumnList(genTableColumnList);
 
         // 获取所有代码模板
         GenConfig config = GenUtils.getConfig();

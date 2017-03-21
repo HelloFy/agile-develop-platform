@@ -17,7 +17,6 @@ import java.util.List;
 import cn.edu.xidian.platform.commons.entity.Message;
 import cn.edu.xidian.platform.commons.utils.Exceptions;
 import cn.edu.xidian.platform.gen.entity.GenScheme;
-import cn.edu.xidian.platform.gen.entity.GenTable;
 import cn.edu.xidian.platform.gen.service.GenSchemaService;
 
 /**

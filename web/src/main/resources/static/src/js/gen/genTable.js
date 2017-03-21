@@ -84,55 +84,8 @@ export function load() {
                                              }).catch(function (err) {
                                                  swal("错误","服务器繁忙","error");
                                              })
-                                         })                                         });
-/*                                     $('.pagination').jqPaginator(
-                                         {
-                                             totalPages: totalPages,
-                                             visiblePages: 5,
-                                             currentPage: 1,
-                                             first: '<li class="icon item"><a href="javascript:void(0);"><i class="left chevron icon"></i><i class="left chevron icon"></i><\/a><\/li>',
-                                             prev: '<li class="icon item"><a href="javascript:void(0);"><i class="left chevron icon"></i><\/a><\/li>',
-                                             next: '<li class="icon item"><a href="javascript:void(0);"><i class="right chevron icon"></i><\/a><\/li>',
-                                             last: '<li class="icon item"><a href="javascript:void(0);"><i class="right chevron icon"></i><i class="right chevron icon"></i><\/a><\/li>',
-                                             page: '<li class="item"><a href="javascript:void(0);">{{page}}<\/a><\/li>',
-                                             onPageChange: function (num, type) {
-                                                 if(num == 1){
-                                                     return;
-                                                 }
-                                                 require.ensure(["whatwg-fetch"],function () {
-                                                     fetch('gen/getBusinessTables?page='+num,{
-                                                         method:'get',
-                                                         credentials: 'include'
-                                                     }).then(function (response) {
-                                                         console.log(response);
-                                                         response.json().then(function (data) {
-                                                             let html = '';
-                                                             $.each(message.list,
-                                                                    function (index, content) {
-                                                                        html += "<tr>";
-                                                                        html +=
-                                                                            "<td>"
-                                                                            + content.tableName
-                                                                            + "</td>";
-                                                                        html +=
-                                                                            "<td>"
-                                                                            + content.tableComments
-                                                                            + "</td>";
-                                                                        html +=
-                                                                            "<td>"
-                                                                            + content.className
-                                                                            + "</td>";
-                                                                        html +=
-                                                                            "<td><a class=\"\" href=\"\">修改</a><a >删除</a></td>";
-                                                                        html += "</tr>";
-                                                                    });
-                                                             $('#business_tb').html(html);
-                                                         })
-                                                     }).catch(function (err) {
-                                                         swal("错误","服务器繁忙","error");
-                                                     })
-                                                 })                                         }
-                                         });*/
+                                         })
+                                     });
                                  }
                                  else {
                                      swal(data.message, data.message, "error");
@@ -232,6 +185,8 @@ export function load() {
                                     "<input type=\"hidden\" name=\"columnList[" + index
                                     + "].jdbcType\" value=\"" + content.jdbcType + "\">"
                                     + content.jdbcType +
+                                    "<input type=\"hidden\" name=\"columnList[" + index
+                                    + "].javaType\" value=\"" + content.javaType + "\">" +
                                     "</td>" +
                                     "<td>" +
                                     "<input type=\"text\" name=\"columnList[" + index

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+    <name>dao</name>
+    <filePath>src/main/java/${packageName}/${moduleName}/dao/${subModuleName}</filePath>
+    <fileName>I${ClassName}Dao.java</fileName>
+    <content><![CDATA[
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package ${packageName}.${moduleName}.dao<#if subModuleName != "">.${subModuleName}</#if>;
+
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
+
+import java.util.List;
+
+import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName};
+import ${packageName}.${moduleName}.dao<#if subModuleName != "">.${subModuleName}</#if>.provider.I${ClassName}DaoSQLProvider;
+
+
+/**
+ * ${functionName}DAO接口
+ * @author ${functionAuthor}
+ * @version ${functionVersion}
+ */
+@Mapper
+public interface I${ClassName}Dao  {
+
+	@Select("SELECT \n" +
+            "a.*\n"+
+            "FROM ${table.tableName} a\n" +
+            "WHERE a.id = ${"#"}{id}")
+    ${ClassName} get(${ClassName} ${className});
+
+    @Select("SELECT a.*\n" +
+            "FROM ${table.tableName} a\n")
+    List<${ClassName}> findAllList();
+
+
+    @SelectProvider(type = I${ClassName}DaoSQLProvider.class, method = "findList")
+    List<${ClassName}> findList(${ClassName} ${className});
+
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    @Insert("INSERT INTO ${table.tableName}( \n"+
+		<#assign insertField>
+			<#list table.columnList as c>
+				<#if c.isInsert?? && c.isInsert == "1" && c.name != "id">
+			" ${c.name},\n" +
+				</#if>
+			</#list>
+		</#assign>
+${insertField?substring(0, insertField?last_index_of(","))} \n" +
+	 " ) VALUES ( \n"+
+		<#assign insertJavaField>
+			<#list table.columnList as c>
+				<#if c.isInsert?? && c.isInsert == "1" && c.name != "id">
+			"${"#"}{${c.javaFieldId}},\n" +
+				</#if>
+			</#list>
+		</#assign>
+${insertJavaField?substring(0, insertJavaField?last_index_of(","))} \n" +
+		 ")")
+    long save(${ClassName} ${className});
+
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    @Update("UPDATE ${table.tableName} SET \n"+
+			<#assign updateField>
+				<#list table.columnList as c>
+					<#if c.isEdit?? && c.isEdit == "1">
+			" ${c.name} = ${"#"}{${c.javaFieldId}},\n"+
+					</#if>
+				</#list>
+			</#assign>
+${updateField?substring(0, updateField?last_index_of(","))} \n"+
+		 " WHERE id = ${"#"}{id}")
+    long update(${ClassName} ${className});
+
+
+    @Delete("DELETE FROM ${table.tableName}\n" +
+            "WHERE id = ${"#"}{id}")
+    void delete(${ClassName} ${className});
+
+}]]>
+    </content>
+</template>

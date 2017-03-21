@@ -37,6 +37,7 @@ public class GenTableColumn extends Page<GenTableColumn> {
     private String showType;    // 字段生成方案（文本框、文本域、下拉框、复选框、单选框、字典选择、人员选择、部门选择、区域选择）
     private String dictType;    // 字典类型
     private Integer sort;        // 排序（升序）
+    private GenTable genTable;   //归属表实例
 
     public String getName() {
         return StringUtils.lowerCase(name);
@@ -179,6 +180,19 @@ public class GenTableColumn extends Page<GenTableColumn> {
     }
 
     /**
+     * 获取简写Java类型
+     */
+    public String getSimpleJavaType() {
+        System.err.println("------------------" + getJdbcType() + ":" + getJavaType());
+        if ("This".equals(getJavaType())) {
+            return StringUtils.capitalize(genTable.getClassName());
+        }
+        return StringUtils.indexOf(getJavaType(), ".") != -1
+                ? StringUtils.substringAfterLast(getJavaType(), ".")
+                : getJavaType();
+    }
+
+    /**
      * 获取简写Java字段
      * @return
      */
@@ -285,6 +299,10 @@ public class GenTableColumn extends Page<GenTableColumn> {
 
     public void setGenTableId(long genTableId) {
         this.genTableId = genTableId;
+    }
+
+    public void setGenTable(GenTable genTable) {
+        this.genTable = genTable;
     }
 }
 

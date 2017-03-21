@@ -85,18 +85,17 @@ public class GenTableService {
 
     @Transactional
     public void saveOrUpdate(GenTable genTable) {
-        long id = 0L;
         if (genTable.getId() != 0L) {
             iGenTableDao.update(genTable);
         } else {
-            id = iGenTableDao.save(genTable);
+            iGenTableDao.save(genTable);
         }
         List<GenTableColumn> columns = genTable.getColumnList();
         for (GenTableColumn genTableColumn : columns) {
             if (genTableColumn.getId() != 0L) {
                 iGenTableColumnDao.update(genTableColumn);
             } else {
-                genTableColumn.setGenTableId(id);
+                genTableColumn.setGenTableId(genTable.getId());
                 iGenTableColumnDao.save(genTableColumn);
             }
         }

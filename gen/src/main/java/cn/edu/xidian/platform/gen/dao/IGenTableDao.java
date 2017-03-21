@@ -3,6 +3,7 @@ package cn.edu.xidian.platform.gen.dao;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
@@ -35,6 +36,7 @@ public interface IGenTableDao {
     @SelectProvider(type = IGenTableDaoSQLProvider.class, method = "findList")
     List<GenTable> findList(GenTable table);
 
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     @Insert("INSERT INTO gen_table(\n" +
             "table_name, \n" +
             "table_comments, \n" +
@@ -45,6 +47,7 @@ public interface IGenTableDao {
             "#{className}) \n")
     long save(GenTable genTable);
 
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     @Update("UPDATE gen_table SET \n" +
             "table_name = #{tableName},  \n" +
             "comments = #{tableComments}, \n" +

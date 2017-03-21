@@ -3,6 +3,7 @@ package cn.edu.xidian.platform.gen.dao;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
@@ -25,7 +26,7 @@ public interface IGenSchemaDao {
     @SelectProvider(type = IGenSchemeDaoSQLProvider.class, method = "findList")
     List<GenScheme> findList(GenScheme genScheme);
 
-
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     @Insert("INSERT INTO gen_scheme(\n" +
             "name, \n" +
             "category, \n" +
@@ -49,6 +50,7 @@ public interface IGenSchemaDao {
             "\t\t)")
     long save(GenScheme genScheme);
 
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     @Update("UPDATE gen_scheme SET \n" +
             "name = #{name}, \n" +
             "category = #{category},  \n" +

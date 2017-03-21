@@ -27,7 +27,9 @@ export function load() {
                                     html += "</tr>";
                                 });
                                 $('#tb_schema_body').html(html);
-                                util.createPage('.pagination',message.pages,5,1,function (num) {
+                                util.createPage('.pagination',
+                                                message.pages == 0 ? 1 : message.pages, 5, 1,
+                                                function (num) {
                                     console.log('page changed '+num);
                                     fetch('gen/getSchemeList?page='+num, {
                                         method: 'get',

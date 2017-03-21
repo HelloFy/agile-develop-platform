@@ -3,6 +3,7 @@ package cn.edu.xidian.platform.gen.dao;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -17,6 +18,7 @@ import cn.edu.xidian.platform.gen.entity.GenTableColumn;
 @Mapper
 public interface IGenTableColumnDao {
 
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     @Insert("INSERT INTO gen_table_column(\n" +
             "gen_table_id, \n" +
             "name, \n" +
@@ -51,6 +53,7 @@ public interface IGenTableColumnDao {
             "#{dictType}) \n")
     long save(GenTableColumn genTableColumn);
 
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     @Update("UPDATE gen_table_column SET \n" +
             "comments = #{comments}, \n" +
             "jdbc_type = #{jdbcType}, \n" +
@@ -72,7 +75,7 @@ public interface IGenTableColumnDao {
             "WHERE gen_table_id = #{id}")
     void delByGenTableId(GenTable genTable);
 
-    @Select("SELECT a.* FROM gen_table_column a WHERE gen_table_id = {genTableId}")
-    List<GenTableColumn> findListByTbId(GenTableColumn genTableColumn);
+    @Select("SELECT a.* FROM gen_table_column a WHERE gen_table_id = #{id}")
+    List<GenTableColumn> findListByTbId(GenTable genTable);
 
 }

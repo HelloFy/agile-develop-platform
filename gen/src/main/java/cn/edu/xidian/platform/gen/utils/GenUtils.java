@@ -5,7 +5,6 @@ package cn.edu.xidian.platform.gen.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
@@ -33,7 +32,6 @@ import cn.edu.xidian.platform.gen.entity.GenScheme;
 import cn.edu.xidian.platform.gen.entity.GenTable;
 import cn.edu.xidian.platform.gen.entity.GenTableColumn;
 import cn.edu.xidian.platform.gen.entity.GenTemplate;
-import cn.edu.xidian.platform.gen.service.GenTableService;
 
 /**
  * 代码生成工具类
@@ -41,6 +39,7 @@ import cn.edu.xidian.platform.gen.service.GenTableService;
  * @version 2013-11-16
  */
 @Component
+//@ImportResource("classpath:/templates/gen/config.xml")
 public class GenUtils {
 
 	private static Logger logger = LoggerFactory.getLogger(GenUtils.class);
@@ -74,6 +73,7 @@ public class GenUtils {
 				column.setJavaType("java.util.Date");
 				column.setShowType("dateselect");
 			}else if (StringUtils.startsWithIgnoreCase(column.getJdbcType(), "BIGINT")
+					|| StringUtils.startsWithIgnoreCase(column.getJdbcType(), "INT")
 					|| StringUtils.startsWithIgnoreCase(column.getJdbcType(), "NUMBER")){
 				// 如果是浮点型
 				String[] ss = StringUtils.split(StringUtils.substringBetween(column.getJdbcType(), "(", ")"), ",");
@@ -277,10 +277,18 @@ public class GenUtils {
 	 */
 	public static String generateToFile(GenTemplate tpl, Map<String, Object> model, boolean isReplaceFile){
 		// 获取生成文件
-		String fileName = Global.getProjectPath() + File.separator
-				+ StringUtils.replaceEach(FreeMarkers.renderString(tpl.getFilePath() + "/", model), 
+		String fileName;
+		if (!StringUtils.equalsIgnoreCase(tpl.getName(), "controller")) {
+			fileName = StringUtils.replace(Global.getProjectPath(), "web", "gen") + File.separator
+					+ StringUtils.replaceEach(FreeMarkers.renderString(tpl.getFilePath() + "/", model),
+					new String[]{"//", "/", "."}, new String[]{File.separator, File.separator, File.separator})
+					+ FreeMarkers.renderString(tpl.getFileName(), model);
+		} else {
+			fileName = Global.getProjectPath() + File.separator
+					+ StringUtils.replaceEach(FreeMarkers.renderString(tpl.getFilePath() + "/", model),
 						new String[]{"//", "/", "."}, new String[]{File.separator, File.separator, File.separator})
-				+ FreeMarkers.renderString(tpl.getFileName(), model);
+					+ FreeMarkers.renderString(tpl.getFileName(), model);
+		}
 		logger.debug(" fileName === " + fileName);
 
 		// 获取生成文件内容
