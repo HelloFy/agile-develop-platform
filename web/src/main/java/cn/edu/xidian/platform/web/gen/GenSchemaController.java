@@ -72,7 +72,7 @@ public class GenSchemaController {
     public Message saveAndGenCode(GenScheme genScheme){
         Message message = new Message();
         message.setResult(Message.MessageResult.SUCCESS);
-        genSchemaService.saveOrUpdateAndGen(genScheme);
+        message.setMessage(genSchemaService.saveOrUpdateAndGen(genScheme));
         return message;
     }
 

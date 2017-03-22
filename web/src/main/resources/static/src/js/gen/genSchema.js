@@ -136,10 +136,12 @@ export function load() {
             response.json().then(function (data) {
                 let isSuccess = data.result == 'SUCCESS' ;
                 if (isSuccess) {
+                    let allFileGen = data.message;
                     swal({
-                             title: "添加成功",
-                             text: "是否继续添加?",
+                             title: "添加并生成成功",
+                             text: allFileGen + "是否继续添加?",
                              type: "success",
+                             html: true,
                              showCancelButton: true,
                              confirmButtonText: "是的",
                              cancelButtonText: "不了",

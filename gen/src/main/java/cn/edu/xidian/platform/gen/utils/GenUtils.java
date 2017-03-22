@@ -65,7 +65,8 @@ public class GenUtils {
 			// 设置java类型
 			if (StringUtils.startsWithIgnoreCase(column.getJdbcType(), "CHAR")
 					|| StringUtils.startsWithIgnoreCase(column.getJdbcType(), "VARCHAR")
-					|| StringUtils.startsWithIgnoreCase(column.getJdbcType(), "NARCHAR")){
+					|| StringUtils.startsWithIgnoreCase(column.getJdbcType(), "NARCHAR")
+					|| StringUtils.startsWithIgnoreCase(column.getJdbcType(), "TEXT")) {
 				column.setJavaType("String");
 			}else if (StringUtils.startsWithIgnoreCase(column.getJdbcType(), "DATETIME")
 					|| StringUtils.startsWithIgnoreCase(column.getJdbcType(), "DATE")

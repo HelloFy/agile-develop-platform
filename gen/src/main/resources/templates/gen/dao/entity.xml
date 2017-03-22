@@ -9,6 +9,10 @@
  */
 package ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>;
 
+<#list table.importList as i>
+import ${i};
+</#list>
+
 
 import cn.edu.xidian.platform.commons.entity.Page;
 
@@ -26,7 +30,7 @@ public class ${ClassName} extends Page<${ClassName}> implements java.io.Serializ
 	<#-- 生成字段属性 -->
 	<#list table.columnList as c>
 		<#-- 如果不是基类属性 -->
-		<#if c.isNotBaseField>
+		<#if c.name != "id">
 			<#-- 父类对象 -->
 	private ${c.simpleJavaType} ${c.simpleJavaField};		<#if c.comments??>// ${c.comments}</#if>
 		</#if>
@@ -50,7 +54,7 @@ public class ${ClassName} extends Page<${ClassName}> implements java.io.Serializ
 	<#-- 生成get和set方法 -->
 	<#list table.columnList as c>
 		<#-- 如果不是基类属性 -->
-		<#if c.isNotBaseField>
+		<#if c.name != "id">
 	public ${c.simpleJavaType} get${c.simpleJavaField?cap_first}() {
 		return ${c.simpleJavaField};
 	}

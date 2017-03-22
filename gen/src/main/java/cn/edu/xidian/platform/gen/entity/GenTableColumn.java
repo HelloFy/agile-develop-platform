@@ -183,7 +183,6 @@ public class GenTableColumn extends Page<GenTableColumn> {
      * 获取简写Java类型
      */
     public String getSimpleJavaType() {
-        System.err.println("------------------" + getJdbcType() + ":" + getJavaType());
         if ("This".equals(getJavaType())) {
             return StringUtils.capitalize(genTable.getClassName());
         }
@@ -276,13 +275,7 @@ public class GenTableColumn extends Page<GenTableColumn> {
      * @return
      */
     public Boolean getIsNotBaseField() {
-        return !StringUtils.equals(getSimpleJavaField(), "id")
-                && !StringUtils.equals(getSimpleJavaField(), "remarks")
-                && !StringUtils.equals(getSimpleJavaField(), "createBy")
-                && !StringUtils.equals(getSimpleJavaField(), "createDate")
-                && !StringUtils.equals(getSimpleJavaField(), "updateBy")
-                && !StringUtils.equals(getSimpleJavaField(), "updateDate")
-                && !StringUtils.equals(getSimpleJavaField(), "delFlag");
+        return true;
     }
 
     public long getId() {

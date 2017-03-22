@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 
+import cn.edu.xidian.platform.commons.utils.StringUtils;
 import cn.edu.xidian.platform.gen.dao.IGenSchemaDao;
 import cn.edu.xidian.platform.gen.dao.IGenTableColumnDao;
 import cn.edu.xidian.platform.gen.dao.IGenTableDao;
@@ -42,13 +43,13 @@ public class GenSchemaService {
     }
 
     @Transactional
-    public void saveOrUpdateAndGen(GenScheme genScheme){
+    public String saveOrUpdateAndGen(GenScheme genScheme) {
         if (genScheme.getId() == 0L) {
             iGenSchemaDao.save(genScheme);
         } else {
             iGenSchemaDao.update(genScheme);
         }
-        generateCode(genScheme);
+        return generateCode(genScheme);
     }
 
     @Transactional
@@ -101,7 +102,7 @@ public class GenSchemaService {
         // 生成主表模板代码
         Map<String, Object> model = GenUtils.getDataModel(genScheme,genTable);
         for (GenTemplate tpl : templateList){
-            result.append(GenUtils.generateToFile(tpl, model, genScheme.getReplaceFile()));
+            result.append(StringUtils.substringAfterLast(GenUtils.generateToFile(tpl, model, genScheme.getReplaceFile()), "\\"));
         }
         return result.toString();
     }

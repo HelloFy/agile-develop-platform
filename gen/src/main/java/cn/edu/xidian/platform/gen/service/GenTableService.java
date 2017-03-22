@@ -92,6 +92,7 @@ public class GenTableService {
         }
         List<GenTableColumn> columns = genTable.getColumnList();
         for (GenTableColumn genTableColumn : columns) {
+            genTableColumn.setQueryType(StringUtils.lowerCase(genTableColumn.getQueryType()));
             if (genTableColumn.getId() != 0L) {
                 iGenTableColumnDao.update(genTableColumn);
             } else {
