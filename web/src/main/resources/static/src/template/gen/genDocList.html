@@ -1,3 +1,8 @@
+<style>
+    .del.item {
+        padding-left: 5px;
+    }
+</style>
 <div class="ui tabular menu">
     <a class="item" id="list_doc_tpl" data-tab="doc_tpl_list">文档模版列表</a>
     <a class="item" id="add_doc_tpl" data-tab="doc_tpl_add">文档模版添加</a>
@@ -41,7 +46,10 @@
 <div class="ui tab" data-tab="doc_tpl_add">
     <div class="ui container">
         <div class="ui form">
-
+            <div class="inline field">
+                <label class="label">请选择文件:</label>
+                <input type="file" id="file" name="file"/>
+            </div>
         </div>
     </div>
 </div>

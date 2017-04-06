@@ -6,6 +6,44 @@ export function load() {
     list_scheme.tab(
         {
             onLoad: function () {
+                util.createPage('.pagination',
+                                1, 5, 1,
+                                function (num) {
+                                    fetch('gen/getSchemeList?page=' + num, {
+                                        method: 'get',
+                                        credentials: 'include'
+                                    }).then(function (response) {
+                                        response.json().then(function (data) {
+                                            let isSuccess = data.result == 'SUCCESS';
+                                            let message = data.message;
+                                            if (isSuccess) {
+                                                let html = '';
+                                                $.each(message.list, function (index, content) {
+                                                    html += "<tr>";
+                                                    html += "<td>" + content.name + "</td>";
+                                                    html += "<td>" + content.packageName + "</td>";
+                                                    html += "<td>" + content.moduleName + "</td>";
+                                                    html += "<td>" + content.functionName + "</td>";
+                                                    html +=
+                                                        "<td>" + content.functionAuthor + "</td>";
+                                                    html +=
+                                                        "<td><a class=\"\" href=\"\">修改</a><a >删除</a></td>";
+                                                    html += "</tr>";
+                                                });
+                                                $('#tb_schema_body').html(html);
+                                                $('.pagination').jqPaginator('option', {
+                                                    totalPages: message.pages == 0 ? 1
+                                                        : message.pages,
+                                                });
+                                            }
+                                            else {
+                                                swal(data.message, data.message, 'error');
+                                            }
+                                            return;
+                                        })
+                                    })
+
+                                })
                 require.ensure(["whatwg-fetch"], function () {
                     fetch('gen/getSchemeList?page=1', {
                         method: 'get',
@@ -27,35 +65,6 @@ export function load() {
                                     html += "</tr>";
                                 });
                                 $('#tb_schema_body').html(html);
-                                util.createPage('.pagination',
-                                                message.pages == 0 ? 1 : message.pages, 5, 1,
-                                                function (num) {
-                                    console.log('page changed '+num);
-                                    fetch('gen/getSchemeList?page='+num, {
-                                        method: 'get',
-                                        credentials: 'include'
-                                    }).then(function (response){
-                                        let isSuccess = data.result == 'SUCCESS';
-                                        if (isSuccess) {
-                                            let html = '';
-                                            $.each(message.list, function (index, content) {
-                                                html += "<tr>";
-                                                html += "<td>" + content.name + "</td>";
-                                                html += "<td>" + content.packageName + "</td>";
-                                                html += "<td>" + content.moduleName + "</td>";
-                                                html += "<td>" + content.functionName + "</td>";
-                                                html += "<td>" + content.functionAuthor + "</td>";
-                                                html += "<td><a class=\"\" href=\"\">修改</a><a >删除</a></td>";
-                                                html += "</tr>";
-                                            });
-                                            $('#tb_schema_body').html(html);
-                                        }
-                                        else {
-                                            swal(data.message, data.message, 'error');
-                                        }
-                                    })
-
-                                })
                             }
                             else {
                                 swal(data.message, data.message, 'error');

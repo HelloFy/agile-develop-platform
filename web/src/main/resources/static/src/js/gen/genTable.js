@@ -27,74 +27,49 @@ export function load() {
     $('.tabular.menu #get_business_tables')
         .tab({
                  onLoad: function () {
-                     require.ensure(["whatwg-fetch"],function () {
-                         fetch('gen/getBusinessTables?page=1',{
-                             method:'get',
-                             credentials: 'include'
-                         }).then(function (response) {
-                             response.json().then(function (data) {
-                                 let isSuccess = data.result == 'SUCCESS' ? true : false;
-                                 if (isSuccess) {
-                                     let message = data.message;
-                                     totalPages = message.pages == 0 ? 1 :message.pages;
-                                     console.log(totalPages);
+                     util.createPage('.pagination', 1, 5, 1, function (num) {
+                         require.ensure(["whatwg-fetch"], function () {
+                             fetch('gen/getBusinessTables?page=' + num, {
+                                 method: 'get',
+                                 credentials: 'include'
+                             }).then(function (response) {
+                                 console.log(response);
+                                 response.json().then(function (data) {
                                      let html = '';
-                                     $.each(message.list, function (index, content) {
-                                         html += "<tr>";
-                                         html += "<td>" + content.tableName + "</td>";
-                                         html += "<td>" + content.tableComments + "</td>";
-                                         html += "<td>" + content.className + "</td>";
-                                         html += "<td><a class=\"\" href=\"\">修改</a><a >删除</a></td>";
-                                         html += "</tr>";
-                                     });
-                                     $('#business_tb').html(html);
-                                     util.createPage('.pagination',totalPages,5,1,function (num, type) {
-                                         if(num == 1){
-                                             return;
-                                         }
-                                         require.ensure(["whatwg-fetch"],function () {
-                                             fetch('gen/getBusinessTables?page='+num,{
-                                                 method:'get',
-                                                 credentials: 'include'
-                                             }).then(function (response) {
-                                                 console.log(response);
-                                                 response.json().then(function (data) {
-                                                     let html = '';
-                                                     $.each(message.list,
-                                                            function (index, content) {
-                                                                html += "<tr>";
-                                                                html +=
-                                                                    "<td>"
-                                                                    + content.tableName
-                                                                    + "</td>";
-                                                                html +=
-                                                                    "<td>"
-                                                                    + content.tableComments
-                                                                    + "</td>";
-                                                                html +=
-                                                                    "<td>"
-                                                                    + content.className
-                                                                    + "</td>";
-                                                                html +=
-                                                                    "<td><a class=\"\" href=\"\">修改</a><a >删除</a></td>";
-                                                                html += "</tr>";
-                                                            });
-                                                     $('#business_tb').html(html);
-                                                 })
-                                             }).catch(function (err) {
-                                                 swal("错误","服务器繁忙","error");
-                                             })
-                                         })
-                                     });
-                                 }
-                                 else {
-                                     swal(data.message, data.message, "error");
-                                 }
-                                 return;
+                                     let isSuccess = data.result == 'SUCCESS';
+                                     let message = data.message;
+                                     if (isSuccess) {
+                                         $.each(message.list, function (index, content) {
+                                             html += "<tr>";
+                                             html +=
+                                                 "<td>"
+                                                 + content.tableName
+                                                 + "</td>";
+                                             html +=
+                                                 "<td>"
+                                                 + content.tableComments
+                                                 + "</td>";
+                                             html +=
+                                                 "<td>"
+                                                 + content.className
+                                                 + "</td>";
+                                             html +=
+                                                 "<td><a class=\"\" href=\"\">修改</a><a >删除</a></td>";
+                                             html += "</tr>";
+                                         });
+                                         $('#business_tb').html(html);
+                                         $('.pagination').jqPaginator('option', {
+                                             totalPages: message.pages == 0 ? 1 : message.pages,
+                                         });
+                                     }
+                                     else {
+                                         swal(data.message, data.message, 'error');
+                                     }
+
+                                 })
+                             }).catch(function (err) {
+                                 swal("错误", "服务器繁忙", "error");
                              })
-                         }).catch(function (err) {
-                             swal("错误","服务器繁忙","error");
-                             return;
                          })
                      });
                  }
