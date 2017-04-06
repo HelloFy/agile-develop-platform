@@ -41,6 +41,8 @@ export function load() {
                                             }
                                             return;
                                         })
+                                    }).catch(function (err) {
+                                        swal("错误", "服务器繁忙", "error");
                                     })
 
                                 })

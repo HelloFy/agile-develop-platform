@@ -135,28 +135,4 @@ export function load() {
     $('#query_doc_btn').click(function () {
         queryDocList($('#docName').val());
     });
-
-    /*$.ajaxFileUpload
-     (
-     {
-     url: '/gen/uploadDoc', //用于文件上传的服务器端请求地址
-     secureuri: false, //是否需要安全协议，一般设置为false
-     fileElementId: 'file', //文件上传域的ID
-     dataType: 'json', //返回值类型 一般设置为json
-     success: function (data, status)  //服务器成功响应处理函数
-     {
-     let isSuccess = data.result == 'SUCCESS';
-     if(isSuccess){
-     swal('上传成功','上传成功','success');
-     }
-     else {
-     swal(data.message, data.message, 'error');
-     }
-     },
-     error: function (data, status, e)//服务器响应失败处理函数
-     {
-     swal(data.message, data.message, 'error');
-     }
-     }
-     )*/
 }

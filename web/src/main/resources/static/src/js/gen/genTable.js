@@ -65,7 +65,7 @@ export function load() {
                                      else {
                                          swal(data.message, data.message, 'error');
                                      }
-
+                                     return;
                                  })
                              }).catch(function (err) {
                                  swal("错误", "服务器繁忙", "error");
