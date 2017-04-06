@@ -108,7 +108,28 @@ module.exports = merge(baseWebpackConfig, {
                 return 0;
             }
         }
+                          }),
+    new HtmlWebpackPlugin({
+                              filename: config.build.docList,
+                              template: 'src/template/gen/genDocList.html',
+                              inject: false,
+                              chunks: ['vendor', 'manifest', 'genSchema'],
+                              // necessary to consistently work with multiple chunks via
+                              // CommonsChunkPlugin
+                              chunksSortMode: function (chunk1, chunk2) {
+                                  var orders = ['manifest', 'vendor', 'genSchema'];
+                                  var order1 = orders.indexOf(chunk1.names[0]);
+                                  var order2 = orders.indexOf(chunk2.names[0]);
+                                  if (order1 > order2) {
+                                      return 1;
+                                  } else if (order1 < order2) {
+                                      return -1;
+                                  } else {
+                                      return 0;
+                                  }
+                              }
     })
+
   ]
 });
 

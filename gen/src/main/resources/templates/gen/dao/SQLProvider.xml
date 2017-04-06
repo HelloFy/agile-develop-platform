@@ -35,7 +35,7 @@ public class I${ClassName}DaoSQLProvider  {
 					<#else>
         if(<#if c.simpleJavaField?cap_first == "Id">${className}.get${c.simpleJavaField?cap_first}() != 0 <#else> ${className}.get${c.simpleJavaField?cap_first}() != null </#if> ){
                         <#if c.queryType ?? && c.queryType == 'like'>
-	        sql.append(" AND a.${c.name} LIKE concat('%',${"#"}{${c.javaFieldId}},'%'");
+	        sql.append(" AND a.${c.name} LIKE concat('%',${"#"}{${c.javaFieldId}},'%') ");
 					        <#else>
 		    sql.append(" AND a.${c.name} ${c.queryType} ${"#"}{${c.javaFieldId}}");
 					        </#if>

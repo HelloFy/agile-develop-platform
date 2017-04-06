@@ -311,14 +311,14 @@ public class GenUtils {
 			return "文件已存在："+fileName+"<br/>";
 		}
 	}
-	
-	public static void main(String[] args) {
+
+	public static void main(String[] args) {/*
 		try {
 			GenConfig config = getConfig();
 			System.out.println(config);
 			System.out.println(JaxbMapper.toXml(config));
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 }

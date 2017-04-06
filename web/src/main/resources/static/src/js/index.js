@@ -43,6 +43,25 @@ $(function () {
             })
         })
     })
+
+    $('#list_doc_item').click(function () {
+        require.ensure(["whatwg-fetch", "./gen/docList.js"], function () {
+            var func = require('./gen/docList.js');
+            fetch('gen/docTplView', {
+                method: 'get',
+                credentials: 'include'
+            }).then(function (response) {
+                console.log(response);
+                response.text().then(function (data) {
+                    console.log(data);
+                    $('#main_frame').html(data);
+                    func.load();
+                })
+            }).catch(function (err) {
+                swal("错误", "服务器繁忙", "error");
+            })
+        })
+    })
     // swal("Good job!", "You clicked the button!", "success")
 });
 

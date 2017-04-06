@@ -1,0 +1,47 @@
+<div class="ui tabular menu">
+    <a class="item" id="list_doc_tpl" data-tab="doc_tpl_list">文档模版列表</a>
+    <a class="item" id="add_doc_tpl" data-tab="doc_tpl_add">文档模版添加</a>
+</div>
+
+<div class="ui tab" data-tab="doc_tpl_list">
+    <div class="ui container">
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="inline field">
+                    <label class="label">文档名称</label>
+                    <input type="text" id="docName" placeholder="文档名称">
+                </div>
+                <div class="inline field">
+                    <button class="ui primary button" id="query_doc_btn">查询</button>
+                </div>
+            </div>
+        </div>
+        <table class="ui celled table ">
+            <thead>
+            <tr>
+                <th class="four wide">文档名称</th>
+                <th class="two wide">文档大小(KB)</th>
+                <th class="two wide">上传日期</th>
+                <th class="three wide">操作</th>
+            </tr>
+            </thead>
+            <tbody id="tb_doc_body">
+            </tbody>
+        </table>
+        <div class="ui middle aligned center aligned grid">
+            <div class="ui column">
+                <div class="ui pagination menu">
+                    <ul class="pagination">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui tab" data-tab="doc_tpl_add">
+    <div class="ui container">
+        <div class="ui form">
+
+        </div>
+    </div>
+</div>

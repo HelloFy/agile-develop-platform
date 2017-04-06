@@ -87,3 +87,21 @@ CREATE TABLE `gen_template` (
   `content` text COLLATE utf8_bin COMMENT '内容',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='代码模板表';
+
+-- ----------------------------
+-- Table structure for gen_doc
+-- ----------------------------
+DROP TABLE IF EXISTS `gen_doc`;
+CREATE TABLE `gen_doc` (
+  `id`          INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `doc_name`    VARCHAR(100)
+                COLLATE utf8_bin NOT NULL,
+  `doc_size`    INT(11)          NOT NULL,
+  `upload_date` DATETIME         NOT NULL,
+  `doc_path`    VARCHAR(50)
+                COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_bin;

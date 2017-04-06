@@ -19,7 +19,6 @@ import cn.edu.xidian.platform.gen.entity.GenScheme;
 @Mapper
 public interface IGenSchemaDao {
 
-
     @Select("SELECT a.* FROM gen_scheme WHERE id =#{id}")
     GenScheme get(GenScheme genScheme);
 

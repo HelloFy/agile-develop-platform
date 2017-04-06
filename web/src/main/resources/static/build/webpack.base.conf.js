@@ -16,6 +16,7 @@ module.exports = {
         index: './src/js/index.js',
         genTable:'./src/js/gen/genTable.js',
         genSchema: './src/js/gen/genSchema.js',
+        docList: './src/js/gen/docList.js',
         vendor: ['jquery','sweetalert','./src/js/base.js']
     },
     output: {

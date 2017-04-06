@@ -23,8 +23,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-import cn.edu.xidian.platform.commons.utils.StringUtils;
-import cn.edu.xidian.platform.commons.utils.Exceptions;
 import cn.edu.xidian.platform.commons.entity.Message;
 import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName};
 import ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Service;
@@ -34,7 +32,6 @@ import ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModule
  * @author ${functionAuthor}
  * @version ${functionVersion}
  */
-@Controller
 @RestController
 @RequestMapping(value = "${moduleName}")
 public class ${ClassName}Controller {

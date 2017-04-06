@@ -6,6 +6,7 @@ module.exports = {
     index: path.resolve(__dirname, '../../templates/index.ftl'),
     genTable: path.resolve(__dirname, '../../templates/gen/genTableForm.ftl'),
       genSchema: path.resolve(__dirname, '../../templates/gen/genSchemaForm.ftl'),
+      docList: path.resolve(__dirname, '../../templates/gen/genDocList.ftl'),
       assetsRoot: path.resolve(__dirname, '../../static'),
     assetsSubDirectory: 'assets',
     assetsPublicPath: '/',
