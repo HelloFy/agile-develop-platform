@@ -72,9 +72,7 @@ function getDocList(page) {
 
 function queryDocList(docName) {
 
-    util.createPage('.pagination',
-                    1, 5, 1,
-                    function (num, type) {
+    util.createPage('.pagination', 1, 5, 1, function (num, type) {
                         fetch('gen/getGenDocList?page=' + num + '&&docName=' + docName, {
                             method: 'get',
                             credentials: 'include'
