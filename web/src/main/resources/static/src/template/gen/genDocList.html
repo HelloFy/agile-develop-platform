@@ -2,6 +2,61 @@
     .del.item {
         padding-left: 5px;
     }
+
+    .format.label {
+        min-width: 7em;
+    }
+
+    .gen.field {
+        border-bottom: 1px dotted #dddddd;
+        padding-bottom: 1px;
+    }
+
+    .gen.inline.field {
+        border-bottom: none;
+    }
+
+    .gen.inline.field input {
+        min-width: 196px;
+    }
+
+    .fileinput-button {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .fileinput-button input {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        transform: translate(-300px, 0) scale(4);
+        font-size: 23px;
+        direction: ltr;
+        cursor: pointer;
+    }
+
+    @media (max-width: 767px) {
+        .fileupload-buttonbar .toggle,
+        .files .toggle,
+        .files .btn span {
+            display: none;
+        }
+
+        .files .name {
+            width: 80px;
+            word-wrap: break-word;
+        }
+
+        .files audio,
+        .files video {
+            max-width: 80px;
+        }
+    }
+
+
 </style>
 <div class="ui tabular menu">
     <a class="item" id="list_doc_tpl" data-tab="doc_tpl_list">文档模版列表</a>
@@ -45,11 +100,31 @@
 </div>
 <div class="ui tab" data-tab="doc_tpl_add">
     <div class="ui container">
-        <div class="ui form">
-            <div class="inline field">
-                <label class="label">请选择文件:</label>
-                <input type="file" id="file" name="file"/>
+        <form class="ui form" enctype="multipart/form-data">
+            <div class="gen field">
+                <div class="gen inline field">
+                    <label class="format label">文件名:</label>
+                    <input type="text" id="up_doc_name"/>
+                </div>
             </div>
-        </div>
+            <div class="gen field">
+                <div class="gen inline field">
+                    <label class="format label">请选择文件:</label>
+                    <div class="ui left action input fileinput-button">
+                        <button class="ui teal labeled icon button"><i class="plus icon"></i> 选择文件
+                        </button>
+                        <input type="file" id="fileupload" name="fileupload"
+                               data-url="gen/uploadDoc">
+                    </div>
+                    <span class="text"></span>
+                </div>
+            </div>
+            <div class="gen field">
+                <div class="gen inline field">
+                    <button class="ui primary button" id="upload">上传并保存</button>
+                    <button class="ui button">取消</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>

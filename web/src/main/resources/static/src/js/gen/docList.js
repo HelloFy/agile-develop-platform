@@ -1,5 +1,7 @@
 let util = require('../utils/util.js');
-require('../ajaxFileUpload/ajaxfileupload.js');
+require('imports?define=>false&exports=>false!blueimp-file-upload/js/vendor/jquery.ui.widget.js');
+require('imports?define=>false&exports=>false!blueimp-file-upload/js/jquery.iframe-transport.js');
+require('imports?define=>false&exports=>false!blueimp-file-upload/js/jquery.fileupload.js');
 
 function deleteDoc(id) {
     require.ensure(["whatwg-fetch"], function () {
@@ -135,4 +137,34 @@ export function load() {
     $('#query_doc_btn').click(function () {
         queryDocList($('#docName').val());
     });
+
+    $('.ui.form').submit(function () {
+        return false;
+    });
+
+    $('#fileupload').fileupload({
+                                    dataType: 'json',
+                                    autoUpload: false,
+                                    acceptFileTypes: /(\.|\/)(doc|dot|docx)$/,
+                                    maxFileSize: 50000000, // 50 MB
+                                    // Enable image resizing, except for Android and Opera,
+                                    // which actually support image resizing, but fail to
+                                    // send Blob objects via XHR requests:
+                                    previewMaxWidth: 100,
+                                    previewMaxHeight: 100,
+                                    previewCrop: true
+                                }).on('fileuploadadd', function (e, data) {
+        $.each(data.files, function (index, file) {
+            $('.text').text(file.name);
+        });
+        $('#upload').click(function () {
+            data.submit();
+        })
+    }).on('fileuploadsubmit', function (e, data) {
+        data.formData = {docName: $("#up_doc_name").val()};  //如果需要额外添加参数可以在这里添加
+    }).on('fileuploaddone', function (e, data) {
+        swal('上传成功', '上传成功', 'success');
+    }).on('fileuploadfail', function (e, data) {
+        swal('上传失败', '上传失败', 'error');
+    })
 }
