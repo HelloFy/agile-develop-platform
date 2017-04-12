@@ -6,12 +6,12 @@ require('imports?define=>false&exports=>false!blueimp-file-upload/js/jquery.file
 function deleteDoc(id) {
     require.ensure(["whatwg-fetch"], function () {
         fetch('gen/delete', {
-            method: 'delete',
+            method: 'post',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: jQuery.param({id: id})
+            body: jQuery.param({id: id, _method: 'DELETE'})
         }).then(function (response) {
             response.json().then(function (data) {
                 let isSuccess = data.result == 'SUCCESS';
