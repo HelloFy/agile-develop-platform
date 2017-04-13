@@ -93,4 +93,13 @@ public class GenTableController {
         message.setResult(Message.MessageResult.SUCCESS);
         return message;
     }
+
+    @RequestMapping(value = "deleteGenTable", method = RequestMethod.DELETE)
+    public Message deleteGenTable(GenTable genTable) {
+        Message message = new Message();
+        genTableService.delete(genTable);
+        message.setResult(Message.MessageResult.SUCCESS);
+        return message;
+    }
+
 }

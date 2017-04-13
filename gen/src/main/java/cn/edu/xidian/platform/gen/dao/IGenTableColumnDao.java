@@ -73,7 +73,7 @@ public interface IGenTableColumnDao {
 
     @Delete("DELETE FROM gen_table_column \n" +
             "WHERE gen_table_id = #{id}")
-    void delByGenTableId(GenTable genTable);
+    void delByGenTable(GenTable genTable);
 
     @Select("SELECT a.* FROM gen_table_column a WHERE gen_table_id = #{id}")
     List<GenTableColumn> findListByTbId(GenTable genTable);

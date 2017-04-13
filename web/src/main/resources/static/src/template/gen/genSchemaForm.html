@@ -19,6 +19,10 @@
     .gen.inline.field input{
         min-width: 196px;
     }
+
+    .del {
+        padding-left: 5px;
+    }
 </style>
 <div class="ui tabular menu">
     <a class="item" id="list_schema" data-tab="schema_list">生成方案列表</a>
@@ -30,7 +34,7 @@
             <div class="inline fields">
                 <div class="inline field">
                     <label class="label">方案名称</label>
-                    <input type="text" placeholder="方案名称">
+                    <input type="text" id="name" placeholder="方案名称">
                 </div>
                 <div class="inline field">
                     <button class="ui primary button" id="query_schema_btn">查询</button>

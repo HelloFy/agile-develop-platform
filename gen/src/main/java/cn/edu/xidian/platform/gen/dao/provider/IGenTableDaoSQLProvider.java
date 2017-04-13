@@ -12,13 +12,13 @@ public class IGenTableDaoSQLProvider {
         StringBuilder sql =  new StringBuilder();
         sql.append("SELECT a.* FROM gen_table a WHERE 1=1 ");
         if (!StringUtils.isEmpty(genTable.getTableName())){
-            sql.append("AND a.table_name=#{tableName} ");
+            sql.append("AND a.table_name LIKE concat('%',#{tableName},'%') ");
         }
         if (!StringUtils.isEmpty(genTable.getTableComments())){
-            sql.append("AND a.table_comments=#{tableComments} ");
+            sql.append("AND a.table_comments LIKE concat('%',#{tableComments},'%') ");
         }
         if (!StringUtils.isEmpty(genTable.getClassName())){
-            sql.append("AND a.class_name=#{className}");
+            sql.append("AND a.class_name LIKE concat('%',#{className},'%')");
         }
         return sql.toString();
     }

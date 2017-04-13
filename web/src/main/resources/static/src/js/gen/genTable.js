@@ -3,6 +3,31 @@
 let util = require('../utils/util.js');
 let totalPages = 1;
 
+function del_gentb(id, selector) {
+    fetch('gen/deleteGenTable', {
+        method: 'post',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: jQuery.param({id: id, _method: 'delete'})
+    }).then(function (response) {
+        response.json().then(function (data) {
+            let isSuccess = data.result == 'SUCCESS';
+            let message = data.message;
+            if (isSuccess) {
+                selector.parents("tr").remove();
+                swal("成功", "删除成功", "success")
+            }
+            else {
+                swal(data.message, data.message, 'error');
+            }
+        })
+    }).catch(function (err) {
+        swal("错误", "服务器繁忙", "error");
+    })
+}
+
 function next_step() {
     $('#first_step_form').addClass('hidden');
     $('#next_step_form').removeClass('hidden');
@@ -54,10 +79,14 @@ export function load() {
                                                  + content.className
                                                  + "</td>";
                                              html +=
-                                                 "<td><a class=\"\" href=\"\">修改</a><a >删除</a></td>";
+                                                 "<td><a class=\"\" href=\"\">修改</a><a class=\"del\" href=\"javascript:void(0)\" del_id=\""
+                                                 + content.id + "\">删除</a></td>";
                                              html += "</tr>";
                                          });
                                          $('#business_tb').html(html);
+                                         $('.del').click(function () {
+                                             del_gentb($(this).attr('del_id'), $(this));
+                                         })
                                          $('.pagination').jqPaginator('option', {
                                              totalPages: message.pages == 0 ? 1 : message.pages,
                                          });
@@ -320,6 +349,71 @@ export function load() {
                 })
             }).catch(function (err) {
                 swal("错误", "服务器繁忙", "error");
+            })
+        });
+    })
+
+    $('#query_btn').click(function () {
+        var tableName = $('#tableName').val();
+        var tableComments = $('#tableComments').val();
+        var className = $('#className').val();
+        util.createPage('.pagination', 1, 5, 1, function (num) {
+            require.ensure(["whatwg-fetch"], function () {
+                var url = 'gen/getBusinessTables?page=' + num;
+                if (tableName.trim() != '') {
+                    url += '&tableName=' + tableName.trim();
+                }
+                if (tableComments.trim() != '') {
+                    url += '&tableComments=' + tableComments.trim();
+                }
+                if (className.trim() != '') {
+                    url += '&className=' + className.trim();
+                }
+                fetch(url, {
+                    method: 'get',
+                    credentials: 'include'
+                }).then(function (response) {
+                    console.log(response);
+                    response.json().then(function (data) {
+                        let html = '';
+                        let isSuccess = data.result == 'SUCCESS';
+                        let message = data.message;
+                        if (isSuccess) {
+                            $.each(message.list, function (index, content) {
+                                html += "<tr>";
+                                html +=
+                                    "<td>"
+                                    + content.tableName
+                                    + "</td>";
+                                html +=
+                                    "<td>"
+                                    + content.tableComments
+                                    + "</td>";
+                                html +=
+                                    "<td>"
+                                    + content.className
+                                    + "</td>";
+                                html +=
+                                    "<td><a class=\"\" href=\"\">修改</a><a class=\"del\" href=\"javascript:void(0)\" del_id=\""
+                                    + content.id + "\">删除</a></td>";
+                                html += "</tr>";
+                            });
+                            $('#business_tb').html(html);
+                            $('.del').click(function () {
+                                del_gentb($(this).attr('del_id'), $(this));
+                            })
+                            $('.pagination').jqPaginator('option', {
+                                totalPages: message.pages == 0 ? 1 : message.pages,
+                            });
+                        }
+                        else {
+                            swal(data.message, data.message, 'error');
+                        }
+                        return;
+                    })
+                }).catch(function (err) {
+                    swal("错误", "服务器繁忙", "error");
+                })
             })
         });
     })

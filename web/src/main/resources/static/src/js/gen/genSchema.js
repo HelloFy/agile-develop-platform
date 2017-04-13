@@ -1,5 +1,31 @@
 let util = require('../utils/util.js')
 
+function del_schema(id, selector) {
+    fetch('gen/deleteScheme', {
+        method: 'post',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: jQuery.param({id: id, _method: 'delete'})
+    }).then(function (response) {
+        response.json().then(function (data) {
+            let isSuccess = data.result == 'SUCCESS';
+            let message = data.message;
+            if (isSuccess) {
+                selector.parents("tr").remove();
+                console.log($(this).parent().parent());
+                swal("成功", "删除成功", "success")
+            }
+            else {
+                swal(data.message, data.message, 'error');
+            }
+        })
+    }).catch(function (err) {
+        swal("错误", "服务器繁忙", "error");
+    })
+}
+
 export function load() {
     let list_scheme = $('.tabular.menu #list_schema');
     let add_scheme = $('.tabular.menu #add_schema');
@@ -27,10 +53,15 @@ export function load() {
                                                     html +=
                                                         "<td>" + content.functionAuthor + "</td>";
                                                     html +=
-                                                        "<td><a class=\"\" href=\"\">修改</a><a >删除</a></td>";
+                                                        "<td><a href=\"\">修改</a><a class=\"del\" href=\"javascript:void(0)\" del_id=\""
+                                                        + content.id + "\">删除</a></td>";
                                                     html += "</tr>";
                                                 });
                                                 $('#tb_schema_body').html(html);
+                                                $('.del').click(function () {
+                                                    var id = $(this).attr('del_id');
+                                                    del_schema(id, $(this))
+                                                })
                                                 $('.pagination').jqPaginator('option', {
                                                     totalPages: message.pages == 0 ? 1
                                                         : message.pages,
@@ -46,37 +77,6 @@ export function load() {
                                     })
 
                                 })
-                require.ensure(["whatwg-fetch"], function () {
-                    fetch('gen/getSchemeList?page=1', {
-                        method: 'get',
-                        credentials: 'include'
-                    }).then(function (response) {
-                        response.json().then(function (data) {
-                            let isSuccess = data.result == 'SUCCESS';
-                            let message = data.message;
-                            if (isSuccess) {
-                                let html = '';
-                                $.each(message.list, function (index, content) {
-                                    html += "<tr>";
-                                    html += "<td>" + content.name + "</td>";
-                                    html += "<td>" + content.packageName + "</td>";
-                                    html += "<td>" + content.moduleName + "</td>";
-                                    html += "<td>" + content.functionName + "</td>";
-                                    html += "<td>" + content.functionAuthor + "</td>";
-                                    html += "<td><a class=\"\" href=\"\">修改</a><a >删除</a></td>";
-                                    html += "</tr>";
-                                });
-                                $('#tb_schema_body').html(html);
-                            }
-                            else {
-                                swal(data.message, data.message, 'error');
-                            }
-                            return;
-                        })
-                    }).catch(function (err) {
-                        swal("错误", "服务器繁忙", "error");
-                    })
-                })
             }
         });
     add_scheme.tab(
@@ -229,5 +229,54 @@ export function load() {
         }).catch(function (err) {
             swal("错误", "服务器繁忙", "error");
         })
+    })
+
+    $('#query_schema_btn').click(function () {
+        var name = $('#name').val();
+        util.createPage('.pagination',
+                        1, 5, 1,
+                        function (num) {
+                            fetch('gen/getSchemeList?page=' + num + '&name=' + name, {
+                                method: 'get',
+                                credentials: 'include'
+                            }).then(function (response) {
+                                response.json().then(function (data) {
+                                    let isSuccess = data.result == 'SUCCESS';
+                                    let message = data.message;
+                                    if (isSuccess) {
+                                        let html = '';
+                                        $.each(message.list, function (index, content) {
+                                            html += "<tr>";
+                                            html += "<td>" + content.name + "</td>";
+                                            html += "<td>" + content.packageName + "</td>";
+                                            html += "<td>" + content.moduleName + "</td>";
+                                            html += "<td>" + content.functionName + "</td>";
+                                            html +=
+                                                "<td>" + content.functionAuthor + "</td>";
+                                            html +=
+                                                "<td><a class=\"\" href=\"\">修改</a><a class=\"del\" href=\"javascript:void(0)\" del_id=\""
+                                                + content.id + "\">删除</a></td>";
+                                            html += "</tr>";
+                                        });
+                                        $('#tb_schema_body').html(html);
+                                        $('.del').click(function () {
+                                            var id = $(this).attr('del_id');
+                                            del_schema(id, $(this))
+                                        })
+                                        $('.pagination').jqPaginator('option', {
+                                            totalPages: message.pages == 0 ? 1
+                                                : message.pages,
+                                        });
+                                    }
+                                    else {
+                                        swal(data.message, data.message, 'error');
+                                    }
+                                    return;
+                                })
+                            }).catch(function (err) {
+                                swal("错误", "服务器繁忙", "error");
+                            })
+
+                        })
     })
 }

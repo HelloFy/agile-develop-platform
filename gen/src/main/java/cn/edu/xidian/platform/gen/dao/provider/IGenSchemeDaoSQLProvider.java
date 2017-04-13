@@ -12,7 +12,7 @@ public class IGenSchemeDaoSQLProvider {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT a.* FROM gen_scheme a WHERE 1=1 ");
         if (StringUtils.isNotEmpty(genScheme.getName())) {
-            sql.append("AND a.name = #{name}");
+            sql.append("AND a.name LIKE concat('%',#{name},'%')");
         }
         return sql.toString();
     }

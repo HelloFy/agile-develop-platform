@@ -3,7 +3,7 @@ require('imports?define=>false&exports=>false!blueimp-file-upload/js/vendor/jque
 require('imports?define=>false&exports=>false!blueimp-file-upload/js/jquery.iframe-transport.js');
 require('imports?define=>false&exports=>false!blueimp-file-upload/js/jquery.fileupload.js');
 
-function deleteDoc(id) {
+function deleteDoc(id, selector) {
     require.ensure(["whatwg-fetch"], function () {
         fetch('gen/delete', {
             method: 'post',
@@ -16,7 +16,8 @@ function deleteDoc(id) {
             response.json().then(function (data) {
                 let isSuccess = data.result == 'SUCCESS';
                 if (isSuccess) {
-                    swal("成功", "删除成功", "success")
+                    selector.parents("tr").remove();
+                    swal("成功", "删除成功", "success");
                 }
                 else {
                     swal(data.message, data.message, 'error');
@@ -55,8 +56,7 @@ function getDocList(page) {
                     $('#tb_doc_body').html(html);
                     $('.del.item').click(function () {
                         console.log('del_id:' + $(this).attr('del_id'));
-                        deleteDoc($(this).attr('del_id'));
-                        $('.tabular.menu #list_doc_tpl').tab('change tab', 'doc_tpl_list');
+                        deleteDoc($(this).attr('del_id'), $(this));
                     });
                     $('.pagination').jqPaginator('option', {
                         totalPages: message.pages == 0 ? 1 : message.pages,
@@ -102,7 +102,7 @@ function queryDocList(docName) {
                                         totalPages: message.pages == 0 ? 1 : message.pages
                                     });
                                     $('.del.item').click(function () {
-                                        deleteDoc($(this).attr('del_id'));
+                                        deleteDoc($(this).attr('del_id'), $(this));
                                         $('.tabular.menu #list_doc_tpl')
                                             .tab('change tab', 'doc_tpl_list');
                                     });

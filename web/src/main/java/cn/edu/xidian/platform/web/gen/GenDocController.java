@@ -83,7 +83,7 @@ public class GenDocController {
     }
 
     @RequestMapping(value = "delete", method = RequestMethod.DELETE)
-    public Message delete(GenDoc genDoc, HttpServletRequest request) {
+    public Message delete(GenDoc genDoc) {
         Message message = new Message();
         message.setResult(Message.MessageResult.SUCCESS);
         genDocService.delete(genDoc);

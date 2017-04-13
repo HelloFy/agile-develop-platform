@@ -67,5 +67,4 @@ public interface IGenDocDao {
     @Delete("DELETE FROM gen_doc\n" +
             "WHERE id = #{id}")
     void delete(GenDoc genDoc);
-
 }
