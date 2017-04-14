@@ -31,6 +31,10 @@ public interface IGenTableDao {
             "ORDER BY a.table_name ASC")
     List<GenTable> findAllList();
 
+    @Select("SELECT a.*\n" +
+            "FROM gen_table a\n" +
+            "WHERE a.table_name=#{tableName}")
+    GenTable findUnique(GenTable genTable);
 
     @SelectProvider(type = IGenTableDaoSQLProvider.class, method = "findList")
     List<GenTable> findList(GenTable table);

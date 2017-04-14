@@ -20,7 +20,7 @@ import cn.edu.xidian.platform.gen.entity.GenTable;
 @Mapper
 public interface IGenSchemaDao {
 
-    @Select("SELECT a.* FROM gen_scheme WHERE id =#{id}")
+    @Select("SELECT a.* FROM gen_scheme a WHERE id =#{id}")
     GenScheme get(GenScheme genScheme);
 
     @SelectProvider(type = IGenSchemeDaoSQLProvider.class, method = "findList")

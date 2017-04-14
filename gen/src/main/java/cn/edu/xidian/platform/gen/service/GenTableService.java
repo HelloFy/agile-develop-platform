@@ -38,6 +38,10 @@ public class GenTableService {
         return iGenTableDao.get(genTable);
     }
 
+    public GenTable findUnique(GenTable genTable) {
+        return iGenTableDao.findUnique(genTable);
+    }
+
     public List<GenTable> findAllTableList() {
         return iGenDataBaseDictDao.findAllTableList();
     }
@@ -62,7 +66,6 @@ public class GenTableService {
 
     public GenTable getTableFromDB(GenTable genTable) {
         genTable.setClassName(StringUtils.toCapitalizeCamelCase(genTable.getTableName()));
-
         // 添加新列
         List<GenTableColumn> columnList = iGenDataBaseDictDao.findTableColumns(genTable);
         genTable.setColumnList(new ArrayList<>());

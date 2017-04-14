@@ -2,6 +2,157 @@
 // require('../jqPagination/jqPaginator.js');
 let util = require('../utils/util.js');
 let totalPages = 1;
+function get_tb_info(tableName, tableComments, is_modify) {
+    let url = 'gen/getTableInfo';
+    if (is_modify) {
+        url = 'gen/modifyGenTable';
+    }
+    url += '?tableName=' + tableName + '&tableComments=' + tableComments;
+    require.ensure(["whatwg-fetch"], function () {
+        fetch(url, {
+            method: 'get',
+            credentials: 'include'
+        }).then(function (response) {
+            console.log(response);
+            response.json().then(function (data) {
+                let isSuccess = data.result;
+                if (isSuccess == 'SUCCESS') {
+                    next_step();
+                    let message = data.message;
+                    $("#id").val(message.id);
+                    $("input[name='tableName']").val(message.tableName);
+                    $("input[name='className']").val(message.className);
+                    $("input[name='tableComments']").val(message.tableComments);
+                    let queryTypes = ['=', '!=', '<', '>', '>=', '<=', 'LIKE', 'BETWEEN'];
+                    let html;
+                    $.each(message.columnList, function (index, content) {
+                        html += "<tr>";
+                        html += "<td >"
+                                + "<input type=\"hidden\" name=\"columnList[" + index
+                                + "].id\" value=\"" + content.id + "\">"
+                                + "<input type=\"hidden\" name=\"columnList[" + index
+                                + "].genTableId\" value=\"" + content.genTableId + "\">"
+                                + "<input type=\"hidden\" name=\"columnList[" + index
+                                + "].name\" value=\"" + content.name + "\">"
+                                + content.name +
+                                "</td>" +
+                                "<td>"
+                                + "<input type=\"hidden\" name=\"columnList[" + index
+                                + "].comments\" value=\"" + content.comments + "\">"
+                                + content.comments +
+                                "</td>" +
+                                "<td>" +
+                                "<input type=\"hidden\" name=\"columnList[" + index
+                                + "].jdbcType\" value=\"" + content.jdbcType + "\">"
+                                + content.jdbcType +
+                                "<input type=\"hidden\" name=\"columnList[" + index
+                                + "].javaType\" value=\"" + content.javaType + "\">" +
+                                "</td>" +
+                                "<td>" +
+                                "<input type=\"text\" name=\"columnList[" + index
+                                + "].javaField\" value=\"" + content.javaField
+                                + "\" maxlength=\"15\">" +
+                                "</td>" +
+                                "<td>" +
+                                "<input type=\"checkbox\" name=\"columnList[" + index
+                                + "].isPk\" value=\"1\"";
+                        console.log(html);
+                        if (content.isPk == '1') {
+                            html += " checked >";
+                        }
+                        else {
+                            html += ">";
+                        }
+                        html += "</td>" +
+                                "<td>" +
+                                "<input type=\"checkbox\" name=\"columnList[" + index
+                                + "].isNull\" value=\"1\"";
+                        console.log(html);
+
+                        if (content.isNull == '1') {
+                            html += " checked >";
+                        }
+                        else {
+                            html += ">";
+                        }
+                        html += "</td>" +
+                                "<td>" +
+                                "<input type=\"checkbox\" name=\"columnList[" + index
+                                + "].isInsert\" value=\"1\"";
+                        console.log(html);
+                        if (content.isInsert == '1') {
+                            html += " checked >";
+                        }
+                        else {
+                            html += ">";
+                        }
+                        html += "</td>" +
+                                "<td>" +
+                                "<input type=\"checkbox\" name=\"columnList[" + index
+                                + "].isEdit\" value=\"1\"";
+                        console.log(html);
+                        if (content.isEdit == '1') {
+                            html += " checked >";
+                        }
+                        else {
+                            html += ">";
+                        }
+                        html += "</td>" +
+                                "<td>" +
+                                "<input type=\"checkbox\" name=\"columnList[" + index
+                                + "].isList\" value=\"1\"";
+                        if (content.isList == '1') {
+                            html += " checked >";
+                        }
+                        else {
+                            html += ">";
+                        }
+                        html += "</td>" +
+                                "<td>" +
+                                "<input type=\"checkbox\" name=\"columnList[" + index
+                                + "].isQuery\" value=\"1\"";
+                        if (content.isQuery == '1') {
+                            html += " checked >";
+                        }
+                        else {
+                            html += ">";
+                        }
+                        html += "</td>" +
+                                "<td>" +
+                                "<select name=\"columnList[" + index
+                                + "].queryType\" class=\"ui search dropdown\">";
+                        if (content.queryType != null && content.queryType != '') {
+                            html +=
+                                "<option value=\"" + $('<div>').text(content.queryType).html()
+                                + "\" >" + $('<div>').text(content.queryType).html() + "</option>";
+
+                        }
+                        $.each(queryTypes, function (index, content) {
+                            if (content.queryType != content) {
+                                html +=
+                                    "<option value=\"" + $('<div>').text(content).html() + "\">"
+                                    + $('<div>').text(content).html() + "</option>";
+                            }
+
+                        });
+                        html += "</tr>";
+                    });
+                    // console.log(html);
+                    $('#table_info').html(html);
+                }
+                else {
+                    swal(data.message, data.message, "error");
+                }
+                $('#first_step_form').removeClass('loading');
+                return;
+            })
+        }).catch(function (err) {
+            swal("错误", "服务器繁忙", "error");
+            $('#first_step_form').removeClass('loading');
+        })
+    });
+
+}
 
 function del_gentb(id, selector) {
     fetch('gen/deleteGenTable', {
@@ -26,6 +177,12 @@ function del_gentb(id, selector) {
     }).catch(function (err) {
         swal("错误", "服务器繁忙", "error");
     })
+}
+
+function modify_gentb(name, comments) {
+    $('.tabular.menu #get_business_tables').tab('change tab', 'getPhysicalTables');
+    next_step();
+    get_tb_info(name, comments, true);
 }
 
 function next_step() {
@@ -79,14 +236,23 @@ export function load() {
                                                  + content.className
                                                  + "</td>";
                                              html +=
-                                                 "<td><a class=\"\" href=\"\">修改</a><a class=\"del\" href=\"javascript:void(0)\" del_id=\""
-                                                 + content.id + "\">删除</a></td>";
+                                                 "<td>"
+                                                 + "<a class=\"modify\" href=\"javascript:void(0)\" modify_name=\""
+                                                 + content.tableName + "\" modify_comments=\""
+                                                 + content.tableComments + "\">修改</a>"
+                                                 + "<a class=\"del\" href=\"javascript:void(0)\" del_id=\""
+                                                 + content.id + "\">删除</a>"
+                                                 + "</td>";
                                              html += "</tr>";
                                          });
                                          $('#business_tb').html(html);
                                          $('.del').click(function () {
                                              del_gentb($(this).attr('del_id'), $(this));
-                                         })
+                                         });
+                                         $('.modify').click(function () {
+                                             modify_gentb($(this).attr('modify_name'),
+                                                          $(this).attr('modify_comments'));
+                                         });
                                          $('.pagination').jqPaginator('option', {
                                              totalPages: message.pages == 0 ? 1 : message.pages,
                                          });
@@ -106,12 +272,12 @@ export function load() {
     $('.tabular.menu #get_phy_tables')
         .tab({
                  onLoad: function () {
-                     if($('#final_step').hasClass('active')){
-                         return ;
+                     if ($('#final_step').hasClass('active')) {
+                         return;
                      }
-                     require.ensure(["whatwg-fetch"],function () {
-                         fetch('gen/getPhysicalTables',{
-                             method:'get',
+                     require.ensure(["whatwg-fetch"], function () {
+                         fetch('gen/getPhysicalTables', {
+                             method: 'get',
                              credentials: 'include'
                          }).then(function (response) {
                              console.log(response);
@@ -123,7 +289,8 @@ export function load() {
                                      let html = '';
                                      $.each(message, function (index, content) {
                                          html +=
-                                             "<div class='item' data-value=\"" + content.tableName + "\">"
+                                             "<div class='item' data-value=\"" + content.tableName
+                                             + ":" + content.tableComments + "\">"
                                              + content.tableName + ":" + content.tableComments
                                              + "</div>";
                                      });
@@ -136,7 +303,7 @@ export function load() {
                                  return;
                              })
                          }).catch(function (err) {
-                             swal("错误","服务器繁忙","error");
+                             swal("错误", "服务器繁忙", "error");
                          })
                      })
                  }
@@ -152,149 +319,10 @@ export function load() {
 
     $('#next_step').click(function () {
         $('#first_step_form').addClass('loading');
-        let tableName =  $('#phy_tb_name').dropdown('get value');
-        require.ensure(["whatwg-fetch"],function () {
-            fetch('gen/getTableInfo?tableName='+tableName,{
-                method:'get',
-                credentials: 'include'
-            }).then(function (response) {
-                console.log(response);
-                response.json().then(function (data) {
-                    let isSuccess = data.result;
-                    if (isSuccess == 'SUCCESS') {
-                        next_step();
-                        let message = data.message;
-                        $("input[name='tableName']").val(message.tableName);
-                        $("input[name='className']").val(message.className);
-                        $("input[name='tableComments']").val(message.tableComments);
-                        let queryTypes = ['=', '!=', '<', '>', '>=', '<=', 'LIKE', 'BETWEEN'];
-                        let html;
-                        $.each(message.columnList, function (index, content) {
-                            html += "<tr>";
-                            html += "<td >"
-                                    + "<input type=\"hidden\" name=\"columnList[" + index
-                                    + "].id\" value=\"" + content.id + "\">"
-                                    + "<input type=\"hidden\" name=\"columnList[" + index
-                                    + "].genTableId\" value=\"" + content.genTableId + "\">"
-                                    + "<input type=\"hidden\" name=\"columnList[" + index
-                                    + "].name\" value=\"" + content.name + "\">"
-                                    + content.name +
-                                    "</td>" +
-                                    "<td>"
-                                    + "<input type=\"hidden\" name=\"columnList[" + index
-                                    + "].comments\" value=\"" + content.comments + "\">"
-                                    + content.comments +
-                                    "</td>" +
-                                    "<td>" +
-                                    "<input type=\"hidden\" name=\"columnList[" + index
-                                    + "].jdbcType\" value=\"" + content.jdbcType + "\">"
-                                    + content.jdbcType +
-                                    "<input type=\"hidden\" name=\"columnList[" + index
-                                    + "].javaType\" value=\"" + content.javaType + "\">" +
-                                    "</td>" +
-                                    "<td>" +
-                                    "<input type=\"text\" name=\"columnList[" + index
-                                    + "].javaField\" value=\"" + content.javaField
-                                    + "\" maxlength=\"15\">" +
-                                    "</td>" +
-                                    "<td>" +
-                                    "<input type=\"checkbox\" name=\"columnList[" + index
-                                    + "].isPk\" value=\"1\"";
-                            console.log(html);
-                            if (content.isPk == '1') {
-                                html += " checked >";
-                            }
-                            else {
-                                html += ">";
-                            }
-                            html += "</td>" +
-                                    "<td>" +
-                                    "<input type=\"checkbox\" name=\"columnList[" + index
-                                    + "].isNull\" value=\"1\"";
-                            console.log(html);
-
-                            if (content.isNull == '1') {
-                                html += " checked >";
-                            }
-                            else {
-                                html += ">";
-                            }
-                            html += "</td>" +
-                                    "<td>" +
-                                    "<input type=\"checkbox\" name=\"columnList[" + index
-                                    + "].isInsert\" value=\"1\"";
-                            console.log(html);
-                            if (content.isInsert == '1') {
-                                html += " checked >";
-                            }
-                            else {
-                                html += ">";
-                            }
-                            html += "</td>" +
-                                    "<td>" +
-                                    "<input type=\"checkbox\" name=\"columnList[" + index
-                                    + "].isEdit\" value=\"1\"";
-                            console.log(html);
-                            if (content.isEdit == '1') {
-                                html += " checked >";
-                            }
-                            else {
-                                html += ">";
-                            }
-                            html += "</td>" +
-                                    "<td>" +
-                                    "<input type=\"checkbox\" name=\"columnList[" + index
-                                    + "].isList\" value=\"1\"";
-                            if (content.isList == '1') {
-                                html += " checked >";
-                            }
-                            else {
-                                html += ">";
-                            }
-                            html += "</td>" +
-                                    "<td>" +
-                                    "<input type=\"checkbox\" name=\"columnList[" + index
-                                    + "].isQuery\" value=\"1\"";
-                            if (content.isQuery == '1') {
-                                html += " checked >";
-                            }
-                            else {
-                                html += ">";
-                            }
-                            html += "</td>" +
-                                    "<td>" +
-                                    "<select name=\"columnList[" + index
-                                    + "].queryType\" class=\"ui search dropdown\">";
-                            if (content.queryType != null && content.queryType != '') {
-                                html +=
-                                    "<option value=\"" + $('<div>').text(content.queryType).html()
-                                    + "\" >" + $('<div>').text(content.queryType).html() + "</option>";
-
-                            }
-                            $.each(queryTypes, function (index, content) {
-                                if (content.queryType != content) {
-                                    html +=
-                                        "<option value=\"" + $('<div>').text(content).html() + "\">"
-                                        + $('<div>').text(content).html() + "</option>";
-                                }
-
-                            });
-                            html += "</tr>";
-                        });
-                        // console.log(html);
-                        $('#table_info').html(html);
-                    }
-                    else {
-                        swal(data.message, data.message, "error");
-                    }
-                    $('#first_step_form').removeClass('loading');
-                    return;
-                })
-            }).catch(function (err) {
-                swal("错误","服务器繁忙","error");
-                $('#first_step_form').removeClass('loading');
-            })
-        });
+        let tableNameAndComments = $('#phy_tb_name').dropdown('get value').split(":");
+        let tableName = tableNameAndComments[0];
+        let tableComments = tableNameAndComments[1];
+        get_tb_info(tableName, tableComments, false);
     });
 
     $('#last_step').click(function () {
@@ -394,14 +422,23 @@ export function load() {
                                     + content.className
                                     + "</td>";
                                 html +=
-                                    "<td><a class=\"\" href=\"\">修改</a><a class=\"del\" href=\"javascript:void(0)\" del_id=\""
-                                    + content.id + "\">删除</a></td>";
+                                    "<td>"
+                                    + "<a class=\"modify\" href=\"javascript:void(0)\" modify_name=\""
+                                    + content.tableName + "\" modify_comments=\""
+                                    + content.tableComments + "\">修改</a>"
+                                    + "<a class=\"del\" href=\"javascript:void(0)\" del_id=\""
+                                    + content.id + "\">删除</a>"
+                                    + "</td>";
                                 html += "</tr>";
                             });
                             $('#business_tb').html(html);
                             $('.del').click(function () {
                                 del_gentb($(this).attr('del_id'), $(this));
-                            })
+                            });
+                            $('.modify').click(function () {
+                                modify_gentb($(this).attr('modify_name'),
+                                             $(this).attr('modify_comments'));
+                            });
                             $('.pagination').jqPaginator('option', {
                                 totalPages: message.pages == 0 ? 1 : message.pages,
                             });

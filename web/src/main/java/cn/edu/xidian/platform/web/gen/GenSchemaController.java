@@ -46,6 +46,14 @@ public class GenSchemaController {
         return new ModelAndView("gen/genSchemaForm");
     }
 
+    @RequestMapping(value = "getSchema", method = RequestMethod.GET)
+    public Message getSchema(GenScheme genScheme) {
+        Message message = new Message();
+        message.setResult(Message.MessageResult.SUCCESS);
+        message.setMessage(genSchemaService.get(genScheme));
+        return message;
+    }
+
     @RequestMapping(value = "getSchemeList",method = RequestMethod.GET)
     public Message getSchemeList(GenScheme genScheme){
         Message message = new Message();

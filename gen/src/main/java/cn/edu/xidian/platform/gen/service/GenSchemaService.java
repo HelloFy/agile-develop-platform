@@ -33,6 +33,11 @@ public class GenSchemaService {
     @Autowired
     private IGenTableColumnDao iGenTableColumnDao;
 
+
+    public GenScheme get(GenScheme genScheme) {
+        return iGenSchemaDao.get(genScheme);
+    }
+
     @Transactional
     public void saveOrUpdate(GenScheme genScheme) {
         if (genScheme.getId() == 0L) {

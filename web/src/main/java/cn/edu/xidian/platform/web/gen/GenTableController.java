@@ -86,6 +86,15 @@ public class GenTableController {
         return message;
     }
 
+    @RequestMapping(value = "modifyGenTable", method = RequestMethod.GET)
+    public Message modifyGenTable(GenTable genTable) {
+        Message message = new Message();
+        GenTable genTableInfo = genTableService.getTableFromDB(genTable);
+        message.setResult(Message.MessageResult.SUCCESS);
+        message.setMessage(genTableInfo);
+        return message;
+    }
+
     @RequestMapping(value = "saveGenTable",method = RequestMethod.PUT)
     public Message saveGenTable(GenTable genTable){
         Message message = new Message();
