@@ -78,7 +78,7 @@ function getschema(id) {
                     $("input[name='moduleName']").val(gen_schema.moduleName);
                     $("input[name='subModuleName']").val(gen_schema.subModuleName);
                     $("input[name='functionName']").val(gen_schema.functionName);
-                    $("input[name='functionNameSimple']").val(gen_schema.functionNameSimpleIdle);
+                    $("input[name='functionNameSimple']").val(gen_schema.functionNameSimple);
                     $("input[name='functionAuthor']").val(gen_schema.functionAuthor);
                     $('#genTableId').dropdown('set selected', gen_schema.genTableId);
                     if (gen_schema.replaceFile) {
@@ -242,6 +242,9 @@ export function load() {
             genTableId= $('#genTableId').dropdown('get value'),
             replaceFile = $("input[name='replaceFile']").val(),
             id = $("input[name='id']").val();
+        if (id == '') {
+            id = 0;
+        }
         fetch('gen/saveScheme', {
             method: 'put',
             credentials: 'include',

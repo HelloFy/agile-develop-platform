@@ -65,7 +65,7 @@ public class ${ClassName}Controller {
 		return new ModelAndView("${moduleName}/${moduleName}${ClassName}Form");
 	}
 
-	@RequestMapping(value = "save",method = RequestMethod.PUT)
+	@RequestMapping(value = "save${ClassName}",method = RequestMethod.PUT)
 	public Message save(${ClassName} ${className}) {
 		Message message = new Message();
         message.setResult(Message.MessageResult.SUCCESS);
@@ -73,7 +73,7 @@ public class ${ClassName}Controller {
 		return message;
 	}
 	
-	@RequestMapping(value = "delete",method = RequestMethod.DELETE)
+	@RequestMapping(value = "delete${ClassName}",method = RequestMethod.DELETE)
 	public Message delete(${ClassName} ${className}) {
 		Message message = new Message();
         message.setResult(Message.MessageResult.SUCCESS);

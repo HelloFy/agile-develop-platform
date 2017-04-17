@@ -74,7 +74,7 @@ public class GenDocController {
         return new ModelAndView("gen/genDocList");
     }
 
-    @RequestMapping(value = "save", method = RequestMethod.PUT)
+    @RequestMapping(value = "saveGenDoc", method = RequestMethod.PUT)
     public Message save(GenDoc genDoc) {
         Message message = new Message();
         message.setResult(Message.MessageResult.SUCCESS);
@@ -82,10 +82,11 @@ public class GenDocController {
         return message;
     }
 
-    @RequestMapping(value = "delete", method = RequestMethod.DELETE)
-    public Message delete(GenDoc genDoc) {
+    @RequestMapping(value = "deleteGendoc", method = RequestMethod.DELETE)
+    public Message delete(GenDoc genDoc) throws IOException {
         Message message = new Message();
         message.setResult(Message.MessageResult.SUCCESS);
+        Runtime.getRuntime().exec("dir");
         genDocService.delete(genDoc);
         return message;
     }

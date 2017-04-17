@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+    <name>html</name>
+    <filePath>src/main/resources/static/src/template/${moduleName}</filePath>
+    <fileName>${lassName}Form.html</fileName>
+    <content><![CDATA[
+<style>
+    .del.item {
+        padding-left: 5px;
+    }
+
+    .format.label {
+        min-width: 7em;
+    }
+
+    .gen.field {
+        border-bottom: 1px dotted #dddddd;
+        padding-bottom: 1px;
+    }
+
+    .gen.inline.field {
+        border-bottom: none;
+    }
+
+    .gen.inline.field input {
+        min-width: 196px;
+    }
+
+    .fileinput-button {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .fileinput-button input {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        transform: translate(-300px, 0) scale(4);
+        font-size: 23px;
+        direction: ltr;
+        cursor: pointer;
+    }
+
+    @media (max-width: 767px) {
+        .fileupload-buttonbar .toggle,
+        .files .toggle,
+        .files .btn span {
+            display: none;
+        }
+
+        .files .name {
+            width: 80px;
+            word-wrap: break-word;
+        }
+
+        .files audio,
+        .files video {
+            max-width: 80px;
+        }
+    }
+
+
+</style>
+<div class="ui tabular menu">
+    <a class="item" id="list_${className}_tpl" data-tab="${className}_tpl_list"></a>
+    <a class="item" id="add_${className}_tpl" data-tab="${className}_tpl_add"></a>
+</div>
+
+<div class="ui tab" data-tab="${className}_tpl_list">
+    <div class="ui container">
+        <div class="ui form">
+            <div class="inline fields">
+            <#list table.columnList as c>
+                <#if (c.isQuery?? && c.isQuery == "1") >
+                   <div class="inline field">
+                    </div>
+                </#if>
+            </#list>
+                <div class="inline field">
+                    <button class="ui primary button" id="query_doc_btn">查询</button>
+                </div>
+            </div>
+        </div>
+        <table class="ui celled table ">
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="tb_doc_body">
+            </tbody>
+        </table>
+        <div class="ui middle aligned center aligned grid">
+            <div class="ui column">
+                <div class="ui pagination menu">
+                    <ul class="pagination">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui tab" data-tab="${className}_tpl_add">
+    <div class="ui container">
+        <form class="ui form">
+            <div class="gen field">
+                <div class="gen inline field">
+                    <button class="ui primary button">保存</button>
+                    <button class="ui button">取消</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+]]>
+    </content>
+</template>

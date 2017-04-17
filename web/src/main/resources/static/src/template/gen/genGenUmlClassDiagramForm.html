@@ -1,0 +1,135 @@
+<style>
+    .del.item {
+        padding-left: 5px;
+    }
+
+    .format.label {
+        min-width: 7em;
+    }
+
+    .gen.field {
+        border-bottom: 1px dotted #dddddd;
+        padding-bottom: 1px;
+    }
+
+    .gen.inline.field {
+        border-bottom: none;
+    }
+
+    .gen.inline.field input {
+        min-width: 196px;
+    }
+
+    .fileinput-button {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .fileinput-button input {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        transform: translate(-300px, 0) scale(4);
+        font-size: 23px;
+        direction: ltr;
+        cursor: pointer;
+    }
+
+    @media (max-width: 767px) {
+        .fileupload-buttonbar .toggle,
+        .files .toggle,
+        .files .btn span {
+            display: none;
+        }
+
+        .files .name {
+            width: 80px;
+            word-wrap: break-word;
+        }
+
+        .files audio,
+        .files video {
+            max-width: 80px;
+        }
+    }
+
+
+</style>
+<div class="ui tabular menu">
+    <a class="item" id="uml_class_list" data-tab="uml_class_list">UML类图列表</a>
+    <a class="item" id="add_uml_class" data-tab="add_uml_class">添加UML类图</a>
+</div>
+<div class="ui tab" data-tab="uml_class_list">
+    <div class="ui container">
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="inline field">
+                    <label class="label">UML类图名称</label>
+                    <input type="text" id="uml_class_name" placeholder="UML类图名称">
+                </div>
+                <div class="inline field">
+                    <button class="ui primary button" id="query_uml_btn">查询</button>
+                </div>
+            </div>
+        </div>
+        <table class="ui celled table">
+            <thead>
+            <tr>
+                <th class="four wide">UML类图名称</th>
+                <th class="five wide">说明</th>
+                <th class="three wide">操作</th>
+            </tr>
+            </thead>
+            <tbody id="business_tb">
+            </tbody>
+        </table>
+        <div class="ui middle aligned  center aligned grid">
+            <div class="ui column">
+                <div class="ui pagination menu">
+                    <ul class="pagination">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui tab" data-tab="add_uml_class">
+    <div class="ui container">
+        <form class="ui form" enctype="multipart/form-data">
+            <h2 class="ui header">仅支持StarUML.mdj类图文件</h2>
+            <div class="gen field">
+                <div class="gen inline field">
+                    <label class="format label">文件名:</label>
+                    <input type="text" id="up_uml_name"/>
+                </div>
+            </div>
+            <div class="gen field">
+                <div class="gen inline field">
+                    <label class="format label">说明:</label>
+                    <input type="text" id="uml_comments"/>
+                </div>
+            </div>
+            <div class="gen field">
+                <div class="gen inline field">
+                    <label class="format label">请选择文件:</label>
+                    <div class="ui left action input fileinput-button">
+                        <button class="ui teal labeled icon button"><i class="plus icon"></i> 选择文件
+                        </button>
+                        <input type="file" id="fileupload" name="fileupload"
+                               data-url="gen/uploadClassDiagram">
+                    </div>
+                    <span class="text"></span>
+                </div>
+            </div>
+            <div class="gen field">
+                <div class="gen inline field">
+                    <button class="ui primary button" id="upload">上传并保存</button>
+                    <button class="ui button">取消</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

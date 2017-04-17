@@ -1,0 +1,146 @@
+<style>
+    .del.item {
+        padding-left: 5px;
+    }
+
+    .format.label {
+        min-width: 7em;
+    }
+
+    .gen.field {
+        border-bottom: 1px dotted #dddddd;
+        padding-bottom: 1px;
+    }
+
+    .gen.inline.field {
+        border-bottom: none;
+    }
+
+    .gen.inline.field input {
+        min-width: 196px;
+    }
+
+    .fileinput-button {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .fileinput-button input {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        transform: translate(-300px, 0) scale(4);
+        font-size: 23px;
+        direction: ltr;
+        cursor: pointer;
+    }
+
+    @media (max-width: 767px) {
+        .fileupload-buttonbar .toggle,
+        .files .toggle,
+        .files .btn span {
+            display: none;
+        }
+
+        .files .name {
+            width: 80px;
+            word-wrap: break-word;
+        }
+
+        .files audio,
+        .files video {
+            max-width: 80px;
+        }
+    }
+
+
+</style>
+<div class="ui tabular menu">
+    <a class="item" id="list_genCodeTemplate_tpl" data-tab="genCodeTemplate_tpl_list">代码模版列表</a>
+    <a class="item" id="add_genCodeTemplate_tpl" data-tab="genCodeTemplate_tpl_add">代码模版添加</a>
+</div>
+
+<div class="ui tab" data-tab="genCodeTemplate_tpl_list">
+    <div class="ui container">
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="inline field">
+                    <label class="label">代码名称</label>
+                    <input type="text" id="code_name" placeholder="代码名称">
+                </div>
+                <div class="inline field">
+                    <label class="label">功能说明</label>
+                    <input type="text" id="function" placeholder="功能说明">
+                </div>
+                <div class="inline field">
+                    <button class="ui primary button" id="query_doc_btn">查询</button>
+                </div>
+            </div>
+        </div>
+        <table class="ui celled table ">
+            <thead>
+            <tr>
+                <th>代码名称</th>
+                <th>功能名称</th>
+                <th>代码说明</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div class="ui middle aligned center aligned grid">
+            <div class="ui column">
+                <div class="ui pagination menu">
+                    <ul class="pagination">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui tab" data-tab="genCodeTemplate_tpl_add">
+    <div class="ui container">
+        <form class="ui form" enctype="multipart/form-data">
+            <div class="gen field">
+                <div class="gen inline field">
+                    <label class="format label">文件名:</label>
+                    <input type="text" id="up_code_name"/>
+                </div>
+            </div>
+            <div class="gen field">
+                <div class="gen inline field">
+                    <label class="format label">代码功能说明:</label>
+                    <input type="text" id="up_code_func"/>
+                </div>
+            </div>
+            <div class="gen field">
+                <div class="gen inline field">
+                    <label class="format label">代码详细说明:</label>
+                    <input type="text" id="up_code_comments"/>
+                </div>
+            </div>
+            <div class="gen field">
+                <div class="gen inline field">
+                    <label class="format label">请选择文件:</label>
+                    <div class="ui left action input fileinput-button">
+                        <button class="ui teal labeled icon button"><i class="plus icon"></i> 选择文件
+                        </button>
+                        <input type="file" id="fileupload" name="fileupload"
+                               data-url="gen/uploadCode">
+                    </div>
+                    <span class="text"></span>
+                </div>
+            </div>
+            <div class="gen field">
+                <div class="gen inline field">
+                    <button class="ui primary button">保存</button>
+                    <button class="ui button">取消</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

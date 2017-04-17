@@ -5,7 +5,7 @@ require('imports?define=>false&exports=>false!blueimp-file-upload/js/jquery.file
 
 function deleteDoc(id, selector) {
     require.ensure(["whatwg-fetch"], function () {
-        fetch('gen/delete', {
+        fetch('gen/deleteGenDoc', {
             method: 'post',
             credentials: 'include',
             headers: {
@@ -28,9 +28,7 @@ function deleteDoc(id, selector) {
         })
     })
 }
-
 function getDocList(page) {
-    console.log(page);
     require.ensure(["whatwg-fetch"], function () {
         fetch('gen/getGenDocList?page=' + page, {
             method: 'get',
@@ -71,9 +69,7 @@ function getDocList(page) {
         })
     })
 }
-
 function queryDocList(docName) {
-
     util.createPage('.pagination', 1, 5, 1, function (num, type) {
                         fetch('gen/getGenDocList?page=' + num + '&&docName=' + docName, {
                             method: 'get',

@@ -379,7 +379,7 @@ export function load() {
                 swal("错误", "服务器繁忙", "error");
             })
         });
-    })
+    });
 
     $('#query_btn').click(function () {
         var tableName = $('#tableName').val();

@@ -266,7 +266,7 @@ public class GenUtils {
 				?":"+StringUtils.lowerCase(genScheme.getSubModuleName()):"")+":"+model.get("className"));
 
 		model.put("table", genTable);
-		
+
 		return model;
 	}
 	
@@ -279,17 +279,19 @@ public class GenUtils {
 	public static String generateToFile(GenTemplate tpl, Map<String, Object> model, boolean isReplaceFile){
 		// 获取生成文件
 		String fileName;
-		if (!StringUtils.equalsIgnoreCase(tpl.getName(), "controller")) {
-			fileName = StringUtils.replace(Global.getProjectPath(), "web", "gen") + File.separator
-					+ StringUtils.replaceEach(FreeMarkers.renderString(tpl.getFilePath() + "/", model),
+        if (StringUtils.equalsIgnoreCase(tpl.getName(), "controller")
+                || StringUtils.equalsIgnoreCase(tpl.getName(), "html")) {
+            fileName = Global.getProjectPath() + File.separator
+                    + StringUtils.replaceEach(FreeMarkers.renderString(tpl.getFilePath() + "/", model),
 					new String[]{"//", "/", "."}, new String[]{File.separator, File.separator, File.separator})
 					+ FreeMarkers.renderString(tpl.getFileName(), model);
-		} else {
-			fileName = Global.getProjectPath() + File.separator
-					+ StringUtils.replaceEach(FreeMarkers.renderString(tpl.getFilePath() + "/", model),
-						new String[]{"//", "/", "."}, new String[]{File.separator, File.separator, File.separator})
-					+ FreeMarkers.renderString(tpl.getFileName(), model);
-		}
+        } else {
+            fileName = StringUtils.replace(Global.getProjectPath(), "web", "gen") + File.separator
+                    + StringUtils.replaceEach(FreeMarkers.renderString(tpl.getFilePath() + "/", model),
+                    new String[]{"//", "/", "."}, new String[]{File.separator, File.separator, File.separator})
+                    + FreeMarkers.renderString(tpl.getFileName(), model);
+
+        }
 		logger.debug(" fileName === " + fileName);
 
 		// 获取生成文件内容

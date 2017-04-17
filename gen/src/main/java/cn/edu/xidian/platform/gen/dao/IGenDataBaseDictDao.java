@@ -1,7 +1,6 @@
 package cn.edu.xidian.platform.gen.dao;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -16,7 +15,7 @@ import cn.edu.xidian.platform.gen.entity.GenTableColumn;
 public interface IGenDataBaseDictDao {
 
     @Select("SELECT t.COLUMN_NAME AS name, (CASE WHEN t.IS_NULLABLE = 'YES' THEN '1' ELSE '0' END) AS isNull,\n" +
-            "(t.ORDINAL_POSITION * 10) AS sort,t.COLUMN_COMMENT AS comments,t.COLUMN_TYPE AS jdbcType \n" +
+            " t.COLUMN_COMMENT AS comments,t.COLUMN_TYPE AS jdbcType \n" +
             "FROM information_schema.`COLUMNS` t \n" +
             "WHERE t.TABLE_SCHEMA = (select database())\n" +
             "AND t.TABLE_NAME = upper(#{tableName})\n" +

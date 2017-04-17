@@ -30,6 +30,10 @@
 .content{
     padding: 0 0 0 0 !important;
 }
+
+.title.sub {
+    margin-left: 10px !important;
+}
 .item .ui.white.inverted.header {
     padding-left: 2em;
 }

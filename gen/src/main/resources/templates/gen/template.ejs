@@ -1,0 +1,23 @@
+<html>
+<head>
+    <title><%= element.name %></title>
+</head>
+<body>
+<h1><%= element.name %></h1>
+<h3>Description</h3>
+<div><%- : element.documentation | markdown %></div>
+<h3>Children</h3>
+<ul>
+    <% element.getChildren().forEach(function (e) { %>
+    <li><%= e.name %></li>
+    <% }); %>
+</ul>
+</body>
+</html>
+
+<%= e.visibility %> class <%= element.name %> <%   %> {
+<% element.getChildren().forEach(function (e) { %>
+<li><%= e.name %></li>
+<li><%= e.visibility %></li>
+<% }); %>
+}

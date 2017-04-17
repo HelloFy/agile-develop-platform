@@ -17,6 +17,8 @@ module.exports = {
         genTable:'./src/js/gen/genTable.js',
         genSchema: './src/js/gen/genSchema.js',
         docList: './src/js/gen/docList.js',
+        genUML: './src/js/gen/genUML.js',
+        genCode: './src/js/gen/genCodeTemplate.js',
         vendor: ['jquery','sweetalert','./src/js/base.js']
     },
     output: {
@@ -78,6 +80,10 @@ module.exports = {
             {
                 test: /\.html$/,
                 loader: 'html-withimg-loader'
+            },
+            {
+                test: /\.ejs$/,
+                loader: 'ejs-loader?variable=data'
             }
         ]
     }
