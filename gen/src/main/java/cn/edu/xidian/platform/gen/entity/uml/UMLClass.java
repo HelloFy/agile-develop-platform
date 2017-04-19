@@ -1,6 +1,6 @@
 package cn.edu.xidian.platform.gen.entity.uml;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by 费玥 on 2017/4/18.
@@ -12,11 +12,11 @@ public class UMLClass extends UMLBase {
 
     private boolean isAbstract;
 
-    private ArrayList<Attribute> atributes;
+    private List<Attribute> atributes;
 
-    private ArrayList<Opreation> opreations;
+    private List<Opreation> opreations;
 
-    private ArrayList<UMLClass> innerClasses;
+    private List<UMLClass> innerClasses;
 
     public boolean isFinalSpecialization() {
         return isFinalSpecialization;
@@ -34,27 +34,27 @@ public class UMLClass extends UMLBase {
         isAbstract = anAbstract;
     }
 
-    public ArrayList<Attribute> getAtributes() {
+    public List<Attribute> getAtributes() {
         return atributes;
     }
 
-    public void setAtributes(ArrayList<Attribute> atributes) {
+    public void setAtributes(List<Attribute> atributes) {
         this.atributes = atributes;
     }
 
-    public ArrayList<Opreation> getOpreations() {
+    public List<Opreation> getOpreations() {
         return opreations;
     }
 
-    public void setOpreations(ArrayList<Opreation> opreations) {
+    public void setOpreations(List<Opreation> opreations) {
         this.opreations = opreations;
     }
 
-    public ArrayList<UMLClass> getInnerClasses() {
+    public List<UMLClass> getInnerClasses() {
         return innerClasses;
     }
 
-    public void setInnerClasses(ArrayList<UMLClass> innerClasses) {
+    public void setInnerClasses(List<UMLClass> innerClasses) {
         this.innerClasses = innerClasses;
     }
 }
