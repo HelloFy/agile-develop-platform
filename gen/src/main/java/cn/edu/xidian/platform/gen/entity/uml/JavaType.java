@@ -10,7 +10,8 @@ public enum JavaType {
     Integer("Integer"), String("String"), Char("Character"), Byte("Byte"), Double("Double"),
     Float("Float"), Long("Long"), Short("Short"), Boolean("Boolean"), IntArray("Integer[]"),
     StringArray("String[]"), CharArray("Character[]"), ByteArray("Byte[]"), DoubleArray("Double[]"),
-    FloatArray("Float[]"), LongArray("Long[]"), ShortArray("Short[]"), BooleanArray("Boolean[]");
+    FloatArray("Float[]"), LongArray("Long[]"), ShortArray("Short[]"), BooleanArray("Boolean[]"),
+    Object("Object"), ObjectArray("Object[]");
 
     private String realType;
 

@@ -12,11 +12,13 @@ public class UMLClass extends UMLBase {
 
     private boolean isAbstract;
 
+    private String stereotype;
+
     private List<Attribute> atributes;
 
     private List<Opreation> opreations;
 
-    private List<UMLClass> innerClasses;
+    private UMLRelation umlRelation;
 
     public boolean isFinalSpecialization() {
         return isFinalSpecialization;
@@ -50,11 +52,19 @@ public class UMLClass extends UMLBase {
         this.opreations = opreations;
     }
 
-    public List<UMLClass> getInnerClasses() {
-        return innerClasses;
+    public String getStereotype() {
+        return stereotype;
     }
 
-    public void setInnerClasses(List<UMLClass> innerClasses) {
-        this.innerClasses = innerClasses;
+    public void setStereotype(String stereotype) {
+        this.stereotype = stereotype;
+    }
+
+    public UMLRelation getUmlRelation() {
+        return umlRelation;
+    }
+
+    public void setUmlRelation(UMLRelation umlRelation) {
+        this.umlRelation = umlRelation;
     }
 }

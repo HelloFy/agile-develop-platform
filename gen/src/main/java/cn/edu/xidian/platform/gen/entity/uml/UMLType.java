@@ -9,7 +9,8 @@ import java.util.Map;
 public enum UMLType {
     UMLClass("UMLClass"), UMLPackage("UMLPackage"), UMLOperation("UMLOperation"),
     UMLInterface("UMLInterface"), UMLParameter("UMLParameter"), UMLAttribute("UMLAttribute"),
-    UMLModel("UMLModel");
+    UMLModel("UMLModel"), UMLGeneralization("UMLGeneralization"), UMLInterfaceRealization("UMLInterfaceRealization"),
+    UMLEnumeration("UMLEnumeration"), UMLAssociation("UMLAssociation"), UMLAssociationEnd("UMLAssociationEnd");
 
     private String _type;
     private static Map<String, UMLType> string2UMLTypeMap = new HashMap<>();

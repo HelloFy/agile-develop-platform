@@ -57,7 +57,7 @@ public class Opreation extends UMLBase {
     }
 
     private enum ConcurrencyType {
-        SEQUENTIAL("sequential");
+        SEQUENTIAL("sequential"), CONCURRENCY("concurrent");
         private String concurrency;
         private static Map<String, ConcurrencyType> string2ConcurrencyTypeMap = new HashMap<>();
 
