@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.Set;
 import java.util.Stack;
 
 import cn.edu.xidian.platform.commons.utils.FileUtils;
+import cn.edu.xidian.platform.commons.utils.StringUtils;
 import cn.edu.xidian.platform.gen.entity.uml.Attribute;
 import cn.edu.xidian.platform.gen.entity.uml.JavaType;
 import cn.edu.xidian.platform.gen.entity.uml.Opreation;
@@ -33,64 +35,10 @@ import cn.edu.xidian.platform.gen.entity.uml.UMLType;
  */
 public class TestGenerateByClassDiagram {
 
-    private <T extends UMLBase> void parseBase(T umlBase, JSONObject var1) {
-        if (var1.containsKey("name"))
-            umlBase.setName(var1.getString("name"));
-        if (var1.containsKey("visibility"))
-            umlBase.setVisibility(var1.getString("visibility"));
-        if (var1.containsKey("documention")) {
-            umlBase.setDocumention(var1.getString("documention"));
-        }
-    }
+    private final ThreadLocal<HashMap<String, UMLClass>> classMap = new ThreadLocal<>();
+    private final ThreadLocal<HashMap<String, UMLInterface>> interfaceMap = new ThreadLocal<>();
 
-    private UMLRelation parseRelation(JSONArray var1) {
-        UMLRelation relation = new UMLRelation();
-        List<UMLClass> innerClasses = new ArrayList<>();
-        List<UMLInterface> impInterfaces = new ArrayList<>();
-        UMLClass parentClass = null;
-        List<UMLClass> combinationClasses = new ArrayList<>();
-        for (Object var2 : var1) {
-            JSONObject var3 = (JSONObject) var2;
-            String _type = var3.getString("_type");
-            UMLType umlType = UMLType.covertFromString(_type);
-            switch (umlType) {
-                case UMLClass: {
-                    UMLClass umlClass = parseUMLClass(var3);
-                    if (var3.containsKey("ownedElements")) {
-                        umlClass.setUmlRelation(parseRelation(var3.getJSONArray("ownedElements")));
-                    }
-                    innerClasses.add(umlClass);
-                    break;
-                }
-                case UMLGeneralization: {
-                    parentClass = parseUMLClass(var3.getJSONObject("target"));
-                    break;
-                }
-                case UMLInterfaceRealization: {
-                    impInterfaces.add(parseInterface(var3.getJSONObject("target")));
-                    break;
-                }
-                default: {
-                    break;
-                }
-            }
-
-        }
-        relation.setInnerClasses(innerClasses);
-        relation.setParentClass(parentClass);
-        relation.setImpInterfaces(impInterfaces);
-        return relation;
-    }
-
-    private UMLClass parseUMLClass(JSONObject var1) {
-        UMLClass umlClass = new UMLClass();
-        parseBase(umlClass, var1);
-        if (var1.containsKey("isAbstract")) {
-            umlClass.setAbstract(var1.getBoolean("isAbstract"));
-        }
-        if (var1.containsKey("isFinalSpecialization")) {
-            umlClass.setFinalSpecialization(var1.getBoolean("isFinalSpecialization"));
-        }
+    private List<Attribute> parseAttribute(JSONObject var1) {
         ArrayList<Attribute> attributes = new ArrayList<>();
         if (var1.containsKey("attributes")) {
             JSONArray var4 = var1.getJSONArray("attributes");
@@ -107,6 +55,10 @@ public class TestGenerateByClassDiagram {
                 attributes.add(attribute);
             }
         }
+        return attributes;
+    }
+
+    private List<Opreation> parseOpreation(JSONObject var1) {
         ArrayList<Opreation> operations = new ArrayList<>();
         if (var1.containsKey("operations")) {
             JSONArray var7 = var1.getJSONArray("operations");
@@ -147,8 +99,85 @@ public class TestGenerateByClassDiagram {
                 operations.add(operation);
             }
         }
-        umlClass.setAtributes(attributes);
-        umlClass.setOpreations(operations);
+        return operations;
+    }
+
+    private <T extends UMLBase> void parseBase(T umlBase, JSONObject var1) {
+        if (var1.containsKey("_id"))
+            umlBase.setId(var1.getString("_id"));
+        if (var1.containsKey("name"))
+            umlBase.setName(var1.getString("name"));
+        if (var1.containsKey("visibility"))
+            umlBase.setVisibility(var1.getString("visibility"));
+        if (var1.containsKey("documention")) {
+            umlBase.setDocumention(var1.getString("documention"));
+        }
+    }
+
+    private UMLRelation parseRelation(JSONArray var1, UMLType sourceType) {
+        UMLRelation relation = new UMLRelation();
+        List<UMLClass> innerClasses = new ArrayList<>();
+        List<UMLInterface> impInterfaces = new ArrayList<>();
+        UMLClass parentClass = null;
+        List<UMLClass> combinationClasses = new ArrayList<>();
+        for (Object var2 : var1) {
+            JSONObject var3 = (JSONObject) var2;
+            String _type = var3.getString("_type");
+            UMLType umlType = UMLType.covertFromString(_type);
+            switch (umlType) {
+                case UMLClass: {
+                    UMLClass umlClass = parseUMLClass(var3);
+                    if (var3.containsKey("ownedElements")) {
+                        umlClass.setUmlRelation(parseRelation(var3.getJSONArray("ownedElements"), UMLType.UMLClass));
+                    }
+                    innerClasses.add(umlClass);
+                    break;
+                }
+                case UMLGeneralization: {
+                    JSONObject var4 = var3.getJSONObject("target");
+                    switch (sourceType) {
+                        case UMLClass: {
+                            parentClass = classMap.get().get(var4.getString("pId"));
+                            break;
+                        }
+                        case UMLInterface: {
+                            impInterfaces.add(interfaceMap.get().get(var4.getString("pId")));
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                    break;
+                }
+                case UMLInterfaceRealization: {
+                    JSONObject var4 = var3.getJSONObject("target");
+                    impInterfaces.add(interfaceMap.get().get(var4.getString("pId")));
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+
+        }
+        relation.setInnerClasses(innerClasses);
+        relation.setParentClass(parentClass);
+        relation.setImpInterfaces(impInterfaces);
+        return relation;
+    }
+
+    private UMLClass parseUMLClass(JSONObject var1) {
+        UMLClass umlClass = new UMLClass();
+        parseBase(umlClass, var1);
+        if (var1.containsKey("isAbstract")) {
+            umlClass.setAbstract(var1.getBoolean("isAbstract"));
+        }
+        if (var1.containsKey("isFinalSpecialization")) {
+            umlClass.setFinalSpecialization(var1.getBoolean("isFinalSpecialization"));
+        }
+        umlClass.setAtributes(parseAttribute(var1));
+        umlClass.setOpreations(parseOpreation(var1));
         return umlClass;
     }
 
@@ -161,12 +190,25 @@ public class TestGenerateByClassDiagram {
     private UMLInterface parseInterface(JSONObject var1) {
         UMLInterface umlInterface = new UMLInterface();
         parseBase(umlInterface, var1);
+        umlInterface.setAttributes(parseAttribute(var1));
+        umlInterface.setOpreations(parseOpreation(var1));
         return umlInterface;
     }
 
     private UMLEnumeration parseUMLEnumeration(JSONObject var1) {
         UMLEnumeration umlEnumeration = new UMLEnumeration();
         parseBase(umlEnumeration, var1);
+        List<UMLEnumeration.UMLEnumerationLiteral> literals = new ArrayList<>();
+        if (var1.containsKey("literals")) {
+            JSONArray var2 = var1.getJSONArray("literals");
+            for (Object var3 : var2) {
+                JSONObject var4 = (JSONObject) var3;
+                UMLEnumeration.UMLEnumerationLiteral literal = new UMLEnumeration.UMLEnumerationLiteral();
+                parseBase(literal, var4);
+                literals.add(literal);
+            }
+        }
+        umlEnumeration.setLiterals(literals);
         return umlEnumeration;
     }
 
@@ -175,7 +217,10 @@ public class TestGenerateByClassDiagram {
         String path = this.getClass().getClassLoader().getResource("templates/gen/").getPath();
         path = URLDecoder.decode(path, "UTF-8");
         String jsonStr = FileUtils.readFileToString(new File(path + "1.mdj"));
-        JSONObject jsonObject = JSON.parseObject(jsonStr);
+        String formatJSON = StringUtils.replace(jsonStr, "$ref", "pId");
+        JSONObject jsonObject = JSON.parseObject(formatJSON);
+        classMap.set(new HashMap<>());
+        interfaceMap.set(new HashMap<>());
         JSONArray jsonArray = jsonObject.getJSONArray("ownedElements");
         Stack<JSONArray> stack = new Stack<>();
         Set<String> parsed = new HashSet<>();
@@ -207,9 +252,10 @@ public class TestGenerateByClassDiagram {
                         }
                         parsed.add(name);
                         UMLClass umlClass = parseUMLClass(var2);
+                        classMap.get().put(umlClass.getId(), umlClass);
                         if (var2.containsKey("ownedElements")) {
                             JSONArray var3 = var2.getJSONArray("ownedElements");
-                            umlClass.setUmlRelation(parseRelation(var3));
+                            umlClass.setUmlRelation(parseRelation(var3, UMLType.UMLClass));
                         }
                         if (!umlPackages.isEmpty()) {
                             if (umlPackages.getLast().getClasses() != null) {
@@ -224,8 +270,9 @@ public class TestGenerateByClassDiagram {
                     }
                     case UMLInterface: {
                         UMLInterface umlInterface = parseInterface(var2);
+                        interfaceMap.get().put(umlInterface.getId(), umlInterface);
                         if (var2.containsKey("ownedElements")) {
-                            umlInterface.setRelation(parseRelation(var2.getJSONArray("ownedElements")));
+                            umlInterface.setRelation(parseRelation(var2.getJSONArray("ownedElements"), UMLType.UMLInterface));
                         }
                         if (!umlPackages.isEmpty()) {
                             if (umlPackages.getLast().getInterfaces() != null) {

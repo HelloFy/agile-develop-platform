@@ -4,6 +4,7 @@ package cn.edu.xidian.platform.gen.entity.uml;
  * Created by 费玥 on 2017/4/18.
  */
 public class UMLBase {
+    protected String id;
     protected String name;
     protected String documention;
     protected String visibility;
@@ -34,5 +35,13 @@ public class UMLBase {
 
     public void setVisibility(String visibility) {
         this.visibility = visibility;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

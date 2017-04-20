@@ -15,7 +15,7 @@ public class UMLEnumeration extends UMLBase {
         this.literals = literals;
     }
 
-    public class UMLEnumerationLiteral extends UMLBase {
+    public static class UMLEnumerationLiteral extends UMLBase {
 
     }
 
