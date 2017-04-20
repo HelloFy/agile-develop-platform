@@ -224,15 +224,12 @@ public class TestGenerateByClassDiagram {
         JSONArray jsonArray = jsonObject.getJSONArray("ownedElements");
         Stack<JSONArray> stack = new Stack<>();
         Set<String> parsed = new HashSet<>();
-        List<UMLClass> parsedClass = new ArrayList<>();
         LinkedList<UMLPackage> umlPackages = new LinkedList<>();
         List<UMLPackage> result = new ArrayList<>();
+        boolean isPackageParsed = false;
         stack.push(jsonArray);
         while (!stack.isEmpty()) {
             jsonArray = stack.pop();
-/*            if (!umlPackages.isEmpty()) {
-                result.add(umlPackages.removeLast());
-            }*/
             for (Object var1 : jsonArray) {
                 JSONObject var2 = (JSONObject) var1;
                 if (var2.containsKey("ownedElements")) {
@@ -286,6 +283,9 @@ public class TestGenerateByClassDiagram {
                         break;
                     }
                     case UMLPackage: {
+                        if (!isPackageParsed) {
+                            isPackageParsed = true;
+                        }
                         umlPackages.addFirst(parseUMLPackage(var2));
                         break;
                     }
@@ -306,6 +306,10 @@ public class TestGenerateByClassDiagram {
                         break;
                     }
                 }
+            }
+            if (isPackageParsed) {
+                result.add(umlPackages.removeLast());
+                isPackageParsed = false;
             }
 
         }
