@@ -22,6 +22,7 @@ import cn.edu.xidian.platform.commons.utils.StringUtils;
 import cn.edu.xidian.platform.gen.entity.uml.Attribute;
 import cn.edu.xidian.platform.gen.entity.uml.JavaType;
 import cn.edu.xidian.platform.gen.entity.uml.Opreation;
+import cn.edu.xidian.platform.gen.entity.uml.UMLAnnotionType;
 import cn.edu.xidian.platform.gen.entity.uml.UMLBase;
 import cn.edu.xidian.platform.gen.entity.uml.UMLClass;
 import cn.edu.xidian.platform.gen.entity.uml.UMLEnumeration;
@@ -119,7 +120,7 @@ public class TestGenerateByClassDiagram {
         List<UMLClass> innerClasses = new ArrayList<>();
         List<UMLInterface> impInterfaces = new ArrayList<>();
         UMLClass parentClass = null;
-        List<UMLClass> combinationClasses = new ArrayList<>();
+        List<UMLRelation.UMLCompose> composes = new ArrayList<>();
         for (Object var2 : var1) {
             JSONObject var3 = (JSONObject) var2;
             String _type = var3.getString("_type");
@@ -155,6 +156,25 @@ public class TestGenerateByClassDiagram {
                     impInterfaces.add(interfaceMap.get().get(var4.getString("pId")));
                     break;
                 }
+                case UMLAssociation: {
+                    JSONObject var4 = var3.getJSONObject("end2");
+                    UMLRelation.UMLCompose.Aggregationtype aggregationType =
+                            UMLRelation.UMLCompose.Aggregationtype.convertFromString(var4.getString("aggregation"));
+                    switch (aggregationType) {
+                        case NONE: {
+                            break;
+                        }
+                        case SHARED: {
+                            break;
+                        }
+                        case COMPOSITE: {
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                }
                 default: {
                     break;
                 }
@@ -167,7 +187,16 @@ public class TestGenerateByClassDiagram {
         return relation;
     }
 
-    private UMLClass parseUMLClass(JSONObject var1) {
+    private <T extends UMLClass> T parseUMLClass(JSONObject var1) {
+        if (var1.containsKey("stereotype")) {
+            if (var1.getString("stereotype").equals("annotationType")) {
+                UMLAnnotionType umlAnnotionType = new UMLAnnotionType();
+                parseBase(umlAnnotionType, var1);
+                umlAnnotionType.setAttributes(parseAttribute(var1));
+                umlAnnotionType.setOpreations(parseOpreation(var1));
+                return (T) umlAnnotionType;
+            }
+        }
         UMLClass umlClass = new UMLClass();
         parseBase(umlClass, var1);
         if (var1.containsKey("isAbstract")) {
@@ -176,9 +205,9 @@ public class TestGenerateByClassDiagram {
         if (var1.containsKey("isFinalSpecialization")) {
             umlClass.setFinalSpecialization(var1.getBoolean("isFinalSpecialization"));
         }
-        umlClass.setAtributes(parseAttribute(var1));
+        umlClass.setAttributes(parseAttribute(var1));
         umlClass.setOpreations(parseOpreation(var1));
-        return umlClass;
+        return (T) umlClass;
     }
 
     private UMLPackage parseUMLPackage(JSONObject var1) {
@@ -226,7 +255,7 @@ public class TestGenerateByClassDiagram {
         Set<String> parsed = new HashSet<>();
         LinkedList<UMLPackage> umlPackages = new LinkedList<>();
         List<UMLPackage> result = new ArrayList<>();
-        boolean isPackageParsed = false;
+        int parsePackageCount = 0;
         stack.push(jsonArray);
         while (!stack.isEmpty()) {
             jsonArray = stack.pop();
@@ -283,9 +312,7 @@ public class TestGenerateByClassDiagram {
                         break;
                     }
                     case UMLPackage: {
-                        if (!isPackageParsed) {
-                            isPackageParsed = true;
-                        }
+                        parsePackageCount++;
                         umlPackages.addFirst(parseUMLPackage(var2));
                         break;
                     }
@@ -307,12 +334,11 @@ public class TestGenerateByClassDiagram {
                     }
                 }
             }
-            if (isPackageParsed) {
+            if (parsePackageCount > 1 && !umlPackages.isEmpty()) {
                 result.add(umlPackages.removeLast());
-                isPackageParsed = false;
             }
 
         }
-        System.out.println(result);
+        System.out.println(result.get(2).getClasses().get(0));
     }
 }

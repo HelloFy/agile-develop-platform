@@ -7,17 +7,17 @@ import java.util.List;
  */
 public class UMLPackage extends UMLBase {
 
-    private List<UMLClass> classes;
+    private List<? super UMLClass> classes;
 
     private List<UMLInterface> interfaces;
 
     private List<UMLEnumeration> enumerations;
 
-    public List<UMLClass> getClasses() {
+    public List<? super UMLClass> getClasses() {
         return classes;
     }
 
-    public void setClasses(List<UMLClass> classes) {
+    public void setClasses(List<? super UMLClass> classes) {
         this.classes = classes;
     }
 

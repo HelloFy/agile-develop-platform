@@ -14,7 +14,7 @@ public class UMLClass extends UMLBase {
 
     private String stereotype;
 
-    private List<Attribute> atributes;
+    private List<Attribute> attributes;
 
     private List<Opreation> opreations;
 
@@ -36,12 +36,12 @@ public class UMLClass extends UMLBase {
         isAbstract = anAbstract;
     }
 
-    public List<Attribute> getAtributes() {
-        return atributes;
+    public List<Attribute> getAttributes() {
+        return attributes;
     }
 
-    public void setAtributes(List<Attribute> atributes) {
-        this.atributes = atributes;
+    public void setAttributes(List<Attribute> attributes) {
+        this.attributes = attributes;
     }
 
     public List<Opreation> getOpreations() {
