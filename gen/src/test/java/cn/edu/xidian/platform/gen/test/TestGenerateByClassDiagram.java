@@ -19,14 +19,14 @@ import java.util.Stack;
 
 import cn.edu.xidian.platform.commons.utils.FileUtils;
 import cn.edu.xidian.platform.commons.utils.StringUtils;
-import cn.edu.xidian.platform.gen.entity.uml.Attribute;
 import cn.edu.xidian.platform.gen.entity.uml.JavaType;
-import cn.edu.xidian.platform.gen.entity.uml.Opreation;
 import cn.edu.xidian.platform.gen.entity.uml.UMLAnnotionType;
+import cn.edu.xidian.platform.gen.entity.uml.UMLAttribute;
 import cn.edu.xidian.platform.gen.entity.uml.UMLBase;
 import cn.edu.xidian.platform.gen.entity.uml.UMLClass;
 import cn.edu.xidian.platform.gen.entity.uml.UMLEnumeration;
 import cn.edu.xidian.platform.gen.entity.uml.UMLInterface;
+import cn.edu.xidian.platform.gen.entity.uml.UMLOperation;
 import cn.edu.xidian.platform.gen.entity.uml.UMLPackage;
 import cn.edu.xidian.platform.gen.entity.uml.UMLRelation;
 import cn.edu.xidian.platform.gen.entity.uml.UMLType;
@@ -39,13 +39,13 @@ public class TestGenerateByClassDiagram {
     private final ThreadLocal<HashMap<String, UMLClass>> classMap = new ThreadLocal<>();
     private final ThreadLocal<HashMap<String, UMLInterface>> interfaceMap = new ThreadLocal<>();
 
-    private List<Attribute> parseAttribute(JSONObject var1) {
-        ArrayList<Attribute> attributes = new ArrayList<>();
+    private List<UMLAttribute> parseAttribute(JSONObject var1) {
+        ArrayList<UMLAttribute> attributes = new ArrayList<>();
         if (var1.containsKey("attributes")) {
             JSONArray var4 = var1.getJSONArray("attributes");
             for (Object var5 : var4) {
                 JSONObject var6 = (JSONObject) var5;
-                Attribute attribute = new Attribute();
+                UMLAttribute attribute = new UMLAttribute();
                 attribute.setName(var6.getString("name"));
                 attribute.setStatic(var6.getBoolean("isStatic"));
                 attribute.setReadOnly(var6.getBoolean("isReadOnly"));
@@ -59,30 +59,30 @@ public class TestGenerateByClassDiagram {
         return attributes;
     }
 
-    private List<Opreation> parseOpreation(JSONObject var1) {
-        ArrayList<Opreation> operations = new ArrayList<>();
+    private List<UMLOperation> parseOpreation(JSONObject var1) {
+        ArrayList<UMLOperation> operations = new ArrayList<>();
         if (var1.containsKey("operations")) {
             JSONArray var7 = var1.getJSONArray("operations");
             for (Object var8 : var7) {
                 JSONObject var9 = (JSONObject) var8;
-                Opreation operation = new Opreation();
+                UMLOperation operation = new UMLOperation();
                 operation.setName(var9.getString("name"));
                 operation.setStatic(var9.getBoolean("isStatic"));
                 operation.setAbstract(var9.getBoolean("isAbstract"));
                 String concurrency = var9.getString("concurrency");
-                operation.setConcurrency(Opreation.convertFromString(concurrency));
+                operation.setConcurrency(UMLOperation.convertFromString(concurrency));
                 if (var9.containsKey("parameters")) {
-                    ArrayList<Opreation.Paramter> paramtersIn = new ArrayList<>();
+                    ArrayList<UMLOperation.Paramter> paramtersIn = new ArrayList<>();
                     JSONArray var10 = var9.getJSONArray("parameters");
                     for (Object var11 : var10) {
                         JSONObject var12 = (JSONObject) var11;
-                        Opreation.Paramter parameter = new Opreation.Paramter();
+                        UMLOperation.Paramter parameter = new UMLOperation.Paramter();
                         String paraName = var12.getString("name");
                         parameter.setName(paraName);
                         parameter.setReadOnly(var12.getBoolean("isReadOnly"));
                         parameter.setType(JavaType.convertFromString(var12.getString("type")));
                         String paraDirection = var12.getString("direction");
-                        Opreation.Paramter.ParaType paraType = Opreation.Paramter.ParaType.convertFromString(paraDirection);
+                        UMLOperation.Paramter.ParaType paraType = UMLOperation.Paramter.ParaType.convertFromString(paraDirection);
                         switch (paraType) {
                             case RETURN: {
                                 operation.setParamterOut(parameter);
@@ -157,17 +157,22 @@ public class TestGenerateByClassDiagram {
                     break;
                 }
                 case UMLAssociation: {
-                    JSONObject var4 = var3.getJSONObject("end2");
+                    JSONObject var4 = var3.getJSONObject("end1");
+                    JSONObject var5 = var3.getJSONObject("end2");
                     UMLRelation.UMLCompose.Aggregationtype aggregationType =
-                            UMLRelation.UMLCompose.Aggregationtype.convertFromString(var4.getString("aggregation"));
+                            UMLRelation.UMLCompose.Aggregationtype.convertFromString(var5.getString("aggregation"));
                     switch (aggregationType) {
                         case NONE: {
                             break;
                         }
-                        case SHARED: {
-                            break;
-                        }
+                        case SHARED:
                         case COMPOSITE: {
+                            UMLRelation.UMLCompose umlCompose = new UMLRelation.UMLCompose();
+                            umlCompose.setFiledNames(var4.getString("name"));
+                            umlCompose.setMultiplicity(UMLRelation.UMLCompose.MultiplicityType.covertFromString(var4.getString("multiplicity")));
+                            JSONObject var6 = var5.getJSONObject("reference");
+                            UMLClass umlClass = classMap.get().get(var6.getString("pId"));
+                            umlClass.getUmlRelation().getCombinateClasses().add(umlCompose);
                             break;
                         }
                         default: {
@@ -184,6 +189,7 @@ public class TestGenerateByClassDiagram {
         relation.setInnerClasses(innerClasses);
         relation.setParentClass(parentClass);
         relation.setImpInterfaces(impInterfaces);
+        relation.setCombinateClasses(composes);
         return relation;
     }
 
@@ -193,7 +199,7 @@ public class TestGenerateByClassDiagram {
                 UMLAnnotionType umlAnnotionType = new UMLAnnotionType();
                 parseBase(umlAnnotionType, var1);
                 umlAnnotionType.setAttributes(parseAttribute(var1));
-                umlAnnotionType.setOpreations(parseOpreation(var1));
+                umlAnnotionType.setUMLOperations(parseOpreation(var1));
                 return (T) umlAnnotionType;
             }
         }
@@ -206,7 +212,7 @@ public class TestGenerateByClassDiagram {
             umlClass.setFinalSpecialization(var1.getBoolean("isFinalSpecialization"));
         }
         umlClass.setAttributes(parseAttribute(var1));
-        umlClass.setOpreations(parseOpreation(var1));
+        umlClass.setUMLOperations(parseOpreation(var1));
         return (T) umlClass;
     }
 
@@ -220,7 +226,7 @@ public class TestGenerateByClassDiagram {
         UMLInterface umlInterface = new UMLInterface();
         parseBase(umlInterface, var1);
         umlInterface.setAttributes(parseAttribute(var1));
-        umlInterface.setOpreations(parseOpreation(var1));
+        umlInterface.setUMLOperations(parseOpreation(var1));
         return umlInterface;
     }
 
@@ -339,6 +345,6 @@ public class TestGenerateByClassDiagram {
             }
 
         }
-        System.out.println(result.get(2).getClasses().get(0));
+        System.out.println(result);
     }
 }

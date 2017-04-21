@@ -7,10 +7,11 @@ import java.util.Map;
  * Created by 费玥 on 2017/4/18.
  */
 public enum UMLType {
-    UMLClass("UMLClass"), UMLPackage("UMLPackage"), UMLOperation("UMLOperation"),
-    UMLInterface("UMLInterface"), UMLParameter("UMLParameter"), UMLAttribute("UMLAttribute"),
-    UMLModel("UMLModel"), UMLGeneralization("UMLGeneralization"), UMLInterfaceRealization("UMLInterfaceRealization"),
-    UMLEnumeration("UMLEnumeration"), UMLAssociation("UMLAssociation"), UMLAssociationEnd("UMLAssociationEnd");
+    UMLProject("UMLProject"), UMLModel("UMLModel"), UMLPackage("UMLPackage"),
+    UMLClass("UMLClass"), UMLInterface("UMLInterface"), UMLEnumeration("UMLEnumeration"),
+    UMLOperation("UMLOperation"), UMLParameter("UMLParameter"), UMLAttribute("UMLAttribute"),
+    UMLGeneralization("UMLGeneralization"), UMLInterfaceRealization("UMLInterfaceRealization"),
+    UMLAssociation("UMLAssociation"), UMLAssociationEnd("UMLAssociationEnd");
 
     private String _type;
     private static Map<String, UMLType> string2UMLTypeMap = new HashMap<>();

@@ -14,9 +14,9 @@ public class UMLClass extends UMLBase {
 
     private String stereotype;
 
-    private List<Attribute> attributes;
+    private List<UMLAttribute> attributes;
 
-    private List<Opreation> opreations;
+    private List<UMLOperation> UMLOperations;
 
     private UMLRelation umlRelation;
 
@@ -36,20 +36,20 @@ public class UMLClass extends UMLBase {
         isAbstract = anAbstract;
     }
 
-    public List<Attribute> getAttributes() {
+    public List<UMLAttribute> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<Attribute> attributes) {
+    public void setAttributes(List<UMLAttribute> attributes) {
         this.attributes = attributes;
     }
 
-    public List<Opreation> getOpreations() {
-        return opreations;
+    public List<UMLOperation> getUMLOperations() {
+        return UMLOperations;
     }
 
-    public void setOpreations(List<Opreation> opreations) {
-        this.opreations = opreations;
+    public void setUMLOperations(List<UMLOperation> UMLOperations) {
+        this.UMLOperations = UMLOperations;
     }
 
     public String getStereotype() {

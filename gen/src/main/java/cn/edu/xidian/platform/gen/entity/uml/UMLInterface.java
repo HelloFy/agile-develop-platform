@@ -7,25 +7,25 @@ import java.util.List;
  */
 public class UMLInterface extends UMLBase {
 
-    private List<Attribute> attributes;
-    private List<Opreation> opreations;
+    private List<UMLAttribute> attributes;
+    private List<UMLOperation> UMLOperations;
     private UMLRelation relation;
 
 
-    public List<Attribute> getAttributes() {
+    public List<UMLAttribute> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<Attribute> attributes) {
+    public void setAttributes(List<UMLAttribute> attributes) {
         this.attributes = attributes;
     }
 
-    public List<Opreation> getOpreations() {
-        return opreations;
+    public List<UMLOperation> getUMLOperations() {
+        return UMLOperations;
     }
 
-    public void setOpreations(List<Opreation> opreations) {
-        this.opreations = opreations;
+    public void setUMLOperations(List<UMLOperation> UMLOperations) {
+        this.UMLOperations = UMLOperations;
     }
 
     public UMLRelation getRelation() {

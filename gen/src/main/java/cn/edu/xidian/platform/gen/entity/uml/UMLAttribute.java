@@ -1,6 +1,6 @@
 package cn.edu.xidian.platform.gen.entity.uml;
 
-public class Attribute extends UMLBase {
+public class UMLAttribute extends UMLBase {
     private boolean isStatic;
     private JavaType type;
     private boolean isReadOnly;

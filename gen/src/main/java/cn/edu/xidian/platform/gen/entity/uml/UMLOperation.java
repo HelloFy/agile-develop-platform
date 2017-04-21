@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Opreation extends UMLBase {
+public class UMLOperation extends UMLBase {
 
     private ConcurrencyType concurrency;
     private boolean isStatic;
