@@ -12,6 +12,7 @@ import cn.edu.xidian.platform.gen.entity.uml.UMLOperation;
 import cn.edu.xidian.platform.gen.entity.uml.UMLPackage;
 import cn.edu.xidian.platform.gen.entity.uml.UMLProject;
 import cn.edu.xidian.platform.gen.entity.uml.UMLRelation;
+import cn.edu.xidian.platform.gen.entity.uml.UMLType;
 
 
 /**
@@ -37,5 +38,5 @@ public interface Processor<O, A> {
 
     List<UMLOperation> parseUMLOperation(O jsonObj);
 
-    UMLRelation parseUMLRelation(A jsonArray);
+    UMLRelation parseUMLRelation(A jsonArray, UMLType clzOrIface);
 }

@@ -27,12 +27,18 @@ import cn.edu.xidian.platform.gen.entity.GenUmlClassDiagram;
 public interface IGenUmlClassDiagramDao {
 
     @Select("SELECT \n" +
-            "a.*\n" +
+            "a.id," +
+            "a.class_diagram_name," +
+            "a.format_json_str," +
+            "a.comments \n" +
             "FROM gen_uml_class_diagram a\n" +
             "WHERE a.id = #{id}")
     GenUmlClassDiagram get(GenUmlClassDiagram genUmlClassDiagram);
 
-    @Select("SELECT a.*\n" +
+    @Select("SELECT \n" +
+            "a.id," +
+            "a.class_diagram_name," +
+            "a.comments \n" +
             "FROM gen_uml_class_diagram a\n")
     List<GenUmlClassDiagram> findAllList();
 
@@ -43,10 +49,12 @@ public interface IGenUmlClassDiagramDao {
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     @Insert("INSERT INTO gen_uml_class_diagram( \n" +
             " class_diagram_name,\n" +
+            " format_json_str,\n" +
             " comments,\n" +
             " path \n" +
             " ) VALUES ( \n" +
             "#{classDiagramName},\n" +
+            "#{formatJsonStr},\n" +
             "#{comments},\n" +
             "#{path} \n" +
             ")")

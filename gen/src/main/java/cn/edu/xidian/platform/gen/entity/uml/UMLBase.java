@@ -8,6 +8,7 @@ public class UMLBase {
     protected String name;
     protected String documention;
     protected String visibility;
+    private UMLType umlType;
 
     public UMLBase() {
 
@@ -43,5 +44,13 @@ public class UMLBase {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public UMLType getUmlType() {
+        return umlType;
+    }
+
+    public void setUmlType(UMLType umlType) {
+        this.umlType = umlType;
     }
 }

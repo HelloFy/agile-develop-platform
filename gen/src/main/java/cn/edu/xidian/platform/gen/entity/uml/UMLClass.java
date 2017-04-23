@@ -8,52 +8,54 @@ import java.util.List;
 
 public class UMLClass extends UMLBase {
 
-    private boolean isFinalSpecialization;
+    private boolean finalSpecialization = false;
 
-    private boolean isAbstract;
+    private boolean virtual = false;
 
     private String stereotype;
 
     private List<UMLAttribute> attributes;
 
-    private List<UMLOperation> UMLOperations;
+    private List<UMLOperation> operations;
 
     private UMLRelation umlRelation;
 
+    private String packageName;
+
     public boolean isFinalSpecialization() {
-        return isFinalSpecialization;
+        return this.finalSpecialization;
     }
 
     public void setFinalSpecialization(boolean finalSpecialization) {
-        isFinalSpecialization = finalSpecialization;
+        this.finalSpecialization = finalSpecialization;
     }
 
-    public boolean isAbstract() {
-        return isAbstract;
+    public boolean isVirtual() {
+        return this.virtual;
     }
 
-    public void setAbstract(boolean anAbstract) {
-        isAbstract = anAbstract;
+    public void setVirtual(boolean virtual) {
+        this.virtual = virtual;
     }
 
     public List<UMLAttribute> getAttributes() {
-        return attributes;
+        return this.attributes;
     }
 
     public void setAttributes(List<UMLAttribute> attributes) {
         this.attributes = attributes;
     }
 
-    public List<UMLOperation> getUMLOperations() {
-        return UMLOperations;
+    public List<UMLOperation> getOperations() {
+        return this.operations;
     }
 
-    public void setUMLOperations(List<UMLOperation> UMLOperations) {
-        this.UMLOperations = UMLOperations;
+    public void setOperations(List<UMLOperation> operations) {
+        this.operations = operations;
     }
 
     public String getStereotype() {
-        return stereotype;
+        return this.stereotype;
     }
 
     public void setStereotype(String stereotype) {
@@ -61,10 +63,18 @@ public class UMLClass extends UMLBase {
     }
 
     public UMLRelation getUmlRelation() {
-        return umlRelation;
+        return this.umlRelation;
     }
 
     public void setUmlRelation(UMLRelation umlRelation) {
         this.umlRelation = umlRelation;
+    }
+
+    public String getPackageName() {
+        return this.packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 }

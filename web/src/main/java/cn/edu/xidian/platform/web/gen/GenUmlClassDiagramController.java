@@ -7,6 +7,7 @@ package cn.edu.xidian.platform.web.gen;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +21,11 @@ import java.io.IOException;
 import java.util.List;
 
 import cn.edu.xidian.platform.commons.entity.Message;
+import cn.edu.xidian.platform.commons.utils.Exceptions;
+import cn.edu.xidian.platform.gen.entity.GenScheme;
 import cn.edu.xidian.platform.gen.entity.GenUmlClassDiagram;
 import cn.edu.xidian.platform.gen.service.GenUmlClassDiagramService;
+import cn.edu.xidian.platform.gen.service.GenUmlSchemaService;
 
 /**
  * 阿斯达斯的Controller
@@ -35,6 +39,10 @@ public class GenUmlClassDiagramController {
     @Autowired
     private GenUmlClassDiagramService genUmlClassDiagramService;
 
+    @Autowired
+    private GenUmlSchemaService genUmlSchemaService;
+
+    private static Logger logger = Logger.getLogger(GenUmlClassDiagramController.class);
 
     @ExceptionHandler(Exception.class)
     public Message exceptionHandler(Exception ex) {
@@ -42,6 +50,7 @@ public class GenUmlClassDiagramController {
         message.setResult(Message.MessageResult.FAIL);
         message.setMessage("服务器繁忙");
         message.setErrorMsg("服务器繁忙");
+        logger.error(Exceptions.getStackTraceAsString(ex));
         return message;
     }
 
@@ -59,6 +68,14 @@ public class GenUmlClassDiagramController {
     @RequestMapping(value = "genUmlClassDiagramForm", method = RequestMethod.GET)
     public ModelAndView form() {
         return new ModelAndView("gen/genGenUmlClassDiagramForm");
+    }
+
+    @RequestMapping(value = "genCodeByUML", method = RequestMethod.PUT)
+    public Message genCodeByUML(GenScheme genScheme) {
+        Message message = new Message();
+        message.setResult(Message.MessageResult.SUCCESS);
+        message.setMessage(genUmlSchemaService.saveOrUpdateAndGen(genScheme));
+        return message;
     }
 
     @RequestMapping(value = "saveGenUmlClassDiagram", method = RequestMethod.PUT)

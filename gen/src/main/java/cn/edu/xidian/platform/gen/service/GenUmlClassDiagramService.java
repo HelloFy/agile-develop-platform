@@ -16,8 +16,11 @@ import java.io.IOException;
 import java.util.List;
 
 import cn.edu.xidian.platform.commons.config.Global;
+import cn.edu.xidian.platform.commons.utils.FileUtils;
 import cn.edu.xidian.platform.commons.utils.StringUtils;
+import cn.edu.xidian.platform.gen.dao.IGenSchemaDao;
 import cn.edu.xidian.platform.gen.dao.IGenUmlClassDiagramDao;
+import cn.edu.xidian.platform.gen.entity.GenScheme;
 import cn.edu.xidian.platform.gen.entity.GenUmlClassDiagram;
 
 /**
@@ -30,6 +33,12 @@ public class GenUmlClassDiagramService {
 
     @Autowired
     private IGenUmlClassDiagramDao iGenUmlClassDiagramDao;
+
+    @Autowired
+    private GenUmlSchemaService genUmlSchemaService;
+
+    @Autowired
+    private IGenSchemaDao iGenSchemaDao;
 
     public GenUmlClassDiagram get(GenUmlClassDiagram genUmlClassDiagram) {
         return iGenUmlClassDiagramDao.get(genUmlClassDiagram);
@@ -50,6 +59,9 @@ public class GenUmlClassDiagramService {
         } else {
             iGenUmlClassDiagramDao.update(genUmlClassDiagram);
         }
+        GenScheme genScheme = genUmlSchemaService.initDefaultGenScheme(genUmlClassDiagram.getClassDiagramName());
+        genScheme.setRefId(genUmlClassDiagram.getId());
+        iGenSchemaDao.save(genScheme);
     }
 
     @Transactional
@@ -67,10 +79,13 @@ public class GenUmlClassDiagramService {
                     new BufferedOutputStream(new FileOutputStream(new File(filePath + genUmlClassDiagram.getClassDiagramName() + "." + fileSuffix)));
             stream.write(bytes);
             stream.close();
+            String origialJsonStr = FileUtils.readFileToString(new File(filePath + genUmlClassDiagram.getClassDiagramName() + "." + fileSuffix));
+            String formatJsonStr = StringUtils.replace(origialJsonStr, "$ref", "pId");
             genUmlClassDiagram.setClassDiagramName(genUmlClassDiagram.getClassDiagramName() + "." + fileSuffix);
             genUmlClassDiagram.setComments(genUmlClassDiagram.getComments());
             genUmlClassDiagram.setPath("UMLClassDiagram" + File.separator + genUmlClassDiagram.getClassDiagramName());
-            iGenUmlClassDiagramDao.save(genUmlClassDiagram);
+            genUmlClassDiagram.setFormatJsonStr(formatJsonStr);
+            saveOrUpdate(genUmlClassDiagram);
         }
     }
 }

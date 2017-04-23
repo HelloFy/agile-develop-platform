@@ -99,7 +99,7 @@ public class GenDocController {
         FileUtils.downFile(new File(fileName), request, response, genDocDown.getDocName());
     }
 
-    @RequestMapping(value = "uploadDoc", method = RequestMethod.POST)
+    @RequestMapping(value = "uploadDoc", method = RequestMethod.PUT)
     public Message uploadDoc(@RequestParam("fileupload") MultipartFile file, GenDoc genDoc) throws IOException {
         Message message = new Message();
         message.setResult(Message.MessageResult.SUCCESS);

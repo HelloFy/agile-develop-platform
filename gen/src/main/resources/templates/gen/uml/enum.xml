@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+    <name>enum</name>
+    <filePath>src/main/java/${enum.packageName}</filePath>
+    <fileName>${enum.name}.java</fileName>
+    <content><![CDATA[
+    package ${enum.packageName};
+
+    ${enum.visibility} enum ${enum.name} {
+        <#if enum.literals?? && (enum.literals?size>0)>
+            <#assign lts>
+                <#list enum.literals as t>${t.name},</#list>
+            </#assign>
+            ${lts?substring(0, lts?last_index_of(","))};
+        </#if>
+
+    }
+]]>
+    </content>
+</template>

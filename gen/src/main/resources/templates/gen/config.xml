@@ -16,6 +16,12 @@
             <template>dao/entity.xml</template>
             <template>dao/SQLProvider.xml</template>
         </category>
+
+        <category value="uml" label="UML类图">
+            <template>uml/class.xml</template>
+            <template>uml/enum.xml</template>
+            <template>uml/interface.xml</template>
+        </category>
     </category>
     <!-- java类型 -->
     <javaType>

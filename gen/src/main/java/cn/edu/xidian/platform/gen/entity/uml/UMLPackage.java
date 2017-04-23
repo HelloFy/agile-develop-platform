@@ -7,17 +7,21 @@ import java.util.List;
  */
 public class UMLPackage extends UMLBase {
 
-    private List<? super UMLClass> classes;
+    private List<UMLClass> classes;
 
     private List<UMLInterface> interfaces;
 
     private List<UMLEnumeration> enumerations;
 
-    public List<? super UMLClass> getClasses() {
+    private List<UMLModel> umlModels;
+
+    private List<UMLPackage> packages;
+
+    public List<UMLClass> getClasses() {
         return classes;
     }
 
-    public void setClasses(List<? super UMLClass> classes) {
+    public void setClasses(List<UMLClass> classes) {
         this.classes = classes;
     }
 
@@ -35,5 +39,21 @@ public class UMLPackage extends UMLBase {
 
     public void setEnumerations(List<UMLEnumeration> enumerations) {
         this.enumerations = enumerations;
+    }
+
+    public List<UMLModel> getUmlModels() {
+        return umlModels;
+    }
+
+    public void setUmlModels(List<UMLModel> umlModels) {
+        this.umlModels = umlModels;
+    }
+
+    public List<UMLPackage> getPackages() {
+        return packages;
+    }
+
+    public void setPackages(List<UMLPackage> packages) {
+        this.packages = packages;
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
 import cn.edu.xidian.platform.commons.entity.Message;
 import cn.edu.xidian.platform.commons.utils.Exceptions;
 import cn.edu.xidian.platform.gen.entity.GenScheme;
-import cn.edu.xidian.platform.gen.service.GenSchemaService;
+import cn.edu.xidian.platform.gen.service.GenTableSchemaService;
 
 /**
  * Created by 费玥 on 2017-3-20.
@@ -29,7 +29,7 @@ public class GenSchemaController {
     private static Logger logger = Logger.getLogger(GenSchemaController.class);
 
     @Autowired
-    private GenSchemaService genSchemaService;
+    private GenTableSchemaService genTableSchemaService;
 
     @ExceptionHandler(Exception.class)
     public Message exceptionHandler(Exception ex) {
@@ -50,7 +50,15 @@ public class GenSchemaController {
     public Message getSchema(GenScheme genScheme) {
         Message message = new Message();
         message.setResult(Message.MessageResult.SUCCESS);
-        message.setMessage(genSchemaService.get(genScheme));
+        message.setMessage(genTableSchemaService.get(genScheme));
+        return message;
+    }
+
+    @RequestMapping(value = "getSchemaByRefId", method = RequestMethod.GET)
+    public Message getSchemaByRefId(GenScheme genScheme) {
+        Message message = new Message();
+        message.setResult(Message.MessageResult.SUCCESS);
+        message.setMessage(genTableSchemaService.getByRefId(genScheme.getRefId()));
         return message;
     }
 
@@ -59,7 +67,7 @@ public class GenSchemaController {
         Message message = new Message();
         message.setResult(Message.MessageResult.SUCCESS);
         PageHelper.startPage(genScheme.getPage(), genScheme.getPageSize());
-        List<GenScheme> genSchemePageList = genSchemaService.findList(genScheme);
+        List<GenScheme> genSchemePageList = genTableSchemaService.findList(genScheme);
         PageInfo<GenScheme> pageInfo = new PageInfo<>(genSchemePageList);
         message.setMessage(pageInfo);
         logger.info(pageInfo);
@@ -72,7 +80,7 @@ public class GenSchemaController {
         logger.info("saving genscheme:"+ToStringBuilder.reflectionToString(genScheme));
         Message message = new Message();
         message.setResult(Message.MessageResult.SUCCESS);
-        genSchemaService.saveOrUpdate(genScheme);
+        genTableSchemaService.saveOrUpdate(genScheme);
         return message;
     }
 
@@ -80,7 +88,7 @@ public class GenSchemaController {
     public Message saveAndGenCode(GenScheme genScheme){
         Message message = new Message();
         message.setResult(Message.MessageResult.SUCCESS);
-        message.setMessage(genSchemaService.saveOrUpdateAndGen(genScheme));
+        message.setMessage(genTableSchemaService.saveOrUpdateAndGen(genScheme));
         return message;
     }
 
@@ -88,7 +96,7 @@ public class GenSchemaController {
     public Message deleteScheme(GenScheme genScheme){
         Message message = new Message();
         message.setResult(Message.MessageResult.SUCCESS);
-        genSchemaService.delete(genScheme);
+        genTableSchemaService.delete(genScheme);
         return message;
     }
 }

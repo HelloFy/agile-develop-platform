@@ -25,7 +25,7 @@ public class GenScheme extends Page<GenScheme> implements Serializable {
 	private String functionName;		// 生成功能名
 	private String functionNameSimple;		// 生成功能名（简写）
 	private String functionAuthor;		// 生成功能作者
-    private long genTableId;        // 业务表Id
+    private long refId;        // ref_Id
 
     private String flag; 	// 0：保存方案； 1：保存方案并生成代码
 	
@@ -119,12 +119,12 @@ public class GenScheme extends Page<GenScheme> implements Serializable {
 		this.id = id;
 	}
 
-    public long getGenTableId() {
-        return genTableId;
+    public long getRefId() {
+        return refId;
     }
 
-    public void setGenTableId(long genTableId) {
-        this.genTableId = genTableId;
+    public void setRefId(long refId) {
+        this.refId = refId;
     }
 }
 

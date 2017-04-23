@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+    <name>class</name>
+    <filePath>src/main/java/${class.packageName}</filePath>
+    <fileName>${class.name}.java</fileName>
+    <content><![CDATA[
+    package ${class.packageName};
+    import java.util.*;
+    <#if class.umlRelation??>
+        <#if class.umlRelation.composes?? && (class.umlRelation.composes?size>0)>
+            <#list class.umlRelation.composes as c>
+                <#if c.composeClass?? >
+    import ${c.composeClass.packageName}.${c.composeClass.name};
+                </#if>
+                <#if c.composeInterface?? >
+    import ${c.composeInterface.packageName}.${c.composeInterface.name};
+                </#if>
+                <#if c.composeEnum??>
+    import ${c.composeEnum.packageName}.${c.composeEnum.name};
+                </#if>
+            </#list>
+        </#if>
+    </#if>
+
+    <#if class.attributes?? && (class.attributes?size>0)>
+       <#list class.attributes as attr>
+            <#if attr.otherType??>
+                <#if attr.otherTypePackageName?? && attr.otherTypePackageName != "" && attr.otherTypePackageName != class.packageName>
+    import ${attr.otherTypePackageName}.${attr.otherType}
+                 </#if>
+            </#if>
+       </#list>
+    </#if>
+    <#if class.operations?? && (class.operations?size>0)>
+        <#list class.operations as opr>
+            <#if opr.paramterOut??>
+                <#if opr.paramterOut.otherType??>
+                     <#if opr.paramterOut.otherTypePackageName?? && opr.paramterOut.otherTypePackageName != "" && opr.paramterOut.otherTypePackageName != class.packageName>
+    import  ${opr.paramterOut.otherTypePackageName}.${opr.paramterOut.otherType};
+                     </#if>
+                </#if>
+            </#if>
+            <#if opr.paramterIn?? && (opr.paramterIn?size>0)>
+                <#list opr.paramterIn as p>
+                   <#if p.otherType??>
+                     <#if p.otherTypePackageName?? && p.otherTypePackageName != "" && p.otherTypePackageName != class.packageName>
+    import  ${p.otherTypePackageName}.${p.otherType};
+                     </#if>
+                    </#if>
+                </#list>
+            </#if>
+        </#list>
+    </#if>
+${class.visibility} class <#if (class.finalSpecialization)> final</#if> <#if (class.virtual)>abstract</#if> ${class.name} <#if class.umlRelation??> <#if class.umlRelation.parentClass??> extends ${class.umlRelation.parentClass.name}</#if> <#if class.umlRelation.impInterfaces?? && (class.umlRelation.impInterfaces?size>0)> implements <#assign insertImps><#list class.umlRelation.impInterfaces as imp>${imp.name},</#list></#assign> ${insertImps?substring(0, insertImps?last_index_of(","))}</#if></#if> {
+<#if class.attributes?? && (class.attributes?size>0)>
+    <#list class.attributes as attr>
+     ${attr.visibility} <#if attr.statics>static </#if><#if attr.readOnly>final </#if> <#if attr.javaType??> <#if attr.list> List<${attr.javaType.realType}> <#else> <#if attr.arraySize == 0> ${attr.javaType.realType} <#else> ${attr.javaType.realType}[] </#if> </#if> <#else> <#if attr.list> List<${attr.otherType}> <#else> <#if attr.arraySize == 0> ${attr.otherType} <#else> ${attr.otherType}[] </#if> </#if> </#if>  ${attr.name} <#if attr.defaultValue??> = <#if attr.defaultValue.valueType == 'String'> "${attr.defaultValue.value}" <#else> ${attr.defaultValue.value} </#if> </#if> ;
+    </#list>
+</#if>
+}
+]]>
+    </content>
+</template>

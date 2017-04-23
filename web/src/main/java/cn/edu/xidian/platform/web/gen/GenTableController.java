@@ -16,7 +16,9 @@ import java.util.List;
 
 import cn.edu.xidian.platform.commons.entity.Message;
 import cn.edu.xidian.platform.commons.utils.Exceptions;
+import cn.edu.xidian.platform.gen.entity.GenScheme;
 import cn.edu.xidian.platform.gen.entity.GenTable;
+import cn.edu.xidian.platform.gen.service.GenTableSchemaService;
 import cn.edu.xidian.platform.gen.service.GenTableService;
 
 /**
@@ -29,6 +31,9 @@ public class GenTableController {
 
     @Autowired
     private GenTableService genTableService;
+
+    @Autowired
+    private GenTableSchemaService genTableSchemaService;
 
     private static Logger logger = Logger.getLogger(GenTableController.class);
 
@@ -92,6 +97,15 @@ public class GenTableController {
         GenTable genTableInfo = genTableService.getTableFromDB(genTable);
         message.setResult(Message.MessageResult.SUCCESS);
         message.setMessage(genTableInfo);
+        return message;
+    }
+
+    @RequestMapping(value = "genCodeByTable", method = RequestMethod.GET)
+    public Message genCodeByTable(GenTable genTable) {
+        Message message = new Message();
+        message.setResult(Message.MessageResult.SUCCESS);
+        GenScheme genScheme = genTableSchemaService.getByRefId(genTable.getId());
+        message.setMessage(genTableSchemaService.saveOrUpdateAndGen(genScheme));
         return message;
     }
 

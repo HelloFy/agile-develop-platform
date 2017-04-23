@@ -17,3 +17,11 @@ export function createPage(selector,totalPages,visiblePages,currentPage,func) {
             onPageChange: func
         });
 }
+
+export function generate_code(id, selectorList, selectorSchema) {
+    selectorList.addClass('hidden');
+    require.ensure(["whatwg-fetch", "../gen/genSchema.js"], function () {
+        let func = require('../gen/genSchema.js');
+        func.getschema_refId(id, selectorSchema);
+    });
+}

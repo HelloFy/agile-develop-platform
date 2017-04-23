@@ -9,6 +9,9 @@ let util = require('../utils/util.js');
 function queryUMLList(uml_name) {
     util.createPage('.pagination', 1, 5, 1, function (num) {
         require.ensure(["whatwg-fetch"], function () {
+            if (uml_name == undefined) {
+                uml_name = '';
+            }
             fetch('gen/getGenUmlClassDiagramList?page=' + num + '&classDiagramName=' + uml_name, {
                 method: 'get',
                 credentials: 'include'
@@ -26,13 +29,19 @@ function queryUMLList(uml_name) {
                                 "<td><a class=\"item\" href=\"gen/downLoad?id=" + content.id
                                 + "\">下载</a>"
                                 + "<a class=\"del item\" href=\"javascript:void(0)\" del_id=\""
-                                + content.id + "\" >删除</a></td>";
+                                + content.id + "\" >删除</a>"
+                                + "<a class=\"generate item\" href=\"javascript:void(0)\" gen_id=\""
+                                + content.id + "\" >生成代码</a></td>";
                             html += "</tr>";
                         });
-                        $('#tb_doc_body').html(html);
+                        $('#tb_uml_body').html(html);
                         $('.del.item').click(function () {
                             console.log('del_id:' + $(this).attr('del_id'));
                             deleteUML($(this).attr('del_id'), $(this));
+                        });
+                        $('.generate.item').click(function () {
+                            util.generate_code($(this).attr('gen_id'), $('#uml_list'),
+                                               $('#schema_form'));
                         });
                         $('.pagination').jqPaginator('option', {
                             totalPages: message.pages == 0 ? 1 : message.pages,
@@ -75,6 +84,14 @@ function deleteUML(id, selector) {
     })
 }
 
+function generate_code(id) {
+    $('#uml_list').addClass('hidden');
+    require.ensure(["whatwg-fetch", "./genSchema.js"], function () {
+        let func = require('./genSchema.js');
+        func.getschema_refId(id, $('#schema_form'));
+    });
+}
+
 export function load() {
     let uml_class_list = $('.tabular.menu #uml_class_list');
     let add_uml_class = $('.tabular.menu #add_uml_class');
@@ -97,6 +114,13 @@ export function load() {
         return false;
     });
 
+    $('#save_gen_code').click(function () {
+        require.ensure(["whatwg-fetch", "./genSchema.js"], function () {
+            let func = require('./genSchema.js');
+            func.save_and_gen('gen/genCodeByUML', $('#schema_form'), $('#uml_list'));
+        });
+    });
+
     $('#fileupload').fileupload({
                                     dataType: 'json',
                                     autoUpload: false,
@@ -117,7 +141,11 @@ export function load() {
         })
     }).on('fileuploadsubmit', function (e, data) {
         data.formData =
-            {classDiagramName: $("#up_uml_name").val(), comments: $('#uml_comments').val()};  //如果需要额外添加参数可以在这里添加
+            {
+                classDiagramName: $("#up_uml_name").val(),
+                comments: $('#uml_comments').val(),
+                _method: 'PUT'
+            };  //如果需要额外添加参数可以在这里添加
     }).on('fileuploaddone', function (e, data) {
         swal('上传成功', '上传成功', 'success');
     }).on('fileuploadfail', function (e, data) {

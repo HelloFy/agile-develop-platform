@@ -1,6 +1,6 @@
 let util = require('../utils/util.js')
 
-function del_schema(id, selector) {
+/*function del_schema(id, selector) {
     fetch('gen/deleteScheme', {
         method: 'post',
         credentials: 'include',
@@ -60,9 +60,44 @@ function get_business_tb(callback) {
             swal("错误", "服务器繁忙", "error");
         })
     })
+ }*/
+
+export function getschema_refId(id, selector) {
+    require.ensure(["whatwg-fetch"], function () {
+        fetch('gen/getSchemaByRefId?refId=' + id, {
+            method: 'get',
+            credentials: 'include'
+        }).then(function (response) {
+            response.json().then(function (data) {
+                let isSuccess = data.result == 'SUCCESS';
+                if (isSuccess) {
+                    let gen_schema = data.message;
+                    $("input[name='name']").val(gen_schema.name)
+                    $('#category').dropdown('set selected', gen_schema.category);
+                    $("input[name='packageName']").val(gen_schema.packageName);
+                    $("input[name='moduleName']").val(gen_schema.moduleName);
+                    $("input[name='subModuleName']").val(gen_schema.subModuleName);
+                    $("input[name='functionName']").val(gen_schema.functionName);
+                    $("input[name='functionNameSimple']").val(gen_schema.functionNameSimple);
+                    $("input[name='functionAuthor']").val(gen_schema.functionAuthor);
+                    if (gen_schema.replaceFile) {
+                        $("input[name='replaceFile']").attr('checked', true);
+                    }
+                    $("input[name='schema_id']").val(gen_schema.id);
+                    $("input[name='ref_id']").val(id);
+                    selector.removeClass('hidden');
+                }
+                else {
+                    swal("错误", "服务器繁忙", "error");
+                }
+            })
+        }).catch(function (err) {
+            swal("错误", "服务器繁忙", "error");
+        })
+    })
 }
 
-function getschema(id) {
+export function getschema(id) {
     require.ensure(["whatwg-fetch"], function () {
         fetch('gen/getSchema?id=' + id, {
             method: 'get',
@@ -80,7 +115,6 @@ function getschema(id) {
                     $("input[name='functionName']").val(gen_schema.functionName);
                     $("input[name='functionNameSimple']").val(gen_schema.functionNameSimple);
                     $("input[name='functionAuthor']").val(gen_schema.functionAuthor);
-                    $('#genTableId').dropdown('set selected', gen_schema.genTableId);
                     if (gen_schema.replaceFile) {
                         $("input[name='replaceFile']").attr('checked', true);
                     }
@@ -96,11 +130,60 @@ function getschema(id) {
     })
 }
 
-function modify_schema(id) {
-    $('.tabular.menu #add_schema').tab('change tab', 'schema_add');
-    get_business_tb(getschema(id));
+export function save_and_gen(url, selector_show, selector_hide) {
+    let name = $("input[name='name']").val(),
+        category = $('#category').dropdown('get value'),
+        packageName = $("input[name='packageName']").val(),
+        moduleName = $("input[name='moduleName']").val(),
+        subModuleName = $("input[name='subModuleName']").val(),
+        functionName = $("input[name='functionName']").val(),
+        functionNameSimple = $("input[name='functionNameSimple']").val(),
+        functionAuthor = $("input[name='functionAuthor']").val(),
+        genTableId = $('#genTableId').dropdown('get value'),
+        replaceFile = $("input[name='replaceFile']").val(),
+        id = $("input[name='schema_id']").val(),
+        refId = $("input[name='ref_id']").val();
+    fetch(url, {
+        method: 'put',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: 'id=' + id + '&name=' + name + '&category=' + category + '&packageName='
+              + packageName + '&moduleName=' + moduleName
+              + '&subModuleName=' + subModuleName + '&functionName=' + functionName
+              + '&functionNameSimple=' + functionNameSimple
+              + '&functionAuthor=' + functionAuthor + '&refId=' + refId + '&replaceFile='
+              + replaceFile
+    }).then(function (response) {
+        response.json().then(function (data) {
+            let isSuccess = data.result == 'SUCCESS';
+            if (isSuccess) {
+                let allFileGen = data.message;
+                swal({
+                         title: "添加并生成成功",
+                         text: allFileGen,
+                         type: "success",
+                         html: true
+                     });
+                selector_show.addClass('hidden');
+                selector_hide.removeClass('hidden');
+            }
+            else {
+                swal(data.message, data.message, "error");
+            }
+        })
+    }).catch(function (err) {
+        swal("错误", "服务器繁忙", "error");
+    })
 }
 
+/*function modify_schema(id) {
+    $('.tabular.menu #add_schema').tab('change tab', 'schema_add');
+    get_business_tb(getschema(id));
+ }*/
+
+/*
 export function load() {
     let list_scheme = $('.tabular.menu #list_schema');
     let add_scheme = $('.tabular.menu #add_schema');
@@ -184,7 +267,8 @@ export function load() {
             functionAuthor= $("input[name='functionAuthor']").val(),
             genTableId= $('#genTableId').dropdown('get value'),
             replaceFile = $("input[name='replaceFile']").val(),
-            id = $("input[name='id']").val();
+ id = $("input[name='schema_id']").val(),
+ refId = $("input[name='ref_id']").val();
         fetch('gen/saveAndGenCode', {
             method: 'put',
             credentials: 'include',
@@ -194,7 +278,7 @@ export function load() {
             body: 'id=' + id + '&name=' + name + '&category=' + category + '&packageName='
                   + packageName + '&moduleName=' + moduleName
                   + '&subModuleName=' + subModuleName + '&functionName=' + functionName + '&functionNameSimple=' + functionNameSimple
-                  + '&functionAuthor=' + functionAuthor + '&genTableId=' + genTableId + '&replaceFile=' + replaceFile
+ + '&functionAuthor=' + functionAuthor + '&refId=' + refId + '&replaceFile=' + replaceFile
         }).then(function (response) {
             response.json().then(function (data) {
                 let isSuccess = data.result == 'SUCCESS' ;
@@ -341,4 +425,4 @@ export function load() {
 
                         })
     })
-}
+ }*/

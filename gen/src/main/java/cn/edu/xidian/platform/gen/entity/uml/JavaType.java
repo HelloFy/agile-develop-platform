@@ -7,11 +7,10 @@ import java.util.Map;
  * Created by 费玥 on 2017/4/18.
  */
 public enum JavaType {
-    Integer("Integer"), String("String"), Char("Character"), Byte("Byte"), Double("Double"),
-    Float("Float"), Long("Long"), Short("Short"), Boolean("Boolean"), IntArray("Integer[]"),
-    StringArray("String[]"), CharArray("Character[]"), ByteArray("Byte[]"), DoubleArray("Double[]"),
-    FloatArray("Float[]"), LongArray("Long[]"), ShortArray("Short[]"), BooleanArray("Boolean[]"),
-    Object("Object"), ObjectArray("Object[]");
+    Integer("Integer"), INT("int"), String("String"), Character("Character"), Char("char"),
+    ByteO("Byte"), Byte("byte"), DoubleO("Double"), Double("double"), FloatO("Float"),
+    Float("float"), LongO("Long"), Long("long"), ShortO("Short"), Short("short"),
+    BooleanO("Boolean"), Boolean("boolean"), Object("Object");
 
     private String realType;
 

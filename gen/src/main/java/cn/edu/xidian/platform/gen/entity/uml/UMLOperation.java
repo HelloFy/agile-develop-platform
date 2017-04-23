@@ -6,26 +6,26 @@ import java.util.Map;
 
 public class UMLOperation extends UMLBase {
 
-    private ConcurrencyType concurrency;
-    private boolean isStatic;
-    private boolean isAbstract;
+    private ConcurrencyType concurrency = ConcurrencyType.SEQUENTIAL;
+    private boolean statics;
+    private boolean virtual;
     private ArrayList<Paramter> paramterIn;
     private Paramter paramterOut;
 
-    public boolean isStatic() {
-        return isStatic;
+    public boolean isStatics() {
+        return statics;
     }
 
-    public void setStatic(boolean aStatic) {
-        isStatic = aStatic;
+    public void setStatics(boolean statics) {
+        this.statics = statics;
     }
 
-    public boolean isAbstract() {
-        return isAbstract;
+    public boolean isVirtual() {
+        return virtual;
     }
 
-    public void setAbstract(boolean anAbstract) {
-        isAbstract = anAbstract;
+    public void setVirtual(boolean virtual) {
+        this.virtual = virtual;
     }
 
     public ConcurrencyType getConcurrency() {
@@ -78,6 +78,62 @@ public class UMLOperation extends UMLBase {
     }
 
     public static class Paramter extends UMLBase {
+
+        private JavaType javaType;
+        private String otherType;
+        private String otherTypePackageName;
+        private boolean readOnly;
+        private boolean list = false;
+        private int arraySize = 0;
+
+        public JavaType getJavaType() {
+            return javaType;
+        }
+
+        public void setJavaType(JavaType javaType) {
+            this.javaType = javaType;
+        }
+
+        public boolean isReadOnly() {
+            return readOnly;
+        }
+
+        public void setReadOnly(boolean readOnly) {
+            this.readOnly = readOnly;
+        }
+
+        public String getOtherType() {
+            return otherType;
+        }
+
+        public void setOtherType(String otherType) {
+            this.otherType = otherType;
+        }
+
+        public boolean isList() {
+            return list;
+        }
+
+        public void setList(boolean list) {
+            this.list = list;
+        }
+
+        public int getArraySize() {
+            return arraySize;
+        }
+
+        public void setArraySize(int arraySize) {
+            this.arraySize = arraySize;
+        }
+
+        public void setOtherTypePackageName(String otherTypePackageName) {
+            this.otherTypePackageName = otherTypePackageName;
+        }
+
+        public String getOtherTypePackageName() {
+            return otherTypePackageName;
+        }
+
         public enum ParaType {
             IN("in"), RETURN("return");
             private String paraType;
@@ -96,25 +152,6 @@ public class UMLOperation extends UMLBase {
             public static ParaType convertFromString(String paraType) {
                 return string2ParaTypeMap.get(paraType);
             }
-        }
-
-        private JavaType type;
-        private boolean isReadOnly;
-
-        public JavaType getType() {
-            return type;
-        }
-
-        public void setType(JavaType type) {
-            this.type = type;
-        }
-
-        public boolean isReadOnly() {
-            return isReadOnly;
-        }
-
-        public void setReadOnly(boolean readOnly) {
-            isReadOnly = readOnly;
         }
     }
 }

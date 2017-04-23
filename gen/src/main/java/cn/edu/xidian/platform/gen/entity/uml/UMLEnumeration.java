@@ -15,9 +15,19 @@ public class UMLEnumeration extends UMLBase {
         this.literals = literals;
     }
 
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
     public static class UMLEnumerationLiteral extends UMLBase {
 
     }
 
     private List<UMLEnumerationLiteral> literals;
+
+    private String packageName;
 }

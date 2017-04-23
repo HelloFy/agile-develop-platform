@@ -8,8 +8,9 @@ import java.util.List;
 public class UMLInterface extends UMLBase {
 
     private List<UMLAttribute> attributes;
-    private List<UMLOperation> UMLOperations;
+    private List<UMLOperation> operations;
     private UMLRelation relation;
+    private String packageName;
 
 
     public List<UMLAttribute> getAttributes() {
@@ -20,12 +21,12 @@ public class UMLInterface extends UMLBase {
         this.attributes = attributes;
     }
 
-    public List<UMLOperation> getUMLOperations() {
-        return UMLOperations;
+    public List<UMLOperation> getOperations() {
+        return operations;
     }
 
-    public void setUMLOperations(List<UMLOperation> UMLOperations) {
-        this.UMLOperations = UMLOperations;
+    public void setOperations(List<UMLOperation> operations) {
+        this.operations = operations;
     }
 
     public UMLRelation getRelation() {
@@ -34,5 +35,13 @@ public class UMLInterface extends UMLBase {
 
     public void setRelation(UMLRelation relation) {
         this.relation = relation;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 }

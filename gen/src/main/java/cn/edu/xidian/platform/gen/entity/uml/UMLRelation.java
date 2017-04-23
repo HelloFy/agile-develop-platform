@@ -13,19 +13,45 @@ public class UMLRelation extends UMLBase {
 
     private List<UMLInterface> impInterfaces;
 
-    private List<UMLCompose> combinateClasses;
+    private List<UMLCompose> composes;
 
     private List<UMLClass> innerClasses;
 
+    private List<UMLInterface> innerInterfaces;
+
+    private List<UMLEnumeration> innerEnums;
+
     public UMLClass getParentClass() {
         return parentClass;
+    }
+
+    public List<UMLInterface> getInnerInterfaces() {
+        return innerInterfaces;
+    }
+
+    public void setInnerInterfaces(List<UMLInterface> innerInterfaces) {
+        this.innerInterfaces = innerInterfaces;
+    }
+
+    public List<UMLEnumeration> getInnerEnums() {
+        return innerEnums;
+    }
+
+    public void setInnerEnums(List<UMLEnumeration> innerEnums) {
+        this.innerEnums = innerEnums;
     }
 
     public static class UMLCompose extends UMLBase {
 
         private MultiplicityType multiplicitytype;
 
-        private String filedNames;
+        private String fieldName;
+
+        private UMLClass composeClass;
+
+        private UMLInterface composeInterface;
+
+        private UMLEnumeration composeEnum;
 
         public MultiplicityType getMultiplicity() {
             return multiplicitytype;
@@ -35,12 +61,36 @@ public class UMLRelation extends UMLBase {
             this.multiplicitytype = multiplicitytype;
         }
 
-        public String getFiledNames() {
-            return filedNames;
+        public String getFieldName() {
+            return fieldName;
         }
 
-        public void setFiledNames(String filedNames) {
-            this.filedNames = filedNames;
+        public void setFieldName(String fieldName) {
+            this.fieldName = fieldName;
+        }
+
+        public UMLClass getComposeClass() {
+            return composeClass;
+        }
+
+        public void setComposeClass(UMLClass composeClass) {
+            this.composeClass = composeClass;
+        }
+
+        public UMLInterface getComposeInterface() {
+            return composeInterface;
+        }
+
+        public void setComposeInterface(UMLInterface composeInterface) {
+            this.composeInterface = composeInterface;
+        }
+
+        public UMLEnumeration getComposeEnum() {
+            return composeEnum;
+        }
+
+        public void setComposeEnum(UMLEnumeration composeEnum) {
+            this.composeEnum = composeEnum;
         }
 
         public enum MultiplicityType {
@@ -97,12 +147,12 @@ public class UMLRelation extends UMLBase {
         this.impInterfaces = impInterfaces;
     }
 
-    public List<UMLCompose> getCombinateClasses() {
-        return combinateClasses;
+    public List<UMLCompose> getComposes() {
+        return composes;
     }
 
-    public void setCombinateClasses(List<UMLCompose> combinateClasses) {
-        this.combinateClasses = combinateClasses;
+    public void setComposes(List<UMLCompose> composes) {
+        this.composes = composes;
     }
 
     public List<UMLClass> getInnerClasses() {

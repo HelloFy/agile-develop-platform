@@ -205,7 +205,6 @@ function last_step() {
 }
 
 export function load() {
-
     $('.tabular.menu #get_business_tables')
         .tab({
                  onLoad: function () {
@@ -242,12 +241,18 @@ export function load() {
                                                  + content.tableComments + "\">修改</a>"
                                                  + "<a class=\"del\" href=\"javascript:void(0)\" del_id=\""
                                                  + content.id + "\">删除</a>"
+                                                 + "<a class=\"generate\" href=\"javascript:void(0)\" gen_id=\""
+                                                 + content.id + "\">生成代码</a>"
                                                  + "</td>";
                                              html += "</tr>";
                                          });
                                          $('#business_tb').html(html);
                                          $('.del').click(function () {
                                              del_gentb($(this).attr('del_id'), $(this));
+                                         });
+                                         $('.generate').click(function () {
+                                             util.generate_code($(this).attr('gen_id'),
+                                                                $('#tb_list'), $('#schema_form'));
                                          });
                                          $('.modify').click(function () {
                                              modify_gentb($(this).attr('modify_name'),
@@ -323,6 +328,13 @@ export function load() {
         let tableName = tableNameAndComments[0];
         let tableComments = tableNameAndComments[1];
         get_tb_info(tableName, tableComments, false);
+    });
+
+    $('#save_gen_code').click(function () {
+        require.ensure(["whatwg-fetch", "./genSchema.js"], function () {
+            let func = require('./genSchema.js');
+            func.save_and_gen('gen/genCodeByTable', $('#schema_form'), $('#tb_list'));
+        });
     });
 
     $('#last_step').click(function () {
@@ -428,12 +440,18 @@ export function load() {
                                     + content.tableComments + "\">修改</a>"
                                     + "<a class=\"del\" href=\"javascript:void(0)\" del_id=\""
                                     + content.id + "\">删除</a>"
+                                    + "<a class=\"generate\" href=\"javascript:void(0)\" gen_id=\""
+                                    + content.id + "\">生成代码</a>"
                                     + "</td>";
                                 html += "</tr>";
                             });
                             $('#business_tb').html(html);
                             $('.del').click(function () {
                                 del_gentb($(this).attr('del_id'), $(this));
+                            });
+                            $('.generate').click(function () {
+                                util.generate_code($(this).attr('gen_id'), $('#tb_list'),
+                                                   $('#schema_form'));
                             });
                             $('.modify').click(function () {
                                 modify_gentb($(this).attr('modify_name'),

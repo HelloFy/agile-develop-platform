@@ -20,6 +20,7 @@ public class GenUmlClassDiagram extends Page<GenUmlClassDiagram> implements java
     private long id;
     private String classDiagramName;        // 类图名称
     private String comments;        // 说明
+    private String formatJsonStr;
     private String path;        // 服务器中存储路径
 
     public long getId() {
@@ -52,5 +53,13 @@ public class GenUmlClassDiagram extends Page<GenUmlClassDiagram> implements java
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getFormatJsonStr() {
+        return formatJsonStr;
+    }
+
+    public void setFormatJsonStr(String formatJsonStr) {
+        this.formatJsonStr = formatJsonStr;
     }
 }

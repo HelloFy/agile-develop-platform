@@ -4,6 +4,7 @@
  */
 package cn.edu.xidian.platform.gen.dao.provider;
 
+import cn.edu.xidian.platform.commons.utils.StringUtils;
 import cn.edu.xidian.platform.gen.entity.GenUmlClassDiagram;
 
 
@@ -17,8 +18,8 @@ public class IGenUmlClassDiagramDaoSQLProvider {
 
     public String findList(GenUmlClassDiagram genUmlClassDiagram) {
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT a.* FROM gen_uml_class_diagram a WHERE 1=1 ");
-        if (genUmlClassDiagram.getClassDiagramName() != null) {
+        sql.append("SELECT a.id,a.class_diagram_name,a.comments  FROM gen_uml_class_diagram a WHERE 1=1 ");
+        if (!StringUtils.isEmpty(genUmlClassDiagram.getClassDiagramName())) {
             sql.append(" AND a.class_diagram_name LIKE concat('%',#{classDiagramName},'%') ");
         }
         return sql.toString();

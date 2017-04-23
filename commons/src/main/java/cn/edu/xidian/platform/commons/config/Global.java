@@ -26,23 +26,16 @@ import cn.edu.xidian.platform.commons.utils.StringUtils;
 @Configuration
 public class Global {
 
-
-    @Value("${frontPath}")
     private static String frontPath;
 
-    @Value("${urlSuffix}")
     private static String urlSuffix;
 
-    @Value("${demoMode}")
     private static String demoMode;
 
-    @Value("userfiles.basedir")
     private static String userfilesBaseDir;
 
-    @Value("projectPath")
     private static String projectPath;
 
-    @Value("authorName")
     private static String authorName;
 
     public static String getFrontPath() {
@@ -101,7 +94,7 @@ public class Global {
      */
     public static String getProjectPath(){
         // 如果配置了工程路径，则直接返回，否则自动获取。
-        if (StringUtils.isNotBlank(projectPath)){
+        if (StringUtils.isEmpty(projectPath)) {
             return projectPath;
         }
         try {
@@ -126,8 +119,38 @@ public class Global {
         return projectPath;
     }
 
+    @Value("${userfiles.basedir}")
+    public void setUserfilesBaseDir(String userfilesBaseDir) {
+        Global.userfilesBaseDir = userfilesBaseDir;
+    }
+
+    @Value("${urlSuffix}")
+    public void setUrlSuffix(String urlSuffix) {
+        Global.urlSuffix = urlSuffix;
+    }
+
+    @Value("${frontPath}")
+    public void setFrontPath(String frontPath) {
+        Global.frontPath = frontPath;
+    }
+
+    @Value("${demoMode}")
+    public void setDemoMode(String demoMode) {
+        Global.demoMode = demoMode;
+    }
+
+    @Value("${projectPath}")
+    public void setProjectPath(String projectPath) {
+        Global.projectPath = projectPath;
+    }
+
     public static String getAuthorName(){
         return authorName;
+    }
+
+    @Value("${authorName}")
+    public void setAuthorName(String authorName) {
+        Global.authorName = authorName;
     }
 }
 

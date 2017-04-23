@@ -25,11 +25,13 @@ import cn.edu.xidian.platform.gen.entity.uml.UMLAttribute;
 import cn.edu.xidian.platform.gen.entity.uml.UMLBase;
 import cn.edu.xidian.platform.gen.entity.uml.UMLClass;
 import cn.edu.xidian.platform.gen.entity.uml.UMLEnumeration;
+import cn.edu.xidian.platform.gen.entity.uml.UMLFile;
 import cn.edu.xidian.platform.gen.entity.uml.UMLInterface;
 import cn.edu.xidian.platform.gen.entity.uml.UMLOperation;
 import cn.edu.xidian.platform.gen.entity.uml.UMLPackage;
 import cn.edu.xidian.platform.gen.entity.uml.UMLRelation;
 import cn.edu.xidian.platform.gen.entity.uml.UMLType;
+import cn.edu.xidian.platform.gen.utils.uml.parse.core.DefaultParse;
 
 /**
  * Created by 费玥 on 2017-4-18.
@@ -47,12 +49,12 @@ public class TestGenerateByClassDiagram {
                 JSONObject var6 = (JSONObject) var5;
                 UMLAttribute attribute = new UMLAttribute();
                 attribute.setName(var6.getString("name"));
-                attribute.setStatic(var6.getBoolean("isStatic"));
+                attribute.setStatics(var6.getBoolean("isStatics"));
                 attribute.setReadOnly(var6.getBoolean("isReadOnly"));
-                attribute.setDefaultValue(var6.get("defaultValue"));
+//                attribute.setDefaultValue(var6.get("defaultValue"));
                 attribute.setDerived(var6.getBooleanValue("isDerived"));
                 String type = var6.getString("type");
-                attribute.setType(JavaType.convertFromString(type));
+                attribute.setJavaType(JavaType.convertFromString(type));
                 attributes.add(attribute);
             }
         }
@@ -67,8 +69,8 @@ public class TestGenerateByClassDiagram {
                 JSONObject var9 = (JSONObject) var8;
                 UMLOperation operation = new UMLOperation();
                 operation.setName(var9.getString("name"));
-                operation.setStatic(var9.getBoolean("isStatic"));
-                operation.setAbstract(var9.getBoolean("isAbstract"));
+                operation.setStatics(var9.getBoolean("isStatics"));
+                operation.setVirtual(var9.getBoolean("isVirtual"));
                 String concurrency = var9.getString("concurrency");
                 operation.setConcurrency(UMLOperation.convertFromString(concurrency));
                 if (var9.containsKey("parameters")) {
@@ -80,7 +82,7 @@ public class TestGenerateByClassDiagram {
                         String paraName = var12.getString("name");
                         parameter.setName(paraName);
                         parameter.setReadOnly(var12.getBoolean("isReadOnly"));
-                        parameter.setType(JavaType.convertFromString(var12.getString("type")));
+                        parameter.setJavaType(JavaType.convertFromString(var12.getString("type")));
                         String paraDirection = var12.getString("direction");
                         UMLOperation.Paramter.ParaType paraType = UMLOperation.Paramter.ParaType.convertFromString(paraDirection);
                         switch (paraType) {
@@ -168,11 +170,11 @@ public class TestGenerateByClassDiagram {
                         case SHARED:
                         case COMPOSITE: {
                             UMLRelation.UMLCompose umlCompose = new UMLRelation.UMLCompose();
-                            umlCompose.setFiledNames(var4.getString("name"));
+                            umlCompose.setFieldName(var4.getString("name"));
                             umlCompose.setMultiplicity(UMLRelation.UMLCompose.MultiplicityType.covertFromString(var4.getString("multiplicity")));
                             JSONObject var6 = var5.getJSONObject("reference");
                             UMLClass umlClass = classMap.get().get(var6.getString("pId"));
-                            umlClass.getUmlRelation().getCombinateClasses().add(umlCompose);
+                            umlClass.getUmlRelation().getComposes().add(umlCompose);
                             break;
                         }
                         default: {
@@ -189,7 +191,7 @@ public class TestGenerateByClassDiagram {
         relation.setInnerClasses(innerClasses);
         relation.setParentClass(parentClass);
         relation.setImpInterfaces(impInterfaces);
-        relation.setCombinateClasses(composes);
+        relation.setComposes(composes);
         return relation;
     }
 
@@ -199,20 +201,20 @@ public class TestGenerateByClassDiagram {
                 UMLAnnotionType umlAnnotionType = new UMLAnnotionType();
                 parseBase(umlAnnotionType, var1);
                 umlAnnotionType.setAttributes(parseAttribute(var1));
-                umlAnnotionType.setUMLOperations(parseOpreation(var1));
+                umlAnnotionType.setOperations(parseOpreation(var1));
                 return (T) umlAnnotionType;
             }
         }
         UMLClass umlClass = new UMLClass();
         parseBase(umlClass, var1);
-        if (var1.containsKey("isAbstract")) {
-            umlClass.setAbstract(var1.getBoolean("isAbstract"));
+        if (var1.containsKey("isVirtual")) {
+            umlClass.setVirtual(var1.getBoolean("isVirtual"));
         }
         if (var1.containsKey("isFinalSpecialization")) {
             umlClass.setFinalSpecialization(var1.getBoolean("isFinalSpecialization"));
         }
         umlClass.setAttributes(parseAttribute(var1));
-        umlClass.setUMLOperations(parseOpreation(var1));
+        umlClass.setOperations(parseOpreation(var1));
         return (T) umlClass;
     }
 
@@ -226,7 +228,7 @@ public class TestGenerateByClassDiagram {
         UMLInterface umlInterface = new UMLInterface();
         parseBase(umlInterface, var1);
         umlInterface.setAttributes(parseAttribute(var1));
-        umlInterface.setUMLOperations(parseOpreation(var1));
+        umlInterface.setOperations(parseOpreation(var1));
         return umlInterface;
     }
 
@@ -346,5 +348,16 @@ public class TestGenerateByClassDiagram {
 
         }
         System.out.println(result);
+    }
+
+    @Test
+    public void testParseV2() throws IOException {
+        String path = this.getClass().getClassLoader().getResource("templates/gen/").getPath();
+        path = URLDecoder.decode(path, "UTF-8");
+        String jsonStr = FileUtils.readFileToString(new File(path + "1.mdj"));
+        String formatJSON = StringUtils.replace(jsonStr, "$ref", "pId");
+        UMLFile umlFile = new UMLFile();
+        umlFile.setFileJsonStr(formatJSON);
+        new DefaultParse().parse(umlFile);
     }
 }

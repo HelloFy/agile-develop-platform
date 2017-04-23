@@ -42,7 +42,7 @@ public interface I${ClassName}Dao  {
     List<${ClassName}> findAllList();
 
 
-    @SelectProvider(type = I${ClassName}DaoSQLProvider.class, method = "findList")
+    @SelectProvider(javaType = I${ClassName}DaoSQLProvider.class, method = "findList")
     List<${ClassName}> findList(${ClassName} ${className});
 
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")

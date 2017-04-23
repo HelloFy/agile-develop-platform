@@ -12,6 +12,7 @@ import cn.edu.xidian.platform.gen.dao.IGenDataBaseDictDao;
 import cn.edu.xidian.platform.gen.dao.IGenSchemaDao;
 import cn.edu.xidian.platform.gen.dao.IGenTableColumnDao;
 import cn.edu.xidian.platform.gen.dao.IGenTableDao;
+import cn.edu.xidian.platform.gen.entity.GenScheme;
 import cn.edu.xidian.platform.gen.entity.GenTable;
 import cn.edu.xidian.platform.gen.entity.GenTableColumn;
 import cn.edu.xidian.platform.gen.utils.GenUtils;
@@ -33,6 +34,9 @@ public class GenTableService {
 
     @Autowired
     private IGenSchemaDao iGenSchemaDao;
+
+    @Autowired
+    private GenTableSchemaService genTableSchemaService;
 
     public GenTable get(GenTable genTable) {
         return iGenTableDao.get(genTable);
@@ -107,7 +111,9 @@ public class GenTableService {
                 iGenTableColumnDao.save(genTableColumn);
             }
         }
-
+        GenScheme defaultGenScheme = genTableSchemaService.initDefaultGenScheme(genTable.getTableName());
+        defaultGenScheme.setRefId(genTable.getId());
+        iGenSchemaDao.save(defaultGenScheme);
     }
 
     public void delete(GenTable genTable) {

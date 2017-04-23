@@ -7,7 +7,7 @@ import java.util.Map;
  * Created by 费玥 on 2017/4/18.
  */
 public enum UMLType {
-    UMLProject("UMLProject"), UMLModel("UMLModel"), UMLPackage("UMLPackage"),
+    UMLProject("Project"), UMLModel("UMLModel"), UMLPackage("UMLPackage"),
     UMLClass("UMLClass"), UMLInterface("UMLInterface"), UMLEnumeration("UMLEnumeration"),
     UMLOperation("UMLOperation"), UMLParameter("UMLParameter"), UMLAttribute("UMLAttribute"),
     UMLGeneralization("UMLGeneralization"), UMLInterfaceRealization("UMLInterfaceRealization"),

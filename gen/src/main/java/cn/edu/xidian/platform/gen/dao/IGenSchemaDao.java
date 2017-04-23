@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
@@ -23,6 +24,9 @@ public interface IGenSchemaDao {
     @Select("SELECT a.* FROM gen_scheme a WHERE id =#{id}")
     GenScheme get(GenScheme genScheme);
 
+    @Select("SELECT a.* FROM gen_scheme a WHERE ref_id = #{refId}")
+    GenScheme getByRefId(@Param("refId") long refId);
+
     @SelectProvider(type = IGenSchemeDaoSQLProvider.class, method = "findList")
     List<GenScheme> findList(GenScheme genScheme);
 
@@ -36,7 +40,7 @@ public interface IGenSchemaDao {
             "function_name, \n" +
             "function_name_simple, \n" +
             "function_author, \n" +
-            "gen_table_id \n" +
+            "ref_id \n" +
             ") VALUES (\n" +
             "#{name}, \n" +
             "#{category},  \n" +
@@ -46,7 +50,7 @@ public interface IGenSchemaDao {
             "#{functionName},  \n" +
             "#{functionNameSimple},  \n" +
             "#{functionAuthor},  \n" +
-            "#{genTableId}  \n" +
+            "#{refId}  \n" +
             "\t\t)")
     long save(GenScheme genScheme);
 
@@ -60,7 +64,7 @@ public interface IGenSchemaDao {
             "function_name = #{functionName},  \n" +
             "function_name_simple = #{functionNameSimple},  \n" +
             "function_author = #{functionAuthor},  \n" +
-            "gen_table_id = #{genTableId}  \n" +
+            "ref_id = #{refId}  \n" +
             "\t\tWHERE id = #{id}")
     long update(GenScheme genScheme);
 
