@@ -6,8 +6,11 @@ import com.alibaba.fastjson.JSONObject;
 
 import org.junit.Test;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -359,5 +362,26 @@ public class TestGenerateByClassDiagram {
         UMLFile umlFile = new UMLFile();
         umlFile.setFileJsonStr(formatJSON);
         new DefaultParse().parse(umlFile);
+    }
+
+    @Test
+    public void testGeneratePDF() throws IOException, InterruptedException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("D:\\wkhtmltopdf\\bin\\wkhtmltopdf.exe").append(" ");
+        String srcHtmlPath = "D:\\agile-develop-platform\\web\\src\\main\\resources\\static\\templates\\index.ftl";
+        String destPath = "D:\\demo.pdf";
+        sb.append(srcHtmlPath).append(" ").append(destPath);
+        Process process = Runtime.getRuntime().exec(sb.toString());
+        InputStream is = process.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            System.out.println();
+        }
+        process.waitFor();
+        is.close();
+        reader.close();
+        process.destroy();
+
     }
 }

@@ -61,8 +61,31 @@ ${class.visibility} class <#if (class.finalSpecialization)> final</#if> <#if (cl
 <#if class.umlRelation??>
    <#if class.umlRelation.composes?? && (class.umlRelation.composes?size>0)>
        <#list class.umlRelation.composes as c>
+            <#if c.composeClass?? >
+     ${c.visibility} <#if c.multiplicitytype??><#if c.multiplicitytype.multiplicity == '0' || c.multiplicitytype.multiplicity == '0..1' >${c.composeClass.name}<#else>List<${c.composeClass.name}></#if></#if> ${c.fieldName};
+            </#if>
+            <#if c.composeInterface?? >
+     ${c.visibility} <#if c.multiplicitytype??><#if c.multiplicitytype.multiplicity == '0' || c.multiplicitytype.multiplicity == '0..1' >${c.composeInterface.name}<#else>List<${c.composeInterface.name}></#if></#if> ${c.fieldName};
+            </#if>
+            <#if c.composeEnum??>
+     ${c.visibility} <#if c.multiplicitytype??><#if c.multiplicitytype.multiplicity == '0' || c.multiplicitytype.multiplicity == '0..1' >${c.composeEnum.name}<#else>List<${c.composeEnum.name}></#if></#if> ${c.fieldName};
+            </#if>
        </#list>
     </#if>
+</#if>
+
+<#if class.operations?? && (class.operations?size>0)>
+   <#list class.operations as op>
+    <#if op.virtual>
+     ${op.visibility} <#if op.concurrency.concurrency??> <#if op.concurrency.concurrency == 'concurrent'> synchronized </#if> </#if> <#if op.paramterOut??> <#if op.paramterOut.javaType??> <#if op.paramterOut.list> List<${op.paramterOut.javaType.realType}> <#else> <#if op.paramterOut.arraySize == 0> ${op.paramterOut.javaType.realType} <#else> ${op.paramterOut.javaType.realType}[] </#if> </#if> <#else> <#if op.paramterOut.list> List <${op.paramterOut.otherType} > <#else> <#if op.paramterOut.arraySize == 0> ${op.paramterOut.otherType} <#else> ${op.paramterOut.otherType}[] </#if> </#if> </#if> <#else> void </#if> ${op.name} <#if op.paramterIn?? && (op.paramterIn?size>0)> <#assign paraIn> <#list op.paramterIn as pin> <#if pin.javaType??> <#if pin.list> List < ${pin.javaType.realType} > ${pin.name}, <#else> <#if pin.arraySize == 0> ${pin.javaType.realType} ${pin.name}, <#else> ${pin.javaType.realType}[] ${pin.name}, </#if> </#if> <#else> <#if pin.list> List < ${pin.otherType} > ${pin.name}, <#else> <#if pin.arraySize == 0> ${pin.otherType} ${pin.name}, <#else> ${pin.otherType}[] ${pin.name}, </#if> </#if> </#if> </#list> </#assign> ( ${paraIn?substring(0, paraIn?last_index_of(","))} ); <#else> (); </#if>
+     <#else>
+     ${op.visibility} <#if op.concurrency.concurrency??> <#if op.concurrency.concurrency == 'concurrent'> synchronized </#if> </#if> <#if op.paramterOut??> <#if op.paramterOut.javaType??> <#if op.paramterOut.list> List<${op.paramterOut.javaType.realType}> <#else> <#if op.paramterOut.arraySize == 0> ${op.paramterOut.javaType.realType} <#else> ${op.paramterOut.javaType.realType}[] </#if> </#if> <#else> <#if op.paramterOut.list> List <${op.paramterOut.otherType} > <#else> <#if op.paramterOut.arraySize == 0> ${op.paramterOut.otherType} <#else> ${op.paramterOut.otherType}[] </#if> </#if> </#if> <#else> void </#if> ${op.name} <#if op.paramterIn?? && (op.paramterIn?size>0)> <#assign paraIn> <#list op.paramterIn as pin> <#if pin.javaType??> <#if pin.list> List < ${pin.javaType.realType} > ${pin.name}, <#else> <#if pin.arraySize == 0> ${pin.javaType.realType} ${pin.name}, <#else> ${pin.javaType.realType}[] ${pin.name}, </#if> </#if> <#else> <#if pin.list> List < ${pin.otherType} > ${pin.name}, <#else> <#if pin.arraySize == 0> ${pin.otherType} ${pin.name}, <#else> ${pin.otherType}[] ${pin.name}, </#if> </#if> </#if> </#list> </#assign> ( ${paraIn?substring(0, paraIn?last_index_of(","))} ) <#else> () </#if>{
+        <#if op.paramterOut??>
+            return null;
+        </#if>
+     }
+    </#if>
+   </#list>
 </#if>
 
 
