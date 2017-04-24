@@ -5,11 +5,11 @@ import java.util.List;
 /**
  * Created by 费玥 on 2017/4/18.
  */
-public class UMLInterface extends UMLBase {
+public class UMLInterface extends UMLBase implements JavaFileType {
 
     private List<UMLAttribute> attributes;
     private List<UMLOperation> operations;
-    private UMLRelation relation;
+    private UMLRelation umlRelation;
     private String packageName;
 
 
@@ -29,12 +29,12 @@ public class UMLInterface extends UMLBase {
         this.operations = operations;
     }
 
-    public UMLRelation getRelation() {
-        return relation;
+    public UMLRelation getUmlRelation() {
+        return this.umlRelation;
     }
 
-    public void setRelation(UMLRelation relation) {
-        this.relation = relation;
+    public void setUmlRelation(UMLRelation umlRelation) {
+        this.umlRelation = umlRelation;
     }
 
     public String getPackageName() {

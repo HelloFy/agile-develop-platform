@@ -309,7 +309,7 @@ public class TestGenerateByClassDiagram {
                         UMLInterface umlInterface = parseInterface(var2);
                         interfaceMap.get().put(umlInterface.getId(), umlInterface);
                         if (var2.containsKey("ownedElements")) {
-                            umlInterface.setRelation(parseRelation(var2.getJSONArray("ownedElements"), UMLType.UMLInterface));
+                            umlInterface.setUmlRelation(parseRelation(var2.getJSONArray("ownedElements"), UMLType.UMLInterface));
                         }
                         if (!umlPackages.isEmpty()) {
                             if (umlPackages.getLast().getInterfaces() != null) {

@@ -211,7 +211,7 @@ public class DefaultProcessor implements Processor<JSONObject, JSONArray>, Parse
                                 break;
                             }
                             case UMLInterface: {
-                                ((UMLInterface) cachedMap.get(refKey)).getRelation().getComposes().add(umlCompose);
+                                ((UMLInterface) cachedMap.get(refKey)).getUmlRelation().getComposes().add(umlCompose);
                                 break;
                             }
                         }
@@ -549,7 +549,7 @@ public class DefaultProcessor implements Processor<JSONObject, JSONArray>, Parse
                     UMLInterface umlInterface = parseUMLInterface(var2);
                     interfacesCachedMap.get().put(umlInterface.getId(), umlInterface);
                     if (containsElements(var2)) {
-                        umlInterface.setRelation(parseUMLRelation(getElements(var2), UMLType.UMLInterface));
+                        umlInterface.setUmlRelation(parseUMLRelation(getElements(var2), UMLType.UMLInterface));
                     }
                     innerInterfaces.add(umlInterface);
                 }
@@ -702,7 +702,7 @@ public class DefaultProcessor implements Processor<JSONObject, JSONArray>, Parse
                                 umlClass.getUmlRelation().getComposes().add(umlCompose);
                             } else if (interfacesCachedMap.get().containsKey(refKeyId)) {
                                 UMLInterface umlInterface = interfacesCachedMap.get().get(var6.getString(PARENT_ID.toString()));
-                                umlInterface.getRelation().getComposes().add(umlCompose);
+                                umlInterface.getUmlRelation().getComposes().add(umlCompose);
                             } else {
                                 if (composeRefPendingMap.get() == null) {
                                     composeRefPendingMap.set(new HashMap<>());

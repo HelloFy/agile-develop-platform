@@ -6,7 +6,7 @@ import java.util.List;
  * Created by 费玥 on 2017/4/18.
  */
 
-public class UMLClass extends UMLBase {
+public class UMLClass extends UMLBase implements JavaFileType {
 
     private boolean finalSpecialization = false;
 

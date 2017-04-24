@@ -183,7 +183,7 @@ public class DefaultParse implements Parse<UMLProject> {
                                 break;
                             }
                             if (processor.containsElements(var4)) {
-                                umlInterface.setRelation(processor.parseUMLRelation(processor.getElements(var4), UMLType.UMLInterface));
+                                umlInterface.setUmlRelation(processor.parseUMLRelation(processor.getElements(var4), UMLType.UMLInterface));
                             }
                             if (parsedElement != null) {
                                 umlInterface.setPackageName(cachedPackageName.get().get(parsedElement.getId()));

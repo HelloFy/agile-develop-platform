@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import cn.edu.xidian.platform.commons.config.Global;
 import cn.edu.xidian.platform.commons.utils.StringUtils;
@@ -16,13 +18,17 @@ import cn.edu.xidian.platform.gen.entity.GenConfig;
 import cn.edu.xidian.platform.gen.entity.GenScheme;
 import cn.edu.xidian.platform.gen.entity.GenTemplate;
 import cn.edu.xidian.platform.gen.entity.GenUmlClassDiagram;
+import cn.edu.xidian.platform.gen.entity.uml.JavaFileType;
+import cn.edu.xidian.platform.gen.entity.uml.UMLAttribute;
 import cn.edu.xidian.platform.gen.entity.uml.UMLClass;
 import cn.edu.xidian.platform.gen.entity.uml.UMLEnumeration;
 import cn.edu.xidian.platform.gen.entity.uml.UMLFile;
 import cn.edu.xidian.platform.gen.entity.uml.UMLInterface;
 import cn.edu.xidian.platform.gen.entity.uml.UMLModel;
+import cn.edu.xidian.platform.gen.entity.uml.UMLOperation;
 import cn.edu.xidian.platform.gen.entity.uml.UMLPackage;
 import cn.edu.xidian.platform.gen.entity.uml.UMLProject;
+import cn.edu.xidian.platform.gen.entity.uml.UMLRelation;
 import cn.edu.xidian.platform.gen.utils.GenUtils;
 import cn.edu.xidian.platform.gen.utils.uml.parse.core.DefaultParse;
 
@@ -35,6 +41,108 @@ public class GenUmlSchemaService extends BaseGenSchemaSevice implements IGenCode
 
     @Autowired
     private IGenUmlClassDiagramDao iGenUmlClassDiagramDao;
+
+    private Set<String> parseImport(JavaFileType javaFileType) {
+        Set<String> refImport = new HashSet<>();
+        LinkedList<JavaFileType> parseRefImpStack = new LinkedList<>();
+        parseRefImpStack.addLast(javaFileType);
+        if (!parseRefImpStack.isEmpty()) {
+            JavaFileType curParse = parseRefImpStack.getLast();
+            if (curParse.getAttributes() != null && curParse.getAttributes().size() > 0) {
+                for (UMLAttribute a : curParse.getAttributes()) {
+                    if (a.getOtherType() != null) {
+                        if (!a.getOtherTypePackageName().equals(curParse.getPackageName())) {
+                            if (!refImport.contains(a.getOtherTypePackageName() + "." + a.getOtherType() + ";")) {
+                                refImport.add(a.getOtherTypePackageName() + "." + a.getOtherType() + ";");
+                            }
+                        }
+                    }
+                }
+            }
+            if (curParse.getOperations() != null && curParse.getOperations().size() > 0) {
+                for (UMLOperation o : curParse.getOperations()) {
+                    if (o.getParamterOut() != null) {
+                        if (o.getParamterOut().getOtherType() != null) {
+                            if (!o.getParamterOut().getOtherTypePackageName().equals(curParse.getPackageName())) {
+                                if (!refImport.contains(o.getParamterOut().getOtherTypePackageName() + "." + o.getParamterOut().getOtherType() + ";")) {
+                                    refImport.add(o.getParamterOut().getOtherTypePackageName() + "." + o.getParamterOut().getOtherType() + ";");
+                                }
+                            }
+                        }
+                    }
+                    if (o.getParamterIn() != null && o.getParamterIn().size() > 0) {
+                        for (UMLOperation.Paramter p : o.getParamterIn()) {
+                            if (p.getOtherType() != null) {
+                                if (!p.getOtherTypePackageName().equals(curParse.getPackageName())) {
+                                    if (!refImport.contains(p.getOtherTypePackageName() + "." + p.getOtherType() + ";")) {
+                                        refImport.add(p.getOtherTypePackageName() + "." + p.getOtherType() + ";");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (curParse.getUmlRelation() != null) {
+                UMLRelation umlRelation = curParse.getUmlRelation();
+                if (umlRelation.getParentClass() != null) {
+                    UMLClass parentClass = umlRelation.getParentClass();
+                    if (!parentClass.getPackageName().equals(curParse.getPackageName())) {
+                        if (!refImport.contains(parentClass.getPackageName() + "." + parentClass.getName() + ";")) {
+                            refImport.add(parentClass.getPackageName() + "." + parentClass.getName() + ";");
+                        }
+                    }
+                }
+                if (umlRelation.getComposes() != null && umlRelation.getComposes().size() > 0) {
+                    for (UMLRelation.UMLCompose compose : umlRelation.getComposes()) {
+                        if (compose.getComposeClass() != null) {
+                            if (!compose.getComposeClass().getPackageName().equals(curParse.getPackageName())) {
+                                if (!refImport.contains(compose.getComposeClass().getPackageName() + "." + compose.getComposeClass().getName() + ";")) {
+                                    refImport.add(compose.getComposeClass().getPackageName() + "." + compose.getComposeClass().getName() + ";");
+                                }
+                            }
+                        }
+                        if (compose.getComposeEnum() != null) {
+                            if (!compose.getComposeEnum().getPackageName().equals(curParse.getPackageName())) {
+                                if (!refImport.contains(compose.getComposeEnum().getPackageName() + "." + compose.getComposeEnum().getName() + ";")) {
+                                    refImport.add(compose.getComposeEnum().getPackageName() + "." + compose.getComposeEnum().getName() + ";");
+                                }
+                            }
+                        }
+
+                        if (compose.getComposeInterface() != null) {
+                            if (!compose.getComposeInterface().getPackageName().equals(curParse.getPackageName())) {
+                                if (!refImport.contains(compose.getComposeInterface().getPackageName() + "." + compose.getComposeInterface().getName() + ";")) {
+                                    refImport.add(compose.getComposeInterface().getPackageName() + "." + compose.getComposeInterface().getName() + ";");
+                                }
+                            }
+                        }
+                    }
+
+                }
+                if (umlRelation.getImpInterfaces() != null && umlRelation.getImpInterfaces().size() > 0) {
+                    for (UMLInterface i : umlRelation.getImpInterfaces()) {
+                        if (!i.getPackageName().equals(curParse.getPackageName())) {
+                            if (!refImport.contains(i.getPackageName() + "." + i.getName() + ";")) {
+                                refImport.add(i.getPackageName() + "." + i.getName() + ";");
+                            }
+                        }
+                    }
+                }
+                if (umlRelation.getInnerClasses() != null && umlRelation.getInnerClasses().size() > 0) {
+                    for (UMLClass c : umlRelation.getInnerClasses()) {
+                        parseRefImpStack.addLast(c);
+                    }
+                }
+                if (umlRelation.getInnerInterfaces() != null && umlRelation.getInnerInterfaces().size() > 0) {
+                    for (UMLInterface i : umlRelation.getInnerInterfaces()) {
+                        parseRefImpStack.addLast(i);
+                    }
+                }
+            }
+        }
+        return refImport;
+    }
 
     @Override
     public GenScheme initDefaultGenScheme(String name) {
@@ -109,6 +217,7 @@ public class GenUmlSchemaService extends BaseGenSchemaSevice implements IGenCode
                     for (UMLClass umlClass : classes) {
                         if (!StringUtils.isEmpty(umlClass.getStereotype()))
                             continue;
+                        Set<String> imports = parseImport(umlClass);
                         dataModel.put("class", umlClass);
                         result.append(StringUtils.substringAfterLast(GenUtils.generateToFile(template, dataModel, genScheme.getReplaceFile()), "\\"));
                     }
