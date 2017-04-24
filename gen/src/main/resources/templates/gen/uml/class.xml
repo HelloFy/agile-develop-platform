@@ -4,19 +4,19 @@
     <filePath>src/main/java/${class.packageName}</filePath>
     <fileName>${class.name}.java</fileName>
     <content><![CDATA[
-    package ${class.packageName};
-    import java.util.*;
+package ${class.packageName};
+import java.util.*;
     <#if class.umlRelation??>
         <#if class.umlRelation.composes?? && (class.umlRelation.composes?size>0)>
             <#list class.umlRelation.composes as c>
                 <#if c.composeClass?? >
-    import ${c.composeClass.packageName}.${c.composeClass.name};
+import ${c.composeClass.packageName}.${c.composeClass.name};
                 </#if>
                 <#if c.composeInterface?? >
-    import ${c.composeInterface.packageName}.${c.composeInterface.name};
+import ${c.composeInterface.packageName}.${c.composeInterface.name};
                 </#if>
                 <#if c.composeEnum??>
-    import ${c.composeEnum.packageName}.${c.composeEnum.name};
+import ${c.composeEnum.packageName}.${c.composeEnum.name};
                 </#if>
             </#list>
         </#if>
@@ -26,7 +26,7 @@
        <#list class.attributes as attr>
             <#if attr.otherType??>
                 <#if attr.otherTypePackageName?? && attr.otherTypePackageName != "" && attr.otherTypePackageName != class.packageName>
-    import ${attr.otherTypePackageName}.${attr.otherType}
+import ${attr.otherTypePackageName}.${attr.otherType}
                  </#if>
             </#if>
        </#list>
@@ -36,7 +36,7 @@
             <#if opr.paramterOut??>
                 <#if opr.paramterOut.otherType??>
                      <#if opr.paramterOut.otherTypePackageName?? && opr.paramterOut.otherTypePackageName != "" && opr.paramterOut.otherTypePackageName != class.packageName>
-    import  ${opr.paramterOut.otherTypePackageName}.${opr.paramterOut.otherType};
+import  ${opr.paramterOut.otherTypePackageName}.${opr.paramterOut.otherType};
                      </#if>
                 </#if>
             </#if>
@@ -44,7 +44,7 @@
                 <#list opr.paramterIn as p>
                    <#if p.otherType??>
                      <#if p.otherTypePackageName?? && p.otherTypePackageName != "" && p.otherTypePackageName != class.packageName>
-    import  ${p.otherTypePackageName}.${p.otherType};
+import  ${p.otherTypePackageName}.${p.otherType};
                      </#if>
                     </#if>
                 </#list>
@@ -57,6 +57,16 @@ ${class.visibility} class <#if (class.finalSpecialization)> final</#if> <#if (cl
      ${attr.visibility} <#if attr.statics>static </#if><#if attr.readOnly>final </#if> <#if attr.javaType??> <#if attr.list> List<${attr.javaType.realType}> <#else> <#if attr.arraySize == 0> ${attr.javaType.realType} <#else> ${attr.javaType.realType}[] </#if> </#if> <#else> <#if attr.list> List<${attr.otherType}> <#else> <#if attr.arraySize == 0> ${attr.otherType} <#else> ${attr.otherType}[] </#if> </#if> </#if>  ${attr.name} <#if attr.defaultValue??> = <#if attr.defaultValue.valueType == 'String'> "${attr.defaultValue.value}" <#else> ${attr.defaultValue.value} </#if> </#if> ;
     </#list>
 </#if>
+
+<#if class.umlRelation??>
+   <#if class.umlRelation.composes?? && (class.umlRelation.composes?size>0)>
+       <#list class.umlRelation.composes as c>
+       </#list>
+    </#if>
+</#if>
+
+
+
 }
 ]]>
     </content>
