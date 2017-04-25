@@ -51,7 +51,7 @@ public class GenUmlSchemaService extends BaseGenSchemaSevice implements IGenCode
             if (curParse.getAttributes() != null && curParse.getAttributes().size() > 0) {
                 for (UMLAttribute a : curParse.getAttributes()) {
                     if (a.getOtherType() != null) {
-                        if (!a.getOtherTypePackageName().equals(curParse.getPackageName())) {
+                        if (a.getOtherTypePackageName() != null && !a.getOtherTypePackageName().equals(curParse.getPackageName())) {
                             if (!refImport.contains(a.getOtherTypePackageName() + "." + a.getOtherType() + ";")) {
                                 refImport.add(a.getOtherTypePackageName() + "." + a.getOtherType() + ";");
                             }
@@ -63,7 +63,7 @@ public class GenUmlSchemaService extends BaseGenSchemaSevice implements IGenCode
                 for (UMLOperation o : curParse.getOperations()) {
                     if (o.getParamterOut() != null) {
                         if (o.getParamterOut().getOtherType() != null) {
-                            if (!o.getParamterOut().getOtherTypePackageName().equals(curParse.getPackageName())) {
+                            if (o.getParamterOut().getOtherTypePackageName() != null && !o.getParamterOut().getOtherTypePackageName().equals(curParse.getPackageName())) {
                                 if (!refImport.contains(o.getParamterOut().getOtherTypePackageName() + "." + o.getParamterOut().getOtherType() + ";")) {
                                     refImport.add(o.getParamterOut().getOtherTypePackageName() + "." + o.getParamterOut().getOtherType() + ";");
                                 }
@@ -73,7 +73,7 @@ public class GenUmlSchemaService extends BaseGenSchemaSevice implements IGenCode
                     if (o.getParamterIn() != null && o.getParamterIn().size() > 0) {
                         for (UMLOperation.Paramter p : o.getParamterIn()) {
                             if (p.getOtherType() != null) {
-                                if (!p.getOtherTypePackageName().equals(curParse.getPackageName())) {
+                                if (p.getOtherTypePackageName() != null && !p.getOtherTypePackageName().equals(curParse.getPackageName())) {
                                     if (!refImport.contains(p.getOtherTypePackageName() + "." + p.getOtherType() + ";")) {
                                         refImport.add(p.getOtherTypePackageName() + "." + p.getOtherType() + ";");
                                     }
@@ -87,7 +87,7 @@ public class GenUmlSchemaService extends BaseGenSchemaSevice implements IGenCode
                 UMLRelation umlRelation = curParse.getUmlRelation();
                 if (umlRelation.getParentClass() != null) {
                     UMLClass parentClass = umlRelation.getParentClass();
-                    if (!parentClass.getPackageName().equals(curParse.getPackageName())) {
+                    if (parentClass.getPackageName() != null && !parentClass.getPackageName().equals(curParse.getPackageName())) {
                         if (!refImport.contains(parentClass.getPackageName() + "." + parentClass.getName() + ";")) {
                             refImport.add(parentClass.getPackageName() + "." + parentClass.getName() + ";");
                         }
@@ -96,14 +96,14 @@ public class GenUmlSchemaService extends BaseGenSchemaSevice implements IGenCode
                 if (umlRelation.getComposes() != null && umlRelation.getComposes().size() > 0) {
                     for (UMLRelation.UMLCompose compose : umlRelation.getComposes()) {
                         if (compose.getComposeClass() != null) {
-                            if (!compose.getComposeClass().getPackageName().equals(curParse.getPackageName())) {
+                            if (compose.getComposeClass().getPackageName() != null && !compose.getComposeClass().getPackageName().equals(curParse.getPackageName())) {
                                 if (!refImport.contains(compose.getComposeClass().getPackageName() + "." + compose.getComposeClass().getName() + ";")) {
                                     refImport.add(compose.getComposeClass().getPackageName() + "." + compose.getComposeClass().getName() + ";");
                                 }
                             }
                         }
                         if (compose.getComposeEnum() != null) {
-                            if (!compose.getComposeEnum().getPackageName().equals(curParse.getPackageName())) {
+                            if (compose.getComposeEnum().getPackageName() != null && !compose.getComposeEnum().getPackageName().equals(curParse.getPackageName())) {
                                 if (!refImport.contains(compose.getComposeEnum().getPackageName() + "." + compose.getComposeEnum().getName() + ";")) {
                                     refImport.add(compose.getComposeEnum().getPackageName() + "." + compose.getComposeEnum().getName() + ";");
                                 }
@@ -111,7 +111,7 @@ public class GenUmlSchemaService extends BaseGenSchemaSevice implements IGenCode
                         }
 
                         if (compose.getComposeInterface() != null) {
-                            if (!compose.getComposeInterface().getPackageName().equals(curParse.getPackageName())) {
+                            if (compose.getComposeInterface().getPackageName() != null && !compose.getComposeInterface().getPackageName().equals(curParse.getPackageName())) {
                                 if (!refImport.contains(compose.getComposeInterface().getPackageName() + "." + compose.getComposeInterface().getName() + ";")) {
                                     refImport.add(compose.getComposeInterface().getPackageName() + "." + compose.getComposeInterface().getName() + ";");
                                 }
@@ -122,7 +122,7 @@ public class GenUmlSchemaService extends BaseGenSchemaSevice implements IGenCode
                 }
                 if (umlRelation.getImpInterfaces() != null && umlRelation.getImpInterfaces().size() > 0) {
                     for (UMLInterface i : umlRelation.getImpInterfaces()) {
-                        if (!i.getPackageName().equals(curParse.getPackageName())) {
+                        if (i.getPackageName() != null && !i.getPackageName().equals(curParse.getPackageName())) {
                             if (!refImport.contains(i.getPackageName() + "." + i.getName() + ";")) {
                                 refImport.add(i.getPackageName() + "." + i.getName() + ";");
                             }
@@ -219,13 +219,16 @@ public class GenUmlSchemaService extends BaseGenSchemaSevice implements IGenCode
                             continue;
                         Set<String> imports = parseImport(umlClass);
                         dataModel.put("class", umlClass);
+                        dataModel.put("imports", imports);
                         result.append(StringUtils.substringAfterLast(GenUtils.generateToFile(template, dataModel, genScheme.getReplaceFile()), "\\"));
                     }
                     break;
                 }
                 case "interface": {
                     for (UMLInterface umlInterface : interfaces) {
+                        Set<String> imports = parseImport(umlInterface);
                         dataModel.put("interface", umlInterface);
+                        dataModel.put("imports", imports);
                         result.append(StringUtils.substringAfterLast(GenUtils.generateToFile(template, dataModel, genScheme.getReplaceFile()), "\\"));
                     }
                     break;
