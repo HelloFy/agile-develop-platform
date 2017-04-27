@@ -6,8 +6,10 @@ package cn.edu.xidian.platform.commons.utils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -19,13 +21,17 @@ import java.util.Map;
  * @author ThinkGem
  * @version 2013-01-15
  */
+
+@Component
 public class FreeMarkers {
+
+    private static Configuration freeMarkerConfigurer;
 
 	public static String renderString(String templateString, Map<String, ?> model) {
 		try {
 			StringWriter result = new StringWriter();
-			Template t = new Template("name", new StringReader(templateString), new Configuration());
-			t.process(model, result);
+            Template t = new Template("name", new StringReader(templateString), freeMarkerConfigurer);
+            t.process(model, result);
 			return result.toString();
 		} catch (Exception e) {
 			throw Exceptions.unchecked(e);
@@ -48,8 +54,13 @@ public class FreeMarkers {
 		cfg.setDirectoryForTemplateLoading(path.getFile());
 		return cfg;
 	}
-	
-	public static void main(String[] args) throws IOException {
+
+    @Autowired
+    public void setFreeMarkerConfigurer(Configuration freeMarkerConfigurer) {
+        FreeMarkers.freeMarkerConfigurer = freeMarkerConfigurer;
+    }
+
+    public static void main(String[] args) throws IOException {
 //		// renderString
 //		Map<String, String> model = com.google.common.collect.Maps.newHashMap();
 //		model.put("userName", "calvin");

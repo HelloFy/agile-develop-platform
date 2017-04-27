@@ -10,7 +10,7 @@ public enum UMLTypeKey {
     NAME("name"), MULTIPLICITY("multiplicity"), REFERENCE("reference"),
     ID("_id"), VISIBILITY("visibility"), DOCUMENTION("documention"),
     STEREOTYPE("stereotype"), ANNOTATION_TYPE("annotationType"),
-    IS_ABSTRACT("isVirtual"), IS_FINALSPECIALIZATION("isFinalSpecialization"),
+    IS_ABSTRACT("isAbstract"), IS_FINALSPECIALIZATION("isFinalSpecialization"),
     LITERALS("literals"), ATTRIBUTES("attributes"), IS_STATIC("isStatic"),
     IS_READONLY("isReadOnly"), DEFAULT_VALUE("defaultValue"), IS_DERIVED("isDerived"),
     JAVA_TYPE("type"), OPERATIONS("operations"), CONCURRENCY("concurrency"),

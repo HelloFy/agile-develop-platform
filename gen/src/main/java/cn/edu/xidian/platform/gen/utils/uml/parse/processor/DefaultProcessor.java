@@ -538,6 +538,9 @@ public class DefaultProcessor implements Processor<JSONObject, JSONArray>, Parse
             switch (umlType) {
                 case UMLClass: {
                     UMLClass umlClass = parseUMLClass(var2);
+                    if (umlClass.getName().equals("Class2")) {
+                        System.out.println();
+                    }
                     classesCachedMap.get().put(umlClass.getId(), umlClass);
                     if (containsElements(var2)) {
                         umlClass.setUmlRelation(parseUMLRelation(getElements(var2), UMLType.UMLClass));
@@ -552,11 +555,16 @@ public class DefaultProcessor implements Processor<JSONObject, JSONArray>, Parse
                         umlInterface.setUmlRelation(parseUMLRelation(getElements(var2), UMLType.UMLInterface));
                     }
                     innerInterfaces.add(umlInterface);
+                    break;
                 }
                 case UMLEnumeration: {
                     UMLEnumeration umlEnumeration = parseUMLEnumeration(var2);
                     enumsCachedMap.get().put(umlEnumeration.getId(), umlEnumeration);
+                    if (containsElements(var2)) {
+                        umlEnumeration.setUmlRelation(parseUMLRelation(getElements(var2), UMLType.UMLEnumeration));
+                    }
                     innerEnums.add(umlEnumeration);
+                    break;
                 }
                 case UMLGeneralization: {
                     JSONObject var3 = var2.getJSONObject(TARGET.toString());
@@ -730,7 +738,7 @@ public class DefaultProcessor implements Processor<JSONObject, JSONArray>, Parse
         }
         relation.setInnerClasses(innerClasses);
         relation.setParentClass(parentClass);
-        relation.setImpInterfaces(innerInterfaces);
+        relation.setInnerInterfaces(innerInterfaces);
         relation.setImpInterfaces(impInterfaces);
         relation.setInnerEnums(innerEnums);
         relation.setComposes(composes);

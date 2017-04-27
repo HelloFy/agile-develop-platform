@@ -236,6 +236,8 @@ public class GenUmlSchemaService extends BaseGenSchemaSevice implements IGenCode
                 case "enum": {
                     for (UMLEnumeration umlEnumeration : enumerations) {
                         dataModel.put("enum", umlEnumeration);
+                        Set<String> imports = parseImport(umlEnumeration);
+                        dataModel.put("imports", imports);
                         result.append(StringUtils.substringAfterLast(GenUtils.generateToFile(template, dataModel, genScheme.getReplaceFile()), "\\"));
                     }
                     break;

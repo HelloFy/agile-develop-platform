@@ -151,7 +151,7 @@ export function load() {
                                     previewCrop: true
                                 }).on('fileuploadadd', function (e, data) {
         $.each(data.files, function (index, file) {
-            $('.text').text(file.name);
+            $("#up_doc_name").val(file.name);
         });
         $('#upload').click(function () {
             data.submit();

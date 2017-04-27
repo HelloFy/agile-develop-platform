@@ -134,7 +134,8 @@ export function load() {
                                     previewCrop: true
                                 }).on('fileuploadadd', function (e, data) {
         $.each(data.files, function (index, file) {
-            $('.filename.text').text(file.name);
+            console.log(file.name);
+            $("#up_uml_name").val(file.name);
         });
         $('#upload').click(function () {
             data.submit();
