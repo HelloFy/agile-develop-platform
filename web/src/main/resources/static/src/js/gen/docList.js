@@ -45,7 +45,7 @@ function getDocList(page) {
                         html += "<td>" + content.docSize + "</td>";
                         html += "<td>" + content.uploadDate + "</td>";
                         html +=
-                            "<td><a class=\"item\" href=\"gen/downLoadTpl?id=" + content.id
+                            "<td><a class=\"item\" href=\"gen/downloadDoc?id=" + content.id
                             + "\">下载</a>"
                             + "<a class=\"del item\" href=\"javascript:void(0)\" del_id=\""
                             + content.id + "\" >删除</a></td>";
@@ -86,7 +86,7 @@ function queryDocList(docName) {
                                         html += "<td>" + content.docSize + "</td>";
                                         html += "<td>" + content.uploadDate + "</td>";
                                         html +=
-                                            "<td><a class=\"item\" href=\"gen/downLoadTpl?id="
+                                            "<td><a class=\"item\" href=\"gen/downloadDoc?id="
                                             + content.id
                                             + "\">下载</a>"
                                             + "<a class=\"del item\" href=\"javascript:void(0)\" del_id=\""
@@ -148,10 +148,19 @@ export function load() {
                                     // send Blob objects via XHR requests:
                                     previewMaxWidth: 100,
                                     previewMaxHeight: 100,
-                                    previewCrop: true
+                                    previewCrop: true,
+                                    singleFileUploads: false
                                 }).on('fileuploadadd', function (e, data) {
+        console.log(data);
         $.each(data.files, function (index, file) {
-            $("#up_doc_name").val(file.name);
+            console.log(data.files.length)
+            if (data.files.length <= 1) {
+                $("#up_doc_name").val(file.name);
+            }
+            else {
+                data.files.splice(0, 1);
+            }
+            console.log(data.files)
         });
         $('#upload').click(function () {
             data.submit();

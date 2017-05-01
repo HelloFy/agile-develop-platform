@@ -43,7 +43,9 @@ public class GenTableService {
     }
 
     public GenTable findUnique(GenTable genTable) {
-        return iGenTableDao.findUnique(genTable);
+        GenTable tb = iGenTableDao.findUnique(genTable);
+        tb.setColumnList(iGenTableColumnDao.findListByTbId(tb));
+        return tb;
     }
 
     public List<GenTable> findAllTableList() {
@@ -95,11 +97,16 @@ public class GenTableService {
     }
 
     @Transactional
-    public void saveOrUpdate(GenTable genTable) {
+    public int saveOrUpdate(GenTable genTable) {
+        int save = 1994;
         if (genTable.getId() != 0L) {
             iGenTableDao.update(genTable);
+            save = 1995;
         } else {
             iGenTableDao.save(genTable);
+            GenScheme defaultGenScheme = genTableSchemaService.initDefaultGenScheme(genTable.getTableName());
+            defaultGenScheme.setRefId(genTable.getId());
+            iGenSchemaDao.save(defaultGenScheme);
         }
         List<GenTableColumn> columns = genTable.getColumnList();
         for (GenTableColumn genTableColumn : columns) {
@@ -111,15 +118,13 @@ public class GenTableService {
                 iGenTableColumnDao.save(genTableColumn);
             }
         }
-        GenScheme defaultGenScheme = genTableSchemaService.initDefaultGenScheme(genTable.getTableName());
-        defaultGenScheme.setRefId(genTable.getId());
-        iGenSchemaDao.save(defaultGenScheme);
+        return save;
     }
 
     public void delete(GenTable genTable) {
         iGenTableDao.delete(genTable);
         iGenTableColumnDao.delByGenTable(genTable);
-        iGenSchemaDao.deleteByGenTable(genTable);
+        iGenSchemaDao.deleteByRefId(genTable.getId());
     }
 }
 

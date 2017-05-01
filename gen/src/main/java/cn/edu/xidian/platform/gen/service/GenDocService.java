@@ -15,9 +15,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import cn.edu.xidian.platform.commons.config.Global;
-import cn.edu.xidian.platform.commons.utils.StringUtils;
+import cn.edu.xidian.platform.commons.utils.FileUtils;
 import cn.edu.xidian.platform.gen.dao.IGenDocDao;
 import cn.edu.xidian.platform.gen.entity.GenDoc;
 
@@ -55,24 +56,24 @@ public class GenDocService {
 
     @Transactional
     public void delete(GenDoc genDoc) {
+        FileUtils.deleteFile(Global.getDocTplPath() + iGenDocDao.get(genDoc).getRealName());
         iGenDocDao.delete(genDoc);
     }
 
     @Transactional
     public void addTpl(MultipartFile file, GenDoc genDoc) throws IOException {
-        String filePath = StringUtils.replace(Global.getProjectPath(), "web", "gen") +
-                File.separator + "DocTemplate" + File.separator;
+        String filePath = Global.getDocTplPath();
         if (!file.isEmpty()) {
-            String fileSuffix = StringUtils.substringAfterLast(file.getOriginalFilename(), ".");
             byte[] bytes = file.getBytes();
+            UUID uuid = java.util.UUID.randomUUID();
             BufferedOutputStream stream =
-                    new BufferedOutputStream(new FileOutputStream(new File(filePath + genDoc.getDocName() + "." + fileSuffix)));
+                    new BufferedOutputStream(new FileOutputStream(new File(filePath + uuid.toString())));
             stream.write(bytes);
             stream.close();
-            genDoc.setDocName(genDoc.getDocName() + "." + fileSuffix);
+            genDoc.setDocName(genDoc.getDocName());
+            genDoc.setRealName(uuid.toString());
             genDoc.setUploadDate(new Date());
             genDoc.setDocSize(file.getSize() / 1024L);
-            genDoc.setDocPath("DocTemplate" + File.separator + genDoc.getDocName());
             iGenDocDao.save(genDoc);
         }
     }

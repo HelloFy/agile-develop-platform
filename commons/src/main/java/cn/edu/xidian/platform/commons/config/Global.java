@@ -13,6 +13,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.edu.xidian.platform.commons.utils.FileUtils;
 import cn.edu.xidian.platform.commons.utils.StringUtils;
 
 
@@ -37,6 +38,12 @@ public class Global {
     private static String projectPath;
 
     private static String authorName;
+
+    private static String docTplPath;
+
+    private static String codeTplPath;
+
+    private static String umlClassDiagramPath;
 
     public static String getFrontPath() {
         return frontPath;
@@ -119,6 +126,45 @@ public class Global {
         return projectPath;
     }
 
+    public static String getDocTplPath() {
+        return docTplPath;
+    }
+
+    @Value("${DocTemplate.path}")
+    public void setDocTplPath(String docTplPath) {
+        Global.docTplPath = docTplPath;
+        if (StringUtils.isEmpty(docTplPath)) {
+            Global.docTplPath = System.getProperty("user.home") + "/agile-develop-platform/DocTemplate/";
+        }
+        FileUtils.createDirectory(Global.docTplPath);
+    }
+
+    public static String getCodeTplPath() {
+        return codeTplPath;
+    }
+
+    @Value("${CodeTemplate.path}")
+    public void setCodeTplPath(String codeTplPath) {
+        Global.codeTplPath = codeTplPath;
+        if (StringUtils.isEmpty(Global.codeTplPath)) {
+            Global.codeTplPath = System.getProperty("user.home") + "/agile-develop-platform/CodeTemplate/";
+        }
+        FileUtils.createDirectory(Global.codeTplPath);
+    }
+
+    public static String getUmlClassDiagramPath() {
+        return umlClassDiagramPath;
+    }
+
+    @Value("${UMLClassDiagram.path}")
+    public void setUmlClassDiagramPath(String umlClassDiagramPath) {
+        Global.umlClassDiagramPath = umlClassDiagramPath;
+        if (StringUtils.isEmpty(Global.umlClassDiagramPath)) {
+            Global.umlClassDiagramPath = System.getProperty("user.home") + "/agile-develop-platform/UMLClassDiagram/";
+        }
+        FileUtils.createDirectory(Global.umlClassDiagramPath);
+    }
+
     @Value("${userfiles.basedir}")
     public void setUserfilesBaseDir(String userfilesBaseDir) {
         Global.userfilesBaseDir = userfilesBaseDir;
@@ -151,6 +197,11 @@ public class Global {
     @Value("${authorName}")
     public void setAuthorName(String authorName) {
         Global.authorName = authorName;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(System.getProperty("user.home"));
+
     }
 }
 

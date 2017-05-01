@@ -13,7 +13,6 @@ import java.util.List;
 
 import cn.edu.xidian.platform.gen.dao.provider.IGenSchemeDaoSQLProvider;
 import cn.edu.xidian.platform.gen.entity.GenScheme;
-import cn.edu.xidian.platform.gen.entity.GenTable;
 
 /**
  * Created by 费玥 on 2017-3-20.
@@ -71,6 +70,6 @@ public interface IGenSchemaDao {
     @Delete("DELETE FROM gen_scheme WHERE id = #{id}")
     void delete(GenScheme genScheme);
 
-    @Delete("DELETE FROM gen_scheme WHERE gen_table_id = #{id}")
-    void deleteByGenTable(GenTable genTable);
+    @Delete("DELETE FROM gen_scheme WHERE ref_id = #{refId}")
+    void deleteByRefId(@Param("refId") long refId);
 }

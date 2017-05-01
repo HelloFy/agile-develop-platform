@@ -28,7 +28,6 @@ import cn.edu.xidian.platform.commons.config.Global;
 import cn.edu.xidian.platform.commons.entity.Message;
 import cn.edu.xidian.platform.commons.utils.Exceptions;
 import cn.edu.xidian.platform.commons.utils.FileUtils;
-import cn.edu.xidian.platform.commons.utils.StringUtils;
 import cn.edu.xidian.platform.gen.entity.GenDoc;
 import cn.edu.xidian.platform.gen.service.GenDocService;
 
@@ -82,20 +81,18 @@ public class GenDocController {
         return message;
     }
 
-    @RequestMapping(value = "deleteGendoc", method = RequestMethod.DELETE)
+    @RequestMapping(value = "deleteGenDoc", method = RequestMethod.DELETE)
     public Message delete(GenDoc genDoc) throws IOException {
         Message message = new Message();
         message.setResult(Message.MessageResult.SUCCESS);
-        Runtime.getRuntime().exec("dir");
         genDocService.delete(genDoc);
         return message;
     }
 
-    @RequestMapping(value = "downLoadTpl", method = RequestMethod.GET)
+    @RequestMapping(value = "downloadDoc", method = RequestMethod.GET)
     public void downLoadTpl(GenDoc genDoc, HttpServletRequest request, HttpServletResponse response) {
         GenDoc genDocDown = genDocService.get(genDoc);
-        String fileName = StringUtils.replace(Global.getProjectPath(), "web", "gen") +
-                File.separator + genDocDown.getDocPath();
+        String fileName = Global.getDocTplPath() + genDocDown.getRealName();
         FileUtils.downFile(new File(fileName), request, response, genDocDown.getDocName());
     }
 

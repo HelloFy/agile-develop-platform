@@ -94,17 +94,16 @@ public class GenTableController {
     @RequestMapping(value = "modifyGenTable", method = RequestMethod.GET)
     public Message modifyGenTable(GenTable genTable) {
         Message message = new Message();
-        GenTable genTableInfo = genTableService.getTableFromDB(genTable);
+        GenTable genTableInfo = genTableService.findUnique(genTable);
         message.setResult(Message.MessageResult.SUCCESS);
         message.setMessage(genTableInfo);
         return message;
     }
 
-    @RequestMapping(value = "genCodeByTable", method = RequestMethod.GET)
-    public Message genCodeByTable(GenTable genTable) {
+    @RequestMapping(value = "genCodeByTable", method = RequestMethod.PUT)
+    public Message genCodeByTable(GenScheme genScheme) {
         Message message = new Message();
         message.setResult(Message.MessageResult.SUCCESS);
-        GenScheme genScheme = genTableSchemaService.getByRefId(genTable.getId());
         message.setMessage(genTableSchemaService.saveOrUpdateAndGen(genScheme));
         return message;
     }
@@ -112,7 +111,19 @@ public class GenTableController {
     @RequestMapping(value = "saveGenTable",method = RequestMethod.PUT)
     public Message saveGenTable(GenTable genTable){
         Message message = new Message();
-        genTableService.saveOrUpdate(genTable);
+        int save = genTableService.saveOrUpdate(genTable);
+        switch (save) {
+            case 1994: {
+                //Save
+                message.setMessage("SAVE");
+                break;
+            }
+            case 1995: {
+                //Update
+                message.setMessage("UPDATE");
+                break;
+            }
+        }
         message.setResult(Message.MessageResult.SUCCESS);
         return message;
     }

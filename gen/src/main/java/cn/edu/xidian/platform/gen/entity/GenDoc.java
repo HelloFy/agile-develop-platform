@@ -26,6 +26,7 @@ public class GenDoc extends Page<GenDoc> implements java.io.Serializable {
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date uploadDate;        // upload_date
     private String docPath;        // doc_path
+    private String realName;
 
     public long getId() {
         return id;
@@ -65,5 +66,13 @@ public class GenDoc extends Page<GenDoc> implements java.io.Serializable {
 
     public void setDocPath(String docPath) {
         this.docPath = docPath;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 }

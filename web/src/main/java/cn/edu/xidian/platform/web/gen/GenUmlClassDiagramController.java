@@ -17,11 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import cn.edu.xidian.platform.commons.config.Global;
 import cn.edu.xidian.platform.commons.entity.Message;
 import cn.edu.xidian.platform.commons.utils.Exceptions;
+import cn.edu.xidian.platform.commons.utils.FileUtils;
 import cn.edu.xidian.platform.gen.entity.GenScheme;
 import cn.edu.xidian.platform.gen.entity.GenUmlClassDiagram;
 import cn.edu.xidian.platform.gen.service.GenUmlClassDiagramService;
@@ -100,6 +106,13 @@ public class GenUmlClassDiagramController {
         message.setResult(Message.MessageResult.SUCCESS);
         genUmlClassDiagramService.addClassDiagram(file, genUmlClassDiagram);
         return message;
+    }
+
+    @RequestMapping(value = "downloadClassDiagram", method = RequestMethod.GET)
+    public void downLoadClassDiagram(GenUmlClassDiagram genUmlClassDiagram, HttpServletRequest request, HttpServletResponse response) {
+        GenUmlClassDiagram genUmlClassDiagramDown = genUmlClassDiagramService.get(genUmlClassDiagram);
+        String fileName = Global.getUmlClassDiagramPath() + genUmlClassDiagramDown.getRealName();
+        FileUtils.downFile(new File(fileName), request, response, genUmlClassDiagramDown.getClassDiagramName());
     }
 
 }

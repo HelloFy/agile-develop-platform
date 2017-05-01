@@ -2,7 +2,7 @@
 <template>
     <name>html</name>
     <filePath>src/main/resources/static/src/template/${moduleName}</filePath>
-    <fileName>${lassName}Form.html</fileName>
+    <fileName>${className}Form.html</fileName>
     <content><![CDATA[
 <style>
     .del.item {

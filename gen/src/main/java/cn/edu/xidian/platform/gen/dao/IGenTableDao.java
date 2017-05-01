@@ -53,8 +53,8 @@ public interface IGenTableDao {
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     @Update("UPDATE gen_table SET \n" +
             "table_name = #{tableName},  \n" +
-            "comments = #{tableComments}, \n" +
-            "class_name = #{className}, \n" +
+            "table_comments = #{tableComments}, \n" +
+            "class_name = #{className} \n" +
             "WHERE id = #{id}")
     long update(GenTable genTable);
 

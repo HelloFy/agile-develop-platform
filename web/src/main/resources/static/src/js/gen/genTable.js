@@ -56,7 +56,6 @@ function get_tb_info(tableName, tableComments, is_modify) {
                                 "<td>" +
                                 "<input type=\"checkbox\" name=\"columnList[" + index
                                 + "].isPk\" value=\"1\"";
-                        console.log(html);
                         if (content.isPk == '1') {
                             html += " checked >";
                         }
@@ -79,7 +78,6 @@ function get_tb_info(tableName, tableComments, is_modify) {
                                 "<td>" +
                                 "<input type=\"checkbox\" name=\"columnList[" + index
                                 + "].isInsert\" value=\"1\"";
-                        console.log(html);
                         if (content.isInsert == '1') {
                             html += " checked >";
                         }
@@ -90,7 +88,6 @@ function get_tb_info(tableName, tableComments, is_modify) {
                                 "<td>" +
                                 "<input type=\"checkbox\" name=\"columnList[" + index
                                 + "].isEdit\" value=\"1\"";
-                        console.log(html);
                         if (content.isEdit == '1') {
                             html += " checked >";
                         }
@@ -299,7 +296,7 @@ export function load() {
                                              + content.tableName + ":" + content.tableComments
                                              + "</div>";
                                      });
-                                     $(".ui.dropdown .menu").html(html);
+                                     $(".ui.dropdown .menu.tbs").html(html);
                                      $('.ui.dropdown').dropdown('clear');
                                  }
                                  else {
@@ -318,7 +315,7 @@ export function load() {
 
     $('.tabular.menu #get_business_tables').tab('change tab', 'getBusinessTables');
     //阻止form提交
-    $('#next_step_form').submit(function () {
+    $('.form').submit(function () {
         return false;
     });
 
@@ -335,6 +332,10 @@ export function load() {
             let func = require('./genSchema.js');
             func.save_and_gen('gen/genCodeByTable', $('#schema_form'), $('#tb_list'));
         });
+    });
+    $('#back').click(function () {
+        $('#schema_form').addClass('hidden');
+        $('#tb_list').removeClass('hidden');
     });
 
     $('#last_step').click(function () {
@@ -357,34 +358,42 @@ export function load() {
                     $('#next_step_form').removeClass('loading');
                     let isSuccess = data.result == 'SUCCESS' ? true : false;
                     if (isSuccess) {
-                        swal({
-                                 title: "添加成功",
-                                 text: "是否继续添加?",
-                                 type: "success",
-                                 showCancelButton: true,
-                                 confirmButtonText: "是的",
-                                 cancelButtonText: "不了",
-                                 closeOnConfirm: true,
-                                 closeOnCancel: true
-                             },
-                             function (isConfirm) {
-                                 if (isConfirm) {
-                                     $('.tabular.menu .item')
-                                         .tab('change tab', 'getPhysicalTables');
-                                     last_step();
-                                     $('#table_info').html('');
-                                 }
-                                 else {
-                                     $('.tabular.menu .item')
-                                         .tab('change tab', 'getBusinessTables');
-                                     last_step();
-                                     $('#table_info').html('');
-                                 }
-                             });
-
+                        if (data.message == "SAVE") {
+                            swal({
+                                     title: "添加成功",
+                                     text: "是否继续添加?",
+                                     type: "success",
+                                     showCancelButton: true,
+                                     confirmButtonText: "是的",
+                                     cancelButtonText: "不了",
+                                     closeOnConfirm: true,
+                                     closeOnCancel: true
+                                 },
+                                 function (isConfirm) {
+                                     if (isConfirm) {
+                                         $('.tabular.menu .item')
+                                             .tab('change tab', 'getPhysicalTables');
+                                         last_step();
+                                         $('#table_info').html('');
+                                     }
+                                     else {
+                                         $('.tabular.menu .item')
+                                             .tab('change tab', 'getBusinessTables');
+                                         last_step();
+                                         $('#table_info').html('');
+                                     }
+                                 });
+                        }
+                        else {
+                            swal("成功", "修改成功", "success");
+                            $('.tabular.menu .item')
+                                .tab('change tab', 'getBusinessTables');
+                            last_step();
+                            $('#table_info').html('');
+                        }
                     }
                     else {
-                        swal('添加失败', '添加业务表失败' + data.errorMsg, 'error');
+                        swal('失败', '修改业务表失败' + data.errorMsg, 'error');
                     }
                 })
             }).catch(function (err) {

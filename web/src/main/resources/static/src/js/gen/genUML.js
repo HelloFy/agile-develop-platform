@@ -26,7 +26,8 @@ function queryUMLList(uml_name) {
                             html += "<td>" + content.classDiagramName + "</td>";
                             html += "<td>" + content.comments + "</td>";
                             html +=
-                                "<td><a class=\"item\" href=\"gen/downLoad?id=" + content.id
+                                "<td><a class=\"item\" href=\"gen/downloadClassDiagram?id="
+                                + content.id
                                 + "\">下载</a>"
                                 + "<a class=\"del item\" href=\"javascript:void(0)\" del_id=\""
                                 + content.id + "\" >删除</a>"
@@ -120,6 +121,10 @@ export function load() {
             func.save_and_gen('gen/genCodeByUML', $('#schema_form'), $('#uml_list'));
         });
     });
+    $('#back').click(function () {
+        $('#schema_form').addClass('hidden');
+        $('#uml_list').removeClass('hidden');
+    });
 
     $('#fileupload').fileupload({
                                     dataType: 'json',
@@ -131,7 +136,8 @@ export function load() {
                                     // send Blob objects via XHR requests:
                                     previewMaxWidth: 100,
                                     previewMaxHeight: 100,
-                                    previewCrop: true
+                                    previewCrop: true,
+                                    singleFileUploads: false
                                 }).on('fileuploadadd', function (e, data) {
         $.each(data.files, function (index, file) {
             console.log(file.name);

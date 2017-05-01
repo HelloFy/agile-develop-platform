@@ -30,7 +30,8 @@ public interface IGenUmlClassDiagramDao {
             "a.id," +
             "a.class_diagram_name," +
             "a.format_json_str," +
-            "a.comments \n" +
+            "a.comments,\n" +
+            "a.real_name \n" +
             "FROM gen_uml_class_diagram a\n" +
             "WHERE a.id = #{id}")
     GenUmlClassDiagram get(GenUmlClassDiagram genUmlClassDiagram);
@@ -51,12 +52,14 @@ public interface IGenUmlClassDiagramDao {
             " class_diagram_name,\n" +
             " format_json_str,\n" +
             " comments,\n" +
-            " path \n" +
+            " path, \n" +
+            "real_name \n" +
             " ) VALUES ( \n" +
             "#{classDiagramName},\n" +
             "#{formatJsonStr},\n" +
             "#{comments},\n" +
-            "#{path} \n" +
+            "#{path}, \n" +
+            "#{realName}\n " +
             ")")
     long save(GenUmlClassDiagram genUmlClassDiagram);
 

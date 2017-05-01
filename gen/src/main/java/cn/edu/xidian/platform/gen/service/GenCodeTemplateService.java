@@ -14,9 +14,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import cn.edu.xidian.platform.commons.config.Global;
-import cn.edu.xidian.platform.commons.utils.StringUtils;
+import cn.edu.xidian.platform.commons.utils.FileUtils;
 import cn.edu.xidian.platform.gen.dao.IGenCodeTemplateDao;
 import cn.edu.xidian.platform.gen.entity.GenCodeTemplate;
 
@@ -54,21 +55,21 @@ public class GenCodeTemplateService {
 
     @Transactional
     public void delete(GenCodeTemplate genCodeTemplate) {
+        FileUtils.deleteFile(Global.getCodeTplPath() + iGenCodeTemplateDao.get(genCodeTemplate).getRealName());
         iGenCodeTemplateDao.delete(genCodeTemplate);
     }
 
     public void addCodeTpl(MultipartFile file, GenCodeTemplate genCodeTemplate) throws IOException {
-        String filePath = StringUtils.replace(Global.getProjectPath(), "web", "gen") +
-                File.separator + "CodeTemplate" + File.separator;
-
+        String filePath = Global.getCodeTplPath();
         if (!file.isEmpty()) {
-            String fileSuffix = StringUtils.substringAfterLast(file.getOriginalFilename(), ".");
             byte[] bytes = file.getBytes();
+            UUID uuid = UUID.randomUUID();
             BufferedOutputStream stream =
-                    new BufferedOutputStream(new FileOutputStream(new File(filePath + genCodeTemplate.getName() + "." + fileSuffix)));
+                    new BufferedOutputStream(new FileOutputStream(new File(filePath + uuid.toString())));
             stream.write(bytes);
             stream.close();
-            genCodeTemplate.setPath("CodeTemplate" + File.separator + genCodeTemplate.getName());
+            genCodeTemplate.setRealName(uuid.toString());
+            saveOrUpdate(genCodeTemplate);
         }
     }
 }

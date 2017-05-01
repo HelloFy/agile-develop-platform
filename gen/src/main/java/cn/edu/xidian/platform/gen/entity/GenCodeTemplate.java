@@ -22,6 +22,7 @@ public class GenCodeTemplate extends Page<GenCodeTemplate> implements java.io.Se
     private String function;        // 功能
     private String comments;        // 说明
     private String path;        // path
+    private String realName;
 
     public long getId() {
         return id;
@@ -61,5 +62,13 @@ public class GenCodeTemplate extends Page<GenCodeTemplate> implements java.io.Se
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 }

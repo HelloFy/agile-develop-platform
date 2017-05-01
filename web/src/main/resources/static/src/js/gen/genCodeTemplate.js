@@ -33,8 +33,14 @@ function deleteCode(id, selector) {
 }
 
 function queryCodeList(name, func) {
+    if (name == undefined) {
+        name = '';
+    }
+    if (func == undefined) {
+        func = '';
+    }
     util.createPage('.pagination', 1, 5, 1, function (num, type) {
-        fetch('gen/getGenCodeTemplateList?page=' + num + '&name=' + name + '$func=' + func, {
+        fetch('gen/getGenCodeTemplateList?page=' + num + '&name=' + name + '&func=' + func, {
             method: 'get',
             credentials: 'include'
         }).then(function (response) {
@@ -49,14 +55,14 @@ function queryCodeList(name, func) {
                         html += "<td>" + content.function + "</td>";
                         html += "<td>" + content.comments + "</td>";
                         html +=
-                            "<td><a class=\"item\" href=\"gen/downLoadTpl?id="
+                            "<td><a class=\"item\" href=\"gen/downloadCode?id="
                             + content.id
                             + "\">下载</a>"
                             + "<a class=\"del item\" href=\"javascript:void(0)\" del_id=\""
                             + content.id + "\">删除</a></td>";
                         html += "</tr>";
                     });
-                    $('#tb_doc_body').html(html);
+                    $('#tb_code_body').html(html);
                     $('.pagination').jqPaginator('option', {
                         totalPages: message.pages == 0 ? 1 : message.pages
                     });
@@ -108,10 +114,11 @@ export function load() {
                                     // send Blob objects via XHR requests:
                                     previewMaxWidth: 100,
                                     previewMaxHeight: 100,
-                                    previewCrop: true
+                                    previewCrop: true,
+                                    singleFileUploads: false
                                 }).on('fileuploadadd', function (e, data) {
         $.each(data.files, function (index, file) {
-            $('.text').text(file.name);
+            $('#up_code_name').val(file.name);
         });
         $('#upload').click(function () {
             data.submit();
@@ -121,7 +128,8 @@ export function load() {
             {
                 name: $("#up_code_name").val(),
                 function: $('#up_code_func').val(),
-                comments: $('#up_code_comments').val()
+                comments: $('#up_code_comments').val(),
+                _method: 'PUT'
             };  //如果需要额外添加参数可以在这里添加
     }).on('fileuploaddone', function (e, data) {
         swal('上传成功', '上传成功', 'success');

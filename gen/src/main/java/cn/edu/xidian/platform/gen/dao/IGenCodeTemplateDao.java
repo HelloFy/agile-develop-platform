@@ -45,12 +45,14 @@ public interface IGenCodeTemplateDao {
             " name,\n" +
             " function,\n" +
             " comments,\n" +
-            " path \n" +
+            " path,\n" +
+            " real_name\n" +
             " ) VALUES ( \n" +
             "#{name},\n" +
             "#{function},\n" +
             "#{comments},\n" +
-            "#{path} \n" +
+            "#{path},\n" +
+            "#{realName} \n" +
             ")")
     long save(GenCodeTemplate genCodeTemplate);
 

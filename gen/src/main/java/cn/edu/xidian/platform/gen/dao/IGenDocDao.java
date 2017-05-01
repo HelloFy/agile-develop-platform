@@ -45,12 +45,14 @@ public interface IGenDocDao {
             " doc_name,\n" +
             " doc_size,\n" +
             " upload_date,\n" +
-            " doc_path \n" +
+            " doc_path, \n" +
+            " real_name \n" +
             " ) VALUES ( \n" +
             "#{docName},\n" +
             "#{docSize},\n" +
             "#{uploadDate},\n" +
-            "#{docPath} \n" +
+            "#{docPath},\n" +
+            "#{realName}\n" +
             ")")
     long save(GenDoc genDoc);
 

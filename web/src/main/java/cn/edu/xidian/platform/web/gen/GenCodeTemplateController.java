@@ -16,10 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import cn.edu.xidian.platform.commons.config.Global;
 import cn.edu.xidian.platform.commons.entity.Message;
+import cn.edu.xidian.platform.commons.utils.FileUtils;
 import cn.edu.xidian.platform.gen.entity.GenCodeTemplate;
 import cn.edu.xidian.platform.gen.service.GenCodeTemplateService;
 
@@ -83,6 +89,13 @@ public class GenCodeTemplateController {
         message.setResult(Message.MessageResult.SUCCESS);
         genCodeTemplateService.addCodeTpl(file, genCodeTemplate);
         return message;
+    }
+
+    @RequestMapping(value = "downloadCode", method = RequestMethod.GET)
+    public void downloadCode(GenCodeTemplate genCodeTemplate, HttpServletRequest request, HttpServletResponse response) {
+        GenCodeTemplate genCodeDown = genCodeTemplateService.get(genCodeTemplate);
+        String fileName = Global.getCodeTplPath() + genCodeDown.getRealName();
+        FileUtils.downFile(new File(fileName), request, response, genCodeDown.getName());
     }
 
 }
