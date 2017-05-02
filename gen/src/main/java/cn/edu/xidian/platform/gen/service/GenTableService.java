@@ -124,7 +124,7 @@ public class GenTableService {
     public void delete(GenTable genTable) {
         iGenTableDao.delete(genTable);
         iGenTableColumnDao.delByGenTable(genTable);
-        iGenSchemaDao.deleteByRefId(genTable.getId());
+        iGenSchemaDao.deleteByRefIdAndRefType(genTable.getId(), GenScheme.GEN_TABLE_TYPE);
     }
 }
 

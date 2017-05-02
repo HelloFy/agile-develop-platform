@@ -153,7 +153,7 @@ public class GenUmlSchemaService extends BaseGenSchemaSevice implements IGenCode
         defaultGenScheme.setModuleName("gen");
         defaultGenScheme.setFunctionAuthor(Global.getAuthorName());
         defaultGenScheme.setFunctionName("uml " + name);
-
+        defaultGenScheme.setRefType(GenScheme.GEN_UML_TYPE);
         return defaultGenScheme;
     }
 

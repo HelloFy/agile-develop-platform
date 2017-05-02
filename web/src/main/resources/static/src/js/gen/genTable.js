@@ -248,7 +248,7 @@ export function load() {
                                              del_gentb($(this).attr('del_id'), $(this));
                                          });
                                          $('.generate').click(function () {
-                                             util.generate_code($(this).attr('gen_id'),
+                                             util.generate_code($(this).attr('gen_id'), 0,
                                                                 $('#tb_list'), $('#schema_form'));
                                          });
                                          $('.modify').click(function () {

@@ -20,8 +20,8 @@ public abstract class BaseGenSchemaSevice implements IGenCodeService {
         return iGenSchemaDao.get(genScheme);
     }
 
-    public GenScheme getByRefId(long refId) {
-        return iGenSchemaDao.getByRefId(refId);
+    public GenScheme getByRefId(long refId, int refType) {
+        return iGenSchemaDao.getByRefIdAndRefType(refId, refType);
     }
 
     public List<GenScheme> findList(GenScheme genScheme) {

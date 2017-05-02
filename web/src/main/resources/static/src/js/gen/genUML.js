@@ -41,7 +41,7 @@ function queryUMLList(uml_name) {
                             deleteUML($(this).attr('del_id'), $(this));
                         });
                         $('.generate.item').click(function () {
-                            util.generate_code($(this).attr('gen_id'), $('#uml_list'),
+                            util.generate_code($(this).attr('gen_id'), 1, $('#uml_list'),
                                                $('#schema_form'));
                         });
                         $('.pagination').jqPaginator('option', {
@@ -83,14 +83,6 @@ function deleteUML(id, selector) {
             swal("错误", "服务器繁忙", "error");
         })
     })
-}
-
-function generate_code(id) {
-    $('#uml_list').addClass('hidden');
-    require.ensure(["whatwg-fetch", "./genSchema.js"], function () {
-        let func = require('./genSchema.js');
-        func.getschema_refId(id, $('#schema_form'));
-    });
 }
 
 export function load() {

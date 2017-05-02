@@ -74,6 +74,7 @@ public class GenTableSchemaService extends BaseGenSchemaSevice {
         defaultGenScheme.setModuleName("gen");
         defaultGenScheme.setFunctionAuthor(Global.getAuthorName());
         defaultGenScheme.setFunctionName("curd " + name);
+        defaultGenScheme.setRefType(GenScheme.GEN_TABLE_TYPE);
         return defaultGenScheme;
     }
 }

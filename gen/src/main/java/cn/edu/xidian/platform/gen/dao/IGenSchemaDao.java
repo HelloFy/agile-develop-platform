@@ -23,8 +23,8 @@ public interface IGenSchemaDao {
     @Select("SELECT a.* FROM gen_scheme a WHERE id =#{id}")
     GenScheme get(GenScheme genScheme);
 
-    @Select("SELECT a.* FROM gen_scheme a WHERE ref_id = #{refId}")
-    GenScheme getByRefId(@Param("refId") long refId);
+    @Select("SELECT a.* FROM gen_scheme a WHERE ref_id = #{refId} AND ref_type = #{refType}")
+    GenScheme getByRefIdAndRefType(@Param("refId") long refId, @Param("refType") int refType);
 
     @SelectProvider(type = IGenSchemeDaoSQLProvider.class, method = "findList")
     List<GenScheme> findList(GenScheme genScheme);
@@ -39,7 +39,8 @@ public interface IGenSchemaDao {
             "function_name, \n" +
             "function_name_simple, \n" +
             "function_author, \n" +
-            "ref_id \n" +
+            "ref_id, \n" +
+            "ref_type \n" +
             ") VALUES (\n" +
             "#{name}, \n" +
             "#{category},  \n" +
@@ -49,7 +50,8 @@ public interface IGenSchemaDao {
             "#{functionName},  \n" +
             "#{functionNameSimple},  \n" +
             "#{functionAuthor},  \n" +
-            "#{refId}  \n" +
+            "#{refId},\n" +
+            "#{refType} \n" +
             "\t\t)")
     long save(GenScheme genScheme);
 
@@ -62,14 +64,13 @@ public interface IGenSchemaDao {
             "sub_module_name = #{subModuleName},  \n" +
             "function_name = #{functionName},  \n" +
             "function_name_simple = #{functionNameSimple},  \n" +
-            "function_author = #{functionAuthor},  \n" +
-            "ref_id = #{refId}  \n" +
+            "function_author = #{functionAuthor}\n" +
             "\t\tWHERE id = #{id}")
     long update(GenScheme genScheme);
 
     @Delete("DELETE FROM gen_scheme WHERE id = #{id}")
     void delete(GenScheme genScheme);
 
-    @Delete("DELETE FROM gen_scheme WHERE ref_id = #{refId}")
-    void deleteByRefId(@Param("refId") long refId);
+    @Delete("DELETE FROM gen_scheme WHERE ref_id = #{refId} AND ref_type = #{refType}")
+    void deleteByRefIdAndRefType(@Param("refId") long refId, @Param("refType") int refType);
 }
