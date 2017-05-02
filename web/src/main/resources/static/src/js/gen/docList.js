@@ -149,22 +149,20 @@ export function load() {
                                     previewMaxWidth: 100,
                                     previewMaxHeight: 100,
                                     previewCrop: true,
-                                    singleFileUploads: false
+                                    singleFileUploads: true
                                 }).on('fileuploadadd', function (e, data) {
         console.log(data);
         $.each(data.files, function (index, file) {
-            console.log(data.files.length)
-            if (data.files.length <= 1) {
-                $("#up_doc_name").val(file.name);
-            }
-            else {
-                data.files.splice(0, 1);
-            }
+            console.log(data.files.length);
+            $("#up_doc_name").val(file.name);
+            $('#upload').unbind('click');
+            $('#upload').click(function () {
+                data.submit();
+            });
             console.log(data.files)
+
         });
-        $('#upload').click(function () {
-            data.submit();
-        })
+
     }).on('fileuploadsubmit', function (e, data) {
         data.formData = {docName: $("#up_doc_name").val(), _method: 'PUT'};  //如果需要额外添加参数可以在这里添加
     }).on('fileuploaddone', function (e, data) {

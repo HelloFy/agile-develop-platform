@@ -143,6 +143,7 @@ export function load() {
             console.log(file.name);
             $("#up_uml_name").val(file.name);
         });
+        $('#upload').unbind('click');
         $('#upload').click(function () {
             data.submit();
         })

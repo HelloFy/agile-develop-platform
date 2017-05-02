@@ -120,6 +120,7 @@ export function load() {
         $.each(data.files, function (index, file) {
             $('#up_code_name').val(file.name);
         });
+        $('#upload').unbind('click');
         $('#upload').click(function () {
             data.submit();
         })
