@@ -58,7 +58,7 @@ public class GenSchemaController {
     public Message getSchemaByRefId(GenScheme genScheme) {
         Message message = new Message();
         message.setResult(Message.MessageResult.SUCCESS);
-        message.setMessage(genTableSchemaService.getByRefId(genScheme.getRefId()));
+        message.setMessage(genTableSchemaService.getByRefId(genScheme.getRefId(), genScheme.getRefType()));
         return message;
     }
 

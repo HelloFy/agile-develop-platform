@@ -18,10 +18,10 @@ export function createPage(selector,totalPages,visiblePages,currentPage,func) {
         });
 }
 
-export function generate_code(id, selectorList, selectorSchema) {
+export function generate_code(id, refType, selectorList, selectorSchema) {
     selectorList.addClass('hidden');
     require.ensure(["whatwg-fetch", "../gen/genSchema.js"], function () {
         let func = require('../gen/genSchema.js');
-        func.getschema_refId(id, selectorSchema);
+        func.getschema_refId(id, refType, selectorSchema);
     });
 }

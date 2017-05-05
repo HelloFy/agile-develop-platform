@@ -15,8 +15,9 @@ import cn.edu.xidian.platform.commons.entity.Page;
 public class GenScheme extends Page<GenScheme> implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-
-	private long id;
+    public static final int GEN_TABLE_TYPE = 0;
+    public static final int GEN_UML_TYPE = 1;
+    private long id;
 	private String name; 	// 名称
 	private String category;		// 分类
 	private String packageName;		// 生成包路径
@@ -26,6 +27,7 @@ public class GenScheme extends Page<GenScheme> implements Serializable {
 	private String functionNameSimple;		// 生成功能名（简写）
 	private String functionAuthor;		// 生成功能作者
     private long refId;        // ref_Id
+    private int refType = GenScheme.GEN_TABLE_TYPE;
 
     private String flag; 	// 0：保存方案； 1：保存方案并生成代码
 	
@@ -125,6 +127,14 @@ public class GenScheme extends Page<GenScheme> implements Serializable {
 
     public void setRefId(long refId) {
         this.refId = refId;
+    }
+
+    public int getRefType() {
+        return refType;
+    }
+
+    public void setRefType(int refType) {
+        this.refType = refType;
     }
 }
 

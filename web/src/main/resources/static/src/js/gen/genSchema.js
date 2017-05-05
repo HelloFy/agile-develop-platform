@@ -62,9 +62,9 @@ function get_business_tb(callback) {
     })
  }*/
 
-export function getschema_refId(id, selector) {
+export function getschema_refId(id, refType, selector) {
     require.ensure(["whatwg-fetch"], function () {
-        fetch('gen/getSchemaByRefId?refId=' + id, {
+        fetch('gen/getSchemaByRefId?refId=' + id + '&refType=' + refType, {
             method: 'get',
             credentials: 'include'
         }).then(function (response) {

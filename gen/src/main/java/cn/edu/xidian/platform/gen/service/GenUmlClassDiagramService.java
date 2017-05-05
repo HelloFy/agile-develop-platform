@@ -69,7 +69,7 @@ public class GenUmlClassDiagramService {
     public void delete(GenUmlClassDiagram genUmlClassDiagram) {
         FileUtils.deleteFile(Global.getUmlClassDiagramPath() + iGenUmlClassDiagramDao.get(genUmlClassDiagram).getRealName());
         iGenUmlClassDiagramDao.delete(genUmlClassDiagram);
-        iGenSchemaDao.deleteByRefId(genUmlClassDiagram.getId());
+        iGenSchemaDao.deleteByRefIdAndRefType(genUmlClassDiagram.getId(), GenScheme.GEN_UML_TYPE);
 
     }
 
