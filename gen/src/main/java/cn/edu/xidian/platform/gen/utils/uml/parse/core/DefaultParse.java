@@ -163,6 +163,7 @@ public class DefaultParse implements Parse<UMLProject> {
                                             parentModel.setUmlClasses(classes);
                                         }
                                         classes.add(umlClass);
+                                        break;
                                     }
                                     case UMLPackage: {
                                         UMLPackage parentPackage = (UMLPackage) parsedElement;
@@ -172,6 +173,7 @@ public class DefaultParse implements Parse<UMLProject> {
                                             parentPackage.setClasses(classes);
                                         }
                                         classes.add(umlClass);
+                                        break;
                                     }
                                 }
                             }

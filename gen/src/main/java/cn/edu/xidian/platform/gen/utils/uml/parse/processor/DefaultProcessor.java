@@ -409,7 +409,9 @@ public class DefaultProcessor implements Processor<JSONObject, JSONArray>, Parse
                     }
                 }
                 String type = var3.getString(JAVA_TYPE.toString());
-                if (JavaType.convertFromString(type.trim()) != null) {
+                if (type == null) {
+                    attribute.setJavaType(JavaType.Object);
+                } else if (JavaType.convertFromString(type.trim()) != null) {
                     attribute.setJavaType(JavaType.convertFromString(type));
                 } else {
                     JSONObject var4 = var3.getJSONObject(JAVA_TYPE.toString());

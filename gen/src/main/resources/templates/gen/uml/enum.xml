@@ -5,7 +5,10 @@
     <fileName>${enum.name}.java</fileName>
     <content><![CDATA[
 <#import "enum.ftl" as ef/>
+<#if enum.packageName?? || enum.packageName==''>
+    <#else>
 package ${enum.packageName};
+</#if>
 
 <#if imports?? && (imports?size>0)>
     <#list imports as imp>

@@ -5,7 +5,10 @@
     <fileName>${interface.name}.java</fileName>
     <content><![CDATA[
 <#import "interface.ftl" as if/>
+<#if interface.packageName?? || interface.packageName==''>
+    <#else>
 package ${interface.packageName};
+</#if>
 import java.util.*;
 
 <#if imports?? && (imports?size>0)>

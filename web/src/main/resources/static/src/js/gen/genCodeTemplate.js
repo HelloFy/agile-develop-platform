@@ -97,8 +97,8 @@ export function load() {
     add_code_tpl.tab();
     list_code_tpl.tab('change tab', 'genCodeTemplate_tpl_list');
 
-    $('#query_doc_btn').click(function () {
-        queryDocList($('#code_name').val(), $('#function').val());
+    $('#query_code_btn').click(function () {
+        queryCodeList($('#code_name').val(), $('#function').val());
     });
 
     $('.ui.form').submit(function () {

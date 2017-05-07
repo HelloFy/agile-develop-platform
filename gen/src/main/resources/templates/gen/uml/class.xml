@@ -5,7 +5,10 @@
     <fileName>${class.name}.java</fileName>
     <content><![CDATA[
 <#import "class.ftl" as cs/>
+<#if class.packageName?? || class.packageName==''>
+    <#else>
 package ${class.packageName};
+</#if>
 import java.util.*;
 
 <#if imports?? && (imports?size>0)>
