@@ -54,7 +54,7 @@ import static cn.edu.xidian.platform.gen.utils.uml.parse.constants.UMLTypeKey.UM
 import static cn.edu.xidian.platform.gen.utils.uml.parse.constants.UMLTypeKey.VISIBILITY;
 
 /**
- * Created by 费玥 on 2017-4-21.
+ * Created by 李婧 on 2017-4-21.
  */
 public class DefaultProcessor implements Processor<JSONObject, JSONArray>, ParseProcessor<JSONObject, JSONArray> {
 

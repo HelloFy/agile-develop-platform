@@ -14,7 +14,7 @@ import cn.edu.xidian.platform.commons.entity.Page;
 import cn.edu.xidian.platform.commons.utils.StringUtils;
 
 /**
- * Created by 费玥 on 2017-3-17.
+ * Created by 李婧 on 2017-3-17.
  */
 
 public class GenTable extends Page<GenTable> implements Serializable {

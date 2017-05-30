@@ -10,7 +10,7 @@ import cn.edu.xidian.platform.commons.entity.Page;
 
 /**
  * 代码模版Entity
- * @author 费玥
+ * @author 李婧
  * @version 2017-04-18
  */
 public class GenCodeTemplate extends Page<GenCodeTemplate> implements java.io.Serializable {

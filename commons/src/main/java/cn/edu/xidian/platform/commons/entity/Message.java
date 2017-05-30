@@ -3,7 +3,7 @@ package cn.edu.xidian.platform.commons.entity;
 import java.io.Serializable;
 
 /**
- * Created by 费玥 on 2017/3/18.
+ * Created by 李婧 on 2017/3/18.
  */
 public class Message implements Serializable {
 

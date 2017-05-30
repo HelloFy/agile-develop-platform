@@ -34,7 +34,7 @@ import cn.edu.xidian.platform.gen.service.GenDocService;
 /**
  * 文档模版Controller
  *
- * @author 费玥
+ * @author 李婧
  * @version 2017-04-06
  */
 @RestController

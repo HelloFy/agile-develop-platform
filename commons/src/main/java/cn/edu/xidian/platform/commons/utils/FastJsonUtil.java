@@ -3,7 +3,7 @@ package cn.edu.xidian.platform.commons.utils;
 import com.alibaba.fastjson.JSON;
 
 /**
- * Created by 费玥 on 2016/12/10.
+ * Created by 李婧 on 2016/12/10.
  */
 public class FastJsonUtil {
 

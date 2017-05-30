@@ -1,7 +1,7 @@
 package cn.edu.xidian.platform.commons.entity;
 
 /**
- * Created by 费玥 on 2017/3/19.
+ * Created by 李婧 on 2017/3/19.
  */
 public class Page<T> {
 

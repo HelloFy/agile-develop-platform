@@ -20,7 +20,7 @@ import cn.edu.xidian.platform.gen.entity.GenScheme;
 import cn.edu.xidian.platform.gen.service.GenTableSchemaService;
 
 /**
- * Created by 费玥 on 2017-3-20.
+ * Created by 李婧 on 2017-3-20.
  */
 @RestController
 @RequestMapping("/gen")

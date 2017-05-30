@@ -18,7 +18,7 @@ import cn.edu.xidian.platform.gen.entity.GenTableColumn;
 import cn.edu.xidian.platform.gen.utils.GenUtils;
 
 /**
- * Created by 费玥 on 2017-3-17.
+ * Created by 李婧 on 2017-3-17.
  */
 @Service
 public class GenTableService {

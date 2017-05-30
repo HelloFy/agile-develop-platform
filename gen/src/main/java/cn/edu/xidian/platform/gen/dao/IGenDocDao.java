@@ -20,7 +20,7 @@ import cn.edu.xidian.platform.gen.entity.GenDoc;
 
 /**
  * 文档模版DAO接口
- * @author 费玥
+ * @author 李婧
  * @version 2017-04-06
  */
 @Mapper

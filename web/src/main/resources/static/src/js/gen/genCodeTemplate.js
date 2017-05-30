@@ -1,5 +1,5 @@
 /**
- * Created by 费玥 on 2017/4/18.
+ * Created by 李婧 on 2017/4/18.
  */
 let util = require('../utils/util.js');
 require('imports?define=>false&exports=>false!blueimp-file-upload/js/vendor/jquery.ui.widget.js');

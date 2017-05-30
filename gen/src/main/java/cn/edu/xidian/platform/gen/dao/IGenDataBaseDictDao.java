@@ -9,7 +9,7 @@ import cn.edu.xidian.platform.gen.entity.GenTable;
 import cn.edu.xidian.platform.gen.entity.GenTableColumn;
 
 /**
- * Created by 费玥 on 2017/3/18.
+ * Created by 李婧 on 2017/3/18.
  */
 @Mapper
 public interface IGenDataBaseDictDao {

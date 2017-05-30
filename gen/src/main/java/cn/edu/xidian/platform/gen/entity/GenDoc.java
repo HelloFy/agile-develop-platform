@@ -13,7 +13,7 @@ import cn.edu.xidian.platform.commons.entity.Page;
 
 /**
  * 文档模版Entity
- * @author 费玥
+ * @author 李婧
  * @version 2017-04-06
  */
 public class GenDoc extends Page<GenDoc> implements java.io.Serializable {

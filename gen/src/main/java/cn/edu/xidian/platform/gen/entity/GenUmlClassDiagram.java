@@ -10,7 +10,7 @@ import cn.edu.xidian.platform.commons.entity.Page;
 
 /**
  * 阿斯达斯的Entity
- * @author 费玥
+ * @author 李婧
  * @version 2017-04-17
  */
 public class GenUmlClassDiagram extends Page<GenUmlClassDiagram> implements java.io.Serializable {

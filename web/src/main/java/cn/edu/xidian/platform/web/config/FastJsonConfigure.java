@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 
 /**
- * Created by 费玥 on 2017/3/18.
+ * Created by 李婧 on 2017/3/18.
  */
 @Configuration
 public class FastJsonConfigure {

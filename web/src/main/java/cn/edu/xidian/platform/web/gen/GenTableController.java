@@ -22,7 +22,7 @@ import cn.edu.xidian.platform.gen.service.GenTableSchemaService;
 import cn.edu.xidian.platform.gen.service.GenTableService;
 
 /**
- * Created by 费玥 on 2017-3-17.
+ * Created by 李婧 on 2017-3-17.
  */
 
 @RestController

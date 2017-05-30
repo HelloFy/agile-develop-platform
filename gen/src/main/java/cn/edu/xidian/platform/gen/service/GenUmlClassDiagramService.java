@@ -26,7 +26,7 @@ import cn.edu.xidian.platform.gen.entity.GenUmlClassDiagram;
 
 /**
  * 阿斯达斯的Service
- * @author 费玥
+ * @author 李婧
  * @version 2017-04-17
  */
 @Service

@@ -19,7 +19,7 @@ import cn.edu.xidian.platform.gen.entity.GenTemplate;
 import cn.edu.xidian.platform.gen.utils.GenUtils;
 
 /**
- * Created by 费玥 on 2017-3-20.
+ * Created by 李婧 on 2017-3-20.
  */
 @Service
 public class GenTableSchemaService extends BaseGenSchemaSevice {

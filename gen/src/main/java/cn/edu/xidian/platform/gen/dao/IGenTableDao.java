@@ -14,7 +14,7 @@ import cn.edu.xidian.platform.gen.dao.provider.IGenTableDaoSQLProvider;
 import cn.edu.xidian.platform.gen.entity.GenTable;
 
 /**
- * Created by 费玥 on 2017-3-17.
+ * Created by 李婧 on 2017-3-17.
  */
 @Mapper
 public interface IGenTableDao {

@@ -9,7 +9,7 @@ import cn.edu.xidian.platform.gen.entity.GenCodeTemplate;
 
 /**
  * 代码模版 SQLProvider
- * @author 费玥
+ * @author 李婧
  * @version 2017-04-18
  */
 

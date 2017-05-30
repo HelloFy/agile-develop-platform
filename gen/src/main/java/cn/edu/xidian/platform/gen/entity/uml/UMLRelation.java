@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by 费玥 on 2017-4-20.
+ * Created by 李婧 on 2017-4-20.
  */
 public class UMLRelation extends UMLBase {
 

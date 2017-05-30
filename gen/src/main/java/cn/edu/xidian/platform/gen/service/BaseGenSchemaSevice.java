@@ -9,7 +9,7 @@ import cn.edu.xidian.platform.gen.dao.IGenSchemaDao;
 import cn.edu.xidian.platform.gen.entity.GenScheme;
 
 /**
- * @author 费玥
+ * @author 李婧
  * @since 2017/4/22 19:35
  */
 public abstract class BaseGenSchemaSevice implements IGenCodeService {

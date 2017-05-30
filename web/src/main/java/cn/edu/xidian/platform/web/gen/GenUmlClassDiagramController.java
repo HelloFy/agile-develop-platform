@@ -35,7 +35,7 @@ import cn.edu.xidian.platform.gen.service.GenUmlSchemaService;
 
 /**
  * 阿斯达斯的Controller
- * @author 费玥
+ * @author 李婧
  * @version 2017-04-17
  */
 @RestController

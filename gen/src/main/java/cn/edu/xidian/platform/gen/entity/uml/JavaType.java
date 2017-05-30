@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by 费玥 on 2017/4/18.
+ * Created by 李婧 on 2017/4/18.
  */
 public enum JavaType {
     Integer("Integer"), INT("int"), String("String"), Character("Character"), Char("char"),

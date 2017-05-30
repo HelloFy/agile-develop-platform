@@ -1,7 +1,7 @@
 package cn.edu.xidian.platform.gen.entity.uml;
 
 /**
- * Created by 费玥 on 2017/4/18.
+ * Created by 李婧 on 2017/4/18.
  */
 public class UMLBase {
     protected String id;

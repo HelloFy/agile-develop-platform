@@ -8,7 +8,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import java.io.IOException;
 
 /**
- * Created by 费玥 on 2017-4-26.
+ * Created by 李婧 on 2017-4-26.
  */
 @org.springframework.context.annotation.Configuration
 public class FreeMarkerConfig {

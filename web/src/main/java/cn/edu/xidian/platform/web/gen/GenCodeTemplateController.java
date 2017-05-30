@@ -31,7 +31,7 @@ import cn.edu.xidian.platform.gen.service.GenCodeTemplateService;
 
 /**
  * 代码模版Controller
- * @author 费玥
+ * @author 李婧
  * @version 2017-04-18
  */
 @RestController

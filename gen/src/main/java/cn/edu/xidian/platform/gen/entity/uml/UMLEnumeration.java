@@ -3,7 +3,7 @@ package cn.edu.xidian.platform.gen.entity.uml;
 import java.util.List;
 
 /**
- * Created by 费玥 on 2017-4-20.
+ * Created by 李婧 on 2017-4-20.
  */
 public class UMLEnumeration extends UMLBase implements JavaFileType {
 

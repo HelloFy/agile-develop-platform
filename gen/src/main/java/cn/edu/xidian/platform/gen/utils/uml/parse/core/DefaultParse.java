@@ -22,7 +22,7 @@ import cn.edu.xidian.platform.gen.utils.uml.parse.constants.UMLTypeKey;
 import cn.edu.xidian.platform.gen.utils.uml.parse.processor.DefaultProcessor;
 
 /**
- * Created by 费玥 on 2017-4-21.
+ * Created by 李婧 on 2017-4-21.
  */
 public class DefaultParse implements Parse<UMLProject> {
 

@@ -33,7 +33,7 @@ import cn.edu.xidian.platform.gen.utils.GenUtils;
 import cn.edu.xidian.platform.gen.utils.uml.parse.core.DefaultParse;
 
 /**
- * @author 费玥
+ * @author 李婧
  * @since 2017/4/22 19:34
  */
 @Service

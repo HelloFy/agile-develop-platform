@@ -1,5 +1,5 @@
 /**
- * Created by 费玥 on 2017-3-21.
+ * Created by 李婧 on 2017-3-21.
  */
 require('../jqPagination/jqPaginator.js');
 

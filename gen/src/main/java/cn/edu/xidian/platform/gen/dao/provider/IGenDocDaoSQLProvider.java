@@ -4,7 +4,7 @@ import cn.edu.xidian.platform.commons.utils.StringUtils;
 import cn.edu.xidian.platform.gen.entity.GenDoc;
 
 /**
- * Created by 费玥 on 2017/4/6.
+ * Created by 李婧 on 2017/4/6.
  */
 public class IGenDocDaoSQLProvider {
 

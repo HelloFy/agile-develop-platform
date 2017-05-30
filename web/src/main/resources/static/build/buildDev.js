@@ -1,5 +1,5 @@
 /**
- * Created by 费玥 on 2017/1/21.
+ * Created by 李婧 on 2017/1/21.
  */
 // https://github.com/shelljs/shelljs
 require('./check-versions')();
